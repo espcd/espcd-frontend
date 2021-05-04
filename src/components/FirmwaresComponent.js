@@ -27,19 +27,21 @@ export default class FirmwaresComponent extends Component {
     }
 
     render() {
+        const rows = ["ID", "Title", "Version"]
+
         return (
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Version</TableCell>
+                            {rows.map(row => (
+                                <TableCell>{row}</TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {this.state.firmwares.map(firmware => (
-                            <TableRow key={`tablerow-device-${firmware.id}`}>
+                            <TableRow key={`tablerow-firmware-${firmware.id}`}>
                                 <TableCell>{firmware.id}</TableCell>
                                 <TableCell>{firmware.title}</TableCell>
                                 <TableCell>{firmware.version}</TableCell>

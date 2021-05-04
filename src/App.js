@@ -14,6 +14,7 @@ import {
 import {DeviceHub, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
+import TitleComponent from "./components/TitleComponent";
 
 const drawerWidth = 200;
 
@@ -67,43 +68,47 @@ class App extends Component {
         const {classes} = this.props;
 
         return (
-            <div className={classes.root}>
-                <CssBaseline/>
-                <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar>
-                        <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <Toolbar/>
-                    <div className={classes.drawerContainer}>
-                        <List>
-                            <ListItem button key="devices" onClick={this.displayDevices}>
-                                <ListItemIcon>
-                                    <DeviceHub/>
-                                </ListItemIcon>
-                                <ListItemText primary="Devices"/>
-                            </ListItem>
-                            <ListItem button key="firmwares" onClick={this.displayFirmwares}>
-                                <ListItemIcon>
-                                    <Memory/>
-                                </ListItemIcon>
-                                <ListItemText primary="Firmwares"/>
-                            </ListItem>
-                        </List>
-                    </div>
-                </Drawer>
-                <main className={classes.content}>
-                    <Toolbar/>
-                    {this.state.displayComponent}
-                </main>
-            </div>
+            <React.Fragment>
+                <TitleComponent title="espcd-frontend"/>
+
+                <div className={classes.root}>
+                    <CssBaseline/>
+                    <AppBar position="fixed" className={classes.appBar}>
+                        <Toolbar>
+                            <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="permanent"
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <Toolbar/>
+                        <div className={classes.drawerContainer}>
+                            <List>
+                                <ListItem button key="devices" onClick={this.displayDevices}>
+                                    <ListItemIcon>
+                                        <DeviceHub/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Devices"/>
+                                </ListItem>
+                                <ListItem button key="firmwares" onClick={this.displayFirmwares}>
+                                    <ListItemIcon>
+                                        <Memory/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Firmwares"/>
+                                </ListItem>
+                            </List>
+                        </div>
+                    </Drawer>
+                    <main className={classes.content}>
+                        <Toolbar/>
+                        {this.state.displayComponent}
+                    </main>
+                </div>
+            </React.Fragment>
         );
     }
 }

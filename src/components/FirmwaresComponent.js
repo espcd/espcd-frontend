@@ -10,18 +10,18 @@ import {
 } from "@material-ui/core";
 import BackendApi from "../api/BackendApi";
 
-export default class DevicesComponent extends Component {
+export default class FirmwaresComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            devices: []
+            firmwares: []
         }
     }
 
     componentDidMount() {
-        BackendApi.getDevices().then(response => {
+        BackendApi.getFirmwares().then(response => {
             this.setState({
-                devices: response
+                firmwares: response
             })
         })
     }
@@ -34,19 +34,15 @@ export default class DevicesComponent extends Component {
                         <TableRow>
                             <TableCell>ID</TableCell>
                             <TableCell>Title</TableCell>
-                            <TableCell>Model</TableCell>
-                            <TableCell>Chip ID</TableCell>
-                            <TableCell>Last seen</TableCell>
+                            <TableCell>Version</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.devices.map(device => (
-                            <TableRow key={`tablerow-device-${device.id}`}>
-                                <TableCell>{device.id}</TableCell>
-                                <TableCell>{device.title}</TableCell>
-                                <TableCell>{device.model}</TableCell>
-                                <TableCell>{device.chip_id}</TableCell>
-                                <TableCell>{device.last_seen}</TableCell>
+                        {this.state.firmwares.map(firmware => (
+                            <TableRow key={`tablerow-device-${firmware.id}`}>
+                                <TableCell>{firmware.id}</TableCell>
+                                <TableCell>{firmware.title}</TableCell>
+                                <TableCell>{firmware.version}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

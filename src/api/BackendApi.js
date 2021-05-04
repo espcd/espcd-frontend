@@ -5,4 +5,9 @@ export default class BackendApi {
         return fetch(`${this.baseUrl}/devices`)
             .then(response => response.json());
     }
+
+    static getFirmwares() {
+        return fetch(`${this.baseUrl}/firmwares`)
+            .then(response => response.json());
+    }
 }

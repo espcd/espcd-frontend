@@ -4,13 +4,23 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {TextField} from "@material-ui/core";
+import {FormLabel, TextField, withStyles} from "@material-ui/core";
 
-export default class EditFirmwareDialogComponent extends Component {
+const styles = theme => ({
+    input: {
+        display: "none",
+    },
+    faceImage: {
+        color: theme.palette.primary.light,
+    }
+});
+
+class FirmwareDialogComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firmware: this.props.firmware,
+            firmware: this.props.firmware || {},
+            selectedFile: null
         };
     }
 
@@ -23,6 +33,13 @@ export default class EditFirmwareDialogComponent extends Component {
         });
     };
 
+    selectFile = (event) => {
+        const target = event.target;
+        this.setState({
+            selectedFile: target.files[0]
+        })
+    }
+
     render() {
         return (
             <Dialog
@@ -30,9 +47,7 @@ export default class EditFirmwareDialogComponent extends Component {
                 onClose={this.props.handleClose}
                 fullWidth={true}
             >
-                <DialogTitle>
-                    Edit Firmware
-                </DialogTitle>
+                <DialogTitle>{this.props.title}</DialogTitle>
                 <DialogContent dividers>
                     <TextField
                         autoFocus
@@ -56,6 +71,26 @@ export default class EditFirmwareDialogComponent extends Component {
                         value={this.state.firmware.description}
                         onChange={this.handleFirmwareChange}
                     />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="version"
+                        name="version"
+                        label="Version"
+                        type="text"
+                        fullWidth
+                        value={this.state.firmware.version}
+                        onChange={this.handleFirmwareChange}
+                    />
+                    <p>
+                        <FormLabel>File</FormLabel>
+                    </p>
+                    <input
+                        id="content"
+                        name="content"
+                        type="file"
+                        onChange={this.selectFile}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -66,7 +101,7 @@ export default class EditFirmwareDialogComponent extends Component {
                     </Button>
                     <Button
                         color="primary"
-                        onClick={() => this.props.handleOk(this.state.firmware)}
+                        onClick={() => this.props.handleOk(this.state.firmware, this.state.selectedFile)}
                     >
                         Ok
                     </Button>
@@ -75,3 +110,5 @@ export default class EditFirmwareDialogComponent extends Component {
         );
     }
 }
+
+export default withStyles(styles)(FirmwareDialogComponent);

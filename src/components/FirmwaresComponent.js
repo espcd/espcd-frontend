@@ -12,9 +12,8 @@ import {
     withStyles
 } from "@material-ui/core";
 import BackendApi from "../api/BackendApi";
-import EditFirmwareDialogComponent from "./EditFirmwareDialogComponent";
 import {Add} from "@material-ui/icons";
-import AddFirmwareDialogComponent from "./AddFirmwareDialogComponent";
+import FirmwareDialogComponent from "./FirmwareDialogComponent";
 
 const styles = theme => ({
     fab: {
@@ -79,9 +78,12 @@ class FirmwaresComponent extends Component {
         });
     };
 
-    handleEditDialogOk = async (firmware) => {
+    handleEditDialogOk = async (firmware, content) => {
+        console.log(firmware)
+        console.log(content)
         this.handleEditDialogClose();
         await BackendApi.editFirmware(firmware)
+        await BackendApi.addFirmwareContent(firmware.id, content)
         this.getFirmwares()
     };
 
@@ -93,7 +95,8 @@ class FirmwaresComponent extends Component {
             <React.Fragment>
                 {
                     this.state.addDialogOpen &&
-                    <AddFirmwareDialogComponent
+                    <FirmwareDialogComponent
+                        title="Add Firmware"
                         handleClose={this.handleAddDialogClose}
                         handleOk={this.handleAddDialogOk}
                     />
@@ -101,7 +104,8 @@ class FirmwaresComponent extends Component {
 
                 {
                     this.state.editDialogOpen &&
-                    <EditFirmwareDialogComponent
+                    <FirmwareDialogComponent
+                        title="Edit Firmware"
                         firmware={this.state.selectedFirmware}
                         handleClose={this.handleEditDialogClose}
                         handleOk={this.handleEditDialogOk}

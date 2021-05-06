@@ -30,8 +30,30 @@ export default class BackendApi {
     }
 
     static getFirmwares() {
-        return fetch(`${this.baseUrl}/firmwares`)
+        return fetch(this.firmwaresUrl)
             .then(response => response.json());
+    }
+
+    static createFirmware(firmware) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(firmware)
+        };
+        return fetch(`${this.firmwaresUrl}`, requestOptions)
+            .then(response => response.json());
+    }
+
+    static addFirmwareContent(firmwareId, content) {
+        let data = new FormData()
+        data.append("content", content);
+        const requestOptions = {
+            method: 'POST',
+            body: data
+        };
+        return fetch(`${this.firmwaresUrl}/${firmwareId}/content`, requestOptions);
     }
 
     static editFirmware(firmware) {

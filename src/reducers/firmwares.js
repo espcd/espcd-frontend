@@ -1,7 +1,9 @@
-import {ADD_FIRMWARES} from "../actions/firmwares";
+import {ADD_FIRMWARES, FIRMWARES_ERROR, FIRMWARES_LOADED} from "../actions/firmwares";
 
 const initialState = {
-    firmwares: []
+    firmwares: [],
+    error: "",
+    loaded: false
 };
 
 export const firmwaresReducer = (state = initialState, action) => {
@@ -12,6 +14,17 @@ export const firmwaresReducer = (state = initialState, action) => {
                 ...state,
                 firmwares: firmwares,
                 error: ""
+            };
+        case FIRMWARES_ERROR:
+            return {
+                ...state,
+                error: action.data,
+                firmwares: []
+            };
+        case FIRMWARES_LOADED:
+            return {
+                ...state,
+                loaded: true
             };
         default:
             return state;

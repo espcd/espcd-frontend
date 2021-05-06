@@ -1,7 +1,9 @@
-import {ADD_DEVICES} from "../actions/devices";
+import {ADD_DEVICES, DEVICES_ERROR, DEVICES_LOADED} from "../actions/devices";
 
 const initialState = {
-    devices: []
+    devices: [],
+    error: "",
+    loaded: false
 };
 
 export const devicesReducer = (state = initialState, action) => {
@@ -12,6 +14,17 @@ export const devicesReducer = (state = initialState, action) => {
                 ...state,
                 devices: devices,
                 error: ""
+            };
+        case DEVICES_ERROR:
+            return {
+                ...state,
+                error: action.data,
+                devices: []
+            };
+        case DEVICES_LOADED:
+            return {
+                ...state,
+                loaded: true
             };
         default:
             return state;

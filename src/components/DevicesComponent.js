@@ -48,7 +48,7 @@ export default class DevicesComponent extends Component {
     };
 
     render() {
-        const rows = ["ID", "Title", "Model", "Chip ID", "Last seen"]
+        const rows = ["ID", "Title", "Model", "Current Firmware", "Available Firmware", "Last seen"]
 
         return (
             <React.Fragment>
@@ -77,7 +77,8 @@ export default class DevicesComponent extends Component {
                                         <TableCell>{device.id}</TableCell>
                                         <TableCell>{device.title}</TableCell>
                                         <TableCell>{device.model}</TableCell>
-                                        <TableCell>{device.chip_id}</TableCell>
+                                        <TableCell>{device.current_firmware_id}</TableCell>
+                                        <TableCell>{device.available_firmware_id}</TableCell>
                                         <TableCell>{device.last_seen}</TableCell>
                                     </TableRow>
                                 ))}

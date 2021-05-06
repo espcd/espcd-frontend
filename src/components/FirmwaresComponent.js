@@ -14,6 +14,8 @@ import {
 import BackendApi from "../api/BackendApi";
 import {Add} from "@material-ui/icons";
 import FirmwareDialogComponent from "./FirmwareDialogComponent";
+import {getFirmwares} from "../actions/firmwares";
+import {connect} from "react-redux";
 
 const styles = theme => ({
     fab: {
@@ -35,15 +37,7 @@ class FirmwaresComponent extends Component {
     }
 
     componentDidMount() {
-        this.getFirmwares()
-    }
-
-    getFirmwares() {
-        BackendApi.getFirmwares().then(response => {
-            this.setState({
-                firmwares: response
-            })
-        })
+        this.props.getFirmwares();
     }
 
     openAddDialog = () => {
@@ -62,7 +56,7 @@ class FirmwaresComponent extends Component {
         this.handleAddDialogClose();
         firmware = await BackendApi.createFirmware(firmware)
         await BackendApi.addFirmwareContent(firmware.id, content)
-        this.getFirmwares()
+        this.props.getFirmwares();
     };
 
     openEditDialog = (firmware) => {
@@ -84,7 +78,7 @@ class FirmwaresComponent extends Component {
         this.handleEditDialogClose();
         await BackendApi.editFirmware(firmware)
         await BackendApi.addFirmwareContent(firmware.id, content)
-        this.getFirmwares()
+        this.props.getFirmwares();
     };
 
     render() {
@@ -123,7 +117,7 @@ class FirmwaresComponent extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.firmwares.map(firmware => (
+                                {this.props.firmwares.map(firmware => (
                                     <TableRow hover key={`tablerow-firmware-${firmware.id}`}
                                               onClick={() => this.openEditDialog(firmware)}>
                                         <TableCell>{firmware.id}</TableCell>
@@ -146,4 +140,18 @@ class FirmwaresComponent extends Component {
     }
 }
 
-export default withStyles(styles)(FirmwaresComponent);
+const mapStateToProps = (state) => ({
+    firmwares: state.firmwaresReducer.firmwares,
+    error: state.firmwaresReducer.error,
+    loaded: state.firmwaresReducer.loaded
+});
+
+const mapDispatchToProps = {
+    getFirmwares
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    withStyles(styles)(
+        FirmwaresComponent
+    )
+);

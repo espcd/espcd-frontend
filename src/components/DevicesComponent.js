@@ -10,8 +10,10 @@ import {
 } from "@material-ui/core";
 import BackendApi from "../api/BackendApi";
 import EditDeviceDialogComponent from "./EditDeviceDialogComponent";
+import {getDevices} from "../actions/devices";
+import {connect} from "react-redux";
 
-export default class DevicesComponent extends Component {
+class DevicesComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,11 +24,7 @@ export default class DevicesComponent extends Component {
     }
 
     componentDidMount() {
-        BackendApi.getDevices().then(response => {
-            this.setState({
-                devices: response
-            })
-        })
+        this.props.getDevices();
     }
 
     openDialog = (device) => {
@@ -72,7 +70,7 @@ export default class DevicesComponent extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.devices.map(device => (
+                                {this.props.devices.map(device => (
                                     <TableRow hover key={`tablerow-device-${device.id}`} onClick={() => this.openDialog(device)}>
                                         <TableCell>{device.id}</TableCell>
                                         <TableCell>{device.title}</TableCell>
@@ -90,3 +88,17 @@ export default class DevicesComponent extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    devices: state.devicesReducer.devices,
+    error: state.devicesReducer.error,
+    loaded: state.devicesReducer.loaded
+});
+
+const mapDispatchToProps = {
+    getDevices
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    DevicesComponent
+);

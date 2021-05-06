@@ -4,9 +4,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {TextField} from "@material-ui/core";
+import {FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {connect} from "react-redux";
 
-export default class EditDeviceDialogComponent extends Component {
+class EditDeviceDialogComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -56,6 +57,20 @@ export default class EditDeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleDeviceChange}
                     />
+                    <FormControl>
+                        <InputLabel id="firmware-select-label">Firmware</InputLabel>
+                        <Select
+                            labelId="firmware-select-label"
+                            id="available_firmware_id"
+                            name="available_firmware_id"
+                            value={this.state.device.available_firmware_id}
+                            onChange={this.handleDeviceChange}
+                        >
+                            {this.props.firmwares.map(firmware => (
+                                <MenuItem value={firmware.id}>{firmware.title} ({firmware.id})</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -75,3 +90,9 @@ export default class EditDeviceDialogComponent extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    firmwares: state.firmwaresReducer.firmwares
+});
+
+export default connect(mapStateToProps)(EditDeviceDialogComponent);

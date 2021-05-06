@@ -36,6 +36,10 @@ class FirmwaresComponent extends Component {
     }
 
     componentDidMount() {
+        this.getFirmwares()
+    }
+
+    getFirmwares() {
         BackendApi.getFirmwares().then(response => {
             this.setState({
                 firmwares: response
@@ -58,8 +62,8 @@ class FirmwaresComponent extends Component {
     handleAddDialogOk = async (firmware, content) => {
         this.handleAddDialogClose();
         firmware = await BackendApi.createFirmware(firmware)
-        console.log(firmware)
         await BackendApi.addFirmwareContent(firmware.id, content)
+        this.getFirmwares()
     };
 
     openEditDialog = (firmware) => {
@@ -78,6 +82,7 @@ class FirmwaresComponent extends Component {
     handleEditDialogOk = async (firmware) => {
         this.handleEditDialogClose();
         await BackendApi.editFirmware(firmware)
+        this.getFirmwares()
     };
 
     render() {

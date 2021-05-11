@@ -54,8 +54,7 @@ class FirmwaresComponent extends Component {
 
     handleAddDialogOk = async (firmware, content) => {
         this.handleAddDialogClose();
-        firmware = await BackendApi.createFirmware(firmware)
-        await BackendApi.addFirmwareContent(firmware.id, content)
+        await BackendApi.createFirmware(firmware, content)
         this.props.getFirmwares();
     };
 
@@ -76,8 +75,7 @@ class FirmwaresComponent extends Component {
         console.log(firmware)
         console.log(content)
         this.handleEditDialogClose();
-        await BackendApi.editFirmware(firmware)
-        await BackendApi.addFirmwareContent(firmware.id, content)
+        await BackendApi.editFirmware(firmware, content)
         this.props.getFirmwares();
     };
 

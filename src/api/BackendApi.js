@@ -34,37 +34,35 @@ export default class BackendApi {
             .then(response => response.json());
     }
 
-    static createFirmware(firmware) {
+    static formDataFromFirmware(firmware, content) {
+        let data = new FormData()
+        Object.keys(firmware).forEach(key => {
+            data.append("firmware[" + key + "]", firmware[key])
+        })
+        data.append("firmware[content]", content);
+        return data
+    }
+
+    static createFirmware(firmware, content) {
+        let data = this.formDataFromFirmware(firmware, content)
+
         const requestOptions = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(firmware)
+            body: data
         };
         return fetch(`${this.firmwaresUrl}`, requestOptions)
             .then(response => response.json());
     }
 
-    static addFirmwareContent(firmwareId, content) {
-        let data = new FormData()
-        data.append("content", content);
-        const requestOptions = {
-            method: 'POST',
-            body: data
-        };
-        return fetch(`${this.firmwaresUrl}/${firmwareId}/content`, requestOptions);
-    }
-
-    static editFirmware(firmware) {
+    static editFirmware(firmware, content) {
         const firmwareId = firmware.id
         firmware = this.removeStaticElements(firmware)
+
+        let data = this.formDataFromFirmware(firmware, content)
+
         const requestOptions = {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(firmware)
+            body: data
         };
         return fetch(`${this.firmwaresUrl}/${firmwareId}`, requestOptions);
     }

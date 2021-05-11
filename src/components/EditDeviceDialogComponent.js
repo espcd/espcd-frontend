@@ -47,7 +47,6 @@ class EditDeviceDialogComponent extends Component {
                         onChange={this.handleDeviceChange}
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="description"
                         name="description"
@@ -57,7 +56,10 @@ class EditDeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleDeviceChange}
                     />
-                    <FormControl>
+                    <FormControl
+                        fullWidth
+                        margin="dense"
+                    >
                         <InputLabel id="firmware-select-label">Firmware</InputLabel>
                         <Select
                             labelId="firmware-select-label"
@@ -67,7 +69,12 @@ class EditDeviceDialogComponent extends Component {
                             onChange={this.handleDeviceChange}
                         >
                             {this.props.firmwares.map(firmware => (
-                                <MenuItem value={firmware.id}>{firmware.title} ({firmware.id})</MenuItem>
+                                <MenuItem
+                                    value={firmware.id}
+                                    key={`firmware-menuitem-${firmware.id}`}
+                                >
+                                    {firmware.title} ({firmware.id})
+                                </MenuItem>
                             ))}
                         </Select>
                     </FormControl>

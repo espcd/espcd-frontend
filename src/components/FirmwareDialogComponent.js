@@ -4,7 +4,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {FormLabel, TextField, withStyles} from "@material-ui/core";
+import {FormControl, TextField, withStyles} from "@material-ui/core";
 
 const styles = theme => ({
     input: {
@@ -61,7 +61,6 @@ class FirmwareDialogComponent extends Component {
                         onChange={this.handleFirmwareChange}
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="description"
                         name="description"
@@ -72,7 +71,6 @@ class FirmwareDialogComponent extends Component {
                         onChange={this.handleFirmwareChange}
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="version"
                         name="version"
@@ -82,15 +80,24 @@ class FirmwareDialogComponent extends Component {
                         value={this.state.firmware.version}
                         onChange={this.handleFirmwareChange}
                     />
-                    <p>
-                        <FormLabel>File</FormLabel>
-                    </p>
-                    <input
-                        id="content"
-                        name="content"
-                        type="file"
-                        onChange={this.selectFile}
-                    />
+                    <FormControl
+                        fullWidth
+                        margin="dense"
+                    >
+                        <label
+                            htmlFor="firmware-file-label"
+                            className="MuiFormLabel-root MuiInputLabel-formControl MuiInputLabel-shrink"
+                        >
+                            File
+                        </label>
+                        <input
+                            id="firmware-file-label"
+                            name="content"
+                            type="file"
+                            onChange={this.selectFile}
+                            className="MuiInputBase-root MuiInput-formControl"
+                        />
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button

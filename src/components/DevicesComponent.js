@@ -4,6 +4,7 @@ import EditDeviceDialogComponent from "./EditDeviceDialogComponent";
 import {editDevice, getDevices} from "../actions/devices";
 import {connect} from "react-redux";
 import {getFirmwares} from "../actions/firmwares";
+import moment from 'moment';
 
 class DevicesComponent extends Component {
     constructor(props) {
@@ -70,7 +71,7 @@ class DevicesComponent extends Component {
                                         <TableCell>{device.model}</TableCell>
                                         <TableCell>{device.current_firmware_id}</TableCell>
                                         <TableCell>{device.available_firmware_id}</TableCell>
-                                        <TableCell>{device.last_seen}</TableCell>
+                                        <TableCell>{moment(device.last_seen).fromNow()}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

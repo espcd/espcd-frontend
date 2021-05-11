@@ -15,6 +15,7 @@ import {DeviceHub, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
+import {Link, Route, Switch, Redirect} from "react-router-dom";
 
 const drawerWidth = 200;
 
@@ -45,25 +46,6 @@ const styles = theme => ({
 });
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayComponent: <DevicesComponent/>,
-        };
-    }
-
-    displayDevices = () => {
-        this.setState({
-            displayComponent: <DevicesComponent/>
-        });
-    };
-
-    displayFirmwares = () => {
-        this.setState({
-            displayComponent: <FirmwaresComponent/>
-        });
-    };
-
     render() {
         const {classes} = this.props;
 
@@ -88,13 +70,13 @@ class App extends Component {
                         <Toolbar/>
                         <div className={classes.drawerContainer}>
                             <List>
-                                <ListItem button key="devices" onClick={this.displayDevices}>
+                                <ListItem button key="devices" component={Link} to="/devices">
                                     <ListItemIcon>
                                         <DeviceHub/>
                                     </ListItemIcon>
                                     <ListItemText primary="Devices"/>
                                 </ListItem>
-                                <ListItem button key="firmwares" onClick={this.displayFirmwares}>
+                                <ListItem button key="firmwares" component={Link} to="/firmwares">
                                     <ListItemIcon>
                                         <Memory/>
                                     </ListItemIcon>
@@ -105,7 +87,15 @@ class App extends Component {
                     </Drawer>
                     <main className={classes.content}>
                         <Toolbar/>
-                        {this.state.displayComponent}
+                        <Switch>
+                            <Redirect exact from="/" to="/devices"/>
+                            <Route path="/devices">
+                                <DevicesComponent />
+                            </Route>
+                            <Route path="/firmwares">
+                                <FirmwaresComponent />
+                            </Route>
+                        </Switch>
                     </main>
                 </div>
             </React.Fragment>

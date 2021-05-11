@@ -1,8 +1,10 @@
+import {backendUrl} from "./common";
+
 export const ADD_DEVICES = "ADD_DEVICES"
 export const DEVICES_ERROR = "DEVICES_ERROR"
 export const DEVICES_LOADED = "DEVICESS_LOADED"
 
-const baseUrl = 'http://localhost:3000'
+const baseUrl = `${backendUrl}/devices`
 
 export const addDevices = (devices) => ({
     type: ADD_DEVICES,
@@ -19,7 +21,7 @@ export const devicesLoaded = () => ({
 });
 
 export const getDevices = () => async dispatch => {
-    fetch(`${baseUrl}/devices`)
+    fetch(baseUrl)
         .then(response => response.json())
         .then(devices => {
             dispatch(addDevices(devices));
@@ -32,3 +34,17 @@ export const getDevices = () => async dispatch => {
             dispatch(devicesLoaded());
         });
 };
+
+export const editDevice = (device) => async dispatch => {
+    const deviceId = device.id
+    device = this.removeStaticElements(device)
+    const requestOptions = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(device)
+    };
+    return fetch(`${baseUrl}/${deviceId}`, requestOptions)
+        .then(() => dispatch(getDevices()));
+}

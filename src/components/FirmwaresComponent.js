@@ -11,10 +11,9 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import BackendApi from "../api/BackendApi";
 import {Add} from "@material-ui/icons";
 import FirmwareDialogComponent from "./FirmwareDialogComponent";
-import {getFirmwares} from "../actions/firmwares";
+import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 
 const styles = theme => ({
@@ -54,8 +53,7 @@ class FirmwaresComponent extends Component {
 
     handleAddDialogOk = async (firmware, content) => {
         this.handleAddDialogClose();
-        await BackendApi.createFirmware(firmware, content)
-        this.props.getFirmwares();
+        this.props.createFirmware(firmware, content)
     };
 
     openEditDialog = (firmware) => {
@@ -75,8 +73,7 @@ class FirmwaresComponent extends Component {
         console.log(firmware)
         console.log(content)
         this.handleEditDialogClose();
-        await BackendApi.editFirmware(firmware, content)
-        this.props.getFirmwares();
+        this.props.editFirmware(firmware, content)
     };
 
     render() {
@@ -145,7 +142,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getFirmwares
+    getFirmwares,
+    createFirmware,
+    editFirmware
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

@@ -1,16 +1,7 @@
 import React, {Component} from "react";
-import {
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from "@material-ui/core";
-import BackendApi from "../api/BackendApi";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import EditDeviceDialogComponent from "./EditDeviceDialogComponent";
-import {getDevices} from "../actions/devices";
+import {editDevice, getDevices} from "../actions/devices";
 import {connect} from "react-redux";
 
 class DevicesComponent extends Component {
@@ -42,7 +33,7 @@ class DevicesComponent extends Component {
 
     handleDialogOk = async (device) => {
         this.handleDialogClose();
-        await BackendApi.editDevice(device)
+        this.props.editDevice(device)
     };
 
     render() {
@@ -96,7 +87,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getDevices
+    getDevices,
+    editDevice
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

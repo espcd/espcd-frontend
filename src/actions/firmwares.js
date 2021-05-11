@@ -35,7 +35,7 @@ export const getFirmwares = () => async dispatch => {
         });
 };
 
-const formDataFromFirmware = (firmware, content) => () => {
+const formDataFromFirmware = (firmware, content) => {
     let data = new FormData()
     Object.keys(firmware).forEach(key => {
         data.append("firmware[" + key + "]", firmware[key])

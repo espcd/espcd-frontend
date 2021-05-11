@@ -1,4 +1,4 @@
-import {backendUrl} from "./common";
+import {backendUrl, removeStaticElements} from "./common";
 
 export const ADD_DEVICES = "ADD_DEVICES"
 export const DEVICES_ERROR = "DEVICES_ERROR"
@@ -37,7 +37,7 @@ export const getDevices = () => async dispatch => {
 
 export const editDevice = (device) => async dispatch => {
     const deviceId = device.id
-    device = this.removeStaticElements(device)
+    device = removeStaticElements(device)
     const requestOptions = {
         method: 'PATCH',
         headers: {

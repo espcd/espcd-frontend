@@ -107,7 +107,7 @@ class FirmwaresComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {rows.map(row => (
-                                        <TableCell>{row}</TableCell>
+                                        <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>

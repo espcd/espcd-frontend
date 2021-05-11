@@ -58,13 +58,13 @@ class DevicesComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {rows.map(row => (
-                                        <TableCell>{row}</TableCell>
+                                        <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {this.props.devices.map(device => (
-                                    <TableRow hover key={`tablerow-device-${device.id}`} onClick={() => this.openDialog(device)}>
+                                    <TableRow hover key={`device-table-body-${device.id}`} onClick={() => this.openDialog(device)}>
                                         <TableCell>{device.id}</TableCell>
                                         <TableCell>{device.title}</TableCell>
                                         <TableCell>{device.model}</TableCell>

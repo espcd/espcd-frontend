@@ -3,6 +3,7 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow}
 import EditDeviceDialogComponent from "./EditDeviceDialogComponent";
 import {editDevice, getDevices} from "../actions/devices";
 import {connect} from "react-redux";
+import {getFirmwares} from "../actions/firmwares";
 
 class DevicesComponent extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class DevicesComponent extends Component {
 
     componentDidMount() {
         this.props.getDevices();
+        this.props.getFirmwares();  // needs to be loaded to allow firmware selection in edit device dialog
     }
 
     openDialog = (device) => {
@@ -88,6 +90,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     getDevices,
+    getFirmwares,
     editDevice
 };
 

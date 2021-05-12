@@ -17,6 +17,7 @@ import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
 import {Link, Route, Switch, Redirect} from "react-router-dom";
 import DeviceComponent from "./components/DeviceComponent";
+import FirmwareComponent from "./components/FirmwareComponent";
 
 const drawerWidth = 200;
 
@@ -96,8 +97,11 @@ class App extends Component {
                             <Route path="/devices/:id">
                                 <DeviceComponent />
                             </Route>
-                            <Route excact path="/firmwares">
+                            <Route exact path="/firmwares">
                                 <FirmwaresComponent />
+                            </Route>
+                            <Route path="/firmwares/:id">
+                                <FirmwareComponent />
                             </Route>
                         </Switch>
                     </main>

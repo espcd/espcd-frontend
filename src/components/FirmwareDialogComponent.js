@@ -4,16 +4,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {FormControl, TextField, withStyles} from "@material-ui/core";
-
-const styles = theme => ({
-    input: {
-        display: "none",
-    },
-    faceImage: {
-        color: theme.palette.primary.light,
-    }
-});
+import {FormControl, TextField} from "@material-ui/core";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -118,4 +109,4 @@ class FirmwareDialogComponent extends Component {
     }
 }
 
-export default withStyles(styles)(FirmwareDialogComponent);
+export default FirmwareDialogComponent;

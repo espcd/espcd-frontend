@@ -35,7 +35,7 @@ class DeviceComponent extends Component {
         }
     }
 
-    handleDeviceChange = (event) => {
+    handleChange = (event) => {
         const target = event.target
         let device = this.state.device
         device[target.name] = target.value
@@ -71,7 +71,7 @@ class DeviceComponent extends Component {
                     type="text"
                     fullWidth
                     value={this.state.device.title}
-                    onChange={this.handleDeviceChange}
+                    onChange={this.handleChange}
                 />
                 <TextField
                     margin="dense"
@@ -81,7 +81,7 @@ class DeviceComponent extends Component {
                     type="text"
                     fullWidth
                     value={this.state.device.description}
-                    onChange={this.handleDeviceChange}
+                    onChange={this.handleChange}
                 />
                 <TextField
                     disabled
@@ -113,7 +113,7 @@ class DeviceComponent extends Component {
                         id="available_firmware_id"
                         name="available_firmware_id"
                         value={this.state.device.available_firmware_id}
-                        onChange={this.handleDeviceChange}
+                        onChange={this.handleChange}
                     >
                         {this.props.firmwares.map(firmware => (
                             <MenuItem

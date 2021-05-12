@@ -12,9 +12,10 @@ import {
     withStyles
 } from "@material-ui/core";
 import {Add} from "@material-ui/icons";
-import FirmwareDialogComponent from "./FirmwareDialogComponent";
 import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import FirmwareDialogComponent from "./FirmwareDialogComponent";
 
 const styles = theme => ({
     fab: {
@@ -30,7 +31,6 @@ class FirmwaresComponent extends Component {
         this.state = {
             firmwares: [],
             addDialogOpen: false,
-            editDialogOpen: false,
             selectedFirmware: null
         }
     }
@@ -56,26 +56,6 @@ class FirmwaresComponent extends Component {
         this.props.createFirmware(firmware, content)
     };
 
-    openEditDialog = (firmware) => {
-        this.setState({
-            editDialogOpen: true,
-            selectedFirmware: firmware
-        });
-    };
-
-    handleEditDialogClose = () => {
-        this.setState({
-            editDialogOpen: false
-        });
-    };
-
-    handleEditDialogOk = async (firmware, content) => {
-        console.log(firmware)
-        console.log(content)
-        this.handleEditDialogClose();
-        this.props.editFirmware(firmware, content)
-    };
-
     render() {
         const {classes} = this.props;
         const rows = ["ID", "Title", "Version"]
@@ -88,16 +68,6 @@ class FirmwaresComponent extends Component {
                         title="Add Firmware"
                         handleClose={this.handleAddDialogClose}
                         handleOk={this.handleAddDialogOk}
-                    />
-                }
-
-                {
-                    this.state.editDialogOpen &&
-                    <FirmwareDialogComponent
-                        title="Edit Firmware"
-                        firmware={this.state.selectedFirmware}
-                        handleClose={this.handleEditDialogClose}
-                        handleOk={this.handleEditDialogOk}
                     />
                 }
 
@@ -114,7 +84,7 @@ class FirmwaresComponent extends Component {
                             <TableBody>
                                 {this.props.firmwares.map(firmware => (
                                     <TableRow hover key={`tablerow-firmware-${firmware.id}`}
-                                              onClick={() => this.openEditDialog(firmware)}>
+                                              onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                         <TableCell>{firmware.id}</TableCell>
                                         <TableCell>{firmware.title}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
@@ -147,8 +117,10 @@ const mapDispatchToProps = {
     editFirmware
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    withStyles(styles)(
-        FirmwaresComponent
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(
+        withStyles(styles)(
+            FirmwaresComponent
+        )
     )
 );

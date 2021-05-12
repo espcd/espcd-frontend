@@ -65,6 +65,8 @@ const mapDispatchToProps = {
     getDevices
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    withRouter(DevicesComponent)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(
+        DevicesComponent
+    )
 );

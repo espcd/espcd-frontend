@@ -16,6 +16,7 @@ import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
 import {Link, Route, Switch, Redirect} from "react-router-dom";
+import DeviceComponent from "./components/DeviceComponent";
 
 const drawerWidth = 200;
 
@@ -89,10 +90,13 @@ class App extends Component {
                         <Toolbar/>
                         <Switch>
                             <Redirect exact from="/" to="/devices"/>
-                            <Route path="/devices">
+                            <Route exact path="/devices">
                                 <DevicesComponent />
                             </Route>
-                            <Route path="/firmwares">
+                            <Route path="/devices/:id">
+                                <DeviceComponent />
+                            </Route>
+                            <Route excact path="/firmwares">
                                 <FirmwaresComponent />
                             </Route>
                         </Switch>

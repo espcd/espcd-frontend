@@ -12,10 +12,9 @@ import {
     withStyles
 } from "@material-ui/core";
 import {Add} from "@material-ui/icons";
-import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
+import {getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import FirmwareDialogComponent from "./FirmwareDialogComponent";
 
 const styles = theme => ({
     fab: {
@@ -29,9 +28,7 @@ class FirmwaresComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firmwares: [],
-            addDialogOpen: false,
-            selectedFirmware: null
+            firmwares: []
         }
     }
 
@@ -39,38 +36,12 @@ class FirmwaresComponent extends Component {
         this.props.getFirmwares();
     }
 
-    openAddDialog = () => {
-        this.setState({
-            addDialogOpen: true
-        });
-    };
-
-    handleAddDialogClose = () => {
-        this.setState({
-            addDialogOpen: false
-        });
-    };
-
-    handleAddDialogOk = async (firmware, content) => {
-        this.handleAddDialogClose();
-        this.props.createFirmware(firmware, content)
-    };
-
     render() {
         const {classes} = this.props;
         const rows = ["ID", "Title", "Version"]
 
         return (
             <React.Fragment>
-                {
-                    this.state.addDialogOpen &&
-                    <FirmwareDialogComponent
-                        title="Add Firmware"
-                        handleClose={this.handleAddDialogClose}
-                        handleOk={this.handleAddDialogOk}
-                    />
-                }
-
                 <Paper>
                     <TableContainer>
                         <Table stickyHeader>
@@ -94,9 +65,8 @@ class FirmwaresComponent extends Component {
                         </Table>
                     </TableContainer>
                 </Paper>
-
                 <Tooltip title="Add Firmware" aria-label="add firmware">
-                    <Fab color="primary" className={classes.fab} onClick={this.openAddDialog}>
+                    <Fab color="primary" className={classes.fab} onClick={() => this.props.history.push('/firmwares/new')}>
                         <Add/>
                     </Fab>
                 </Tooltip>
@@ -107,14 +77,10 @@ class FirmwaresComponent extends Component {
 
 const mapStateToProps = (state) => ({
     firmwares: state.firmwaresReducer.firmwares,
-    error: state.firmwaresReducer.error,
-    loaded: state.firmwaresReducer.loaded
 });
 
 const mapDispatchToProps = {
-    getFirmwares,
-    createFirmware,
-    editFirmware
+    getFirmwares
 };
 
 export default withRouter(

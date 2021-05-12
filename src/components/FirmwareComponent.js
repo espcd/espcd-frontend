@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-import {editFirmware, getFirmwares} from "../actions/firmwares";
+import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {Button, FormControl, TextField, withStyles} from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
@@ -26,7 +26,8 @@ class FirmwareComponent extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.firmwares !== prevProps.firmwares) {
-            let firmware = this.props.firmwares.find(firmware => firmware.id === this.props.match.params.id)
+            let firmware = this.props.firmwares
+                .find(firmware => firmware.id === this.props.match.params.id) || new Firmware()
             this.setState({
                 firmware: {...firmware}
             })
@@ -40,6 +41,12 @@ class FirmwareComponent extends Component {
         this.setState({
             firmware: firmware
         })
+    }
+
+    handleSubmit = () => {
+        this.props.isPresent ?
+            this.props.editFirmware(this.state.firmware, this.state.selectedFile) :
+            this.props.createFirmware(this.state.firmware, this.state.selectedFile)
     }
 
     selectFile = (event) => {
@@ -117,9 +124,9 @@ class FirmwareComponent extends Component {
                     variant="contained"
                     color="primary"
                     className={classes.submitButton}
-                    onClick={() => this.props.editFirmware(this.state.firmware, this.state.selectedFile)}
+                    onClick={this.handleSubmit}
                 >
-                    Apply changes
+                    {this.props.isPresent ? "Edit firmware" : "Create firmware"}
                 </Button>
             </form>
         )
@@ -132,6 +139,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     getFirmwares,
+    createFirmware,
     editFirmware
 };
 

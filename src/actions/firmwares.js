@@ -47,6 +47,7 @@ const formDataFromFirmware = (firmware, content) => {
 }
 
 export const createFirmware = (firmware, content) => async dispatch => {
+    firmware = removeStaticElements(firmware)
     let data = formDataFromFirmware(firmware, content)
 
     const requestOptions = {

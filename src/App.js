@@ -100,8 +100,11 @@ class App extends Component {
                             <Route exact path="/firmwares">
                                 <FirmwaresComponent />
                             </Route>
+                            <Route path="/firmwares/new">
+                                <FirmwareComponent isPresent={false} />
+                            </Route>
                             <Route path="/firmwares/:id">
-                                <FirmwareComponent />
+                                <FirmwareComponent isPresent={true} />
                             </Route>
                         </Switch>
                     </main>

@@ -131,7 +131,7 @@ class DeviceComponent extends Component {
                     className={classes.submitButton}
                     onClick={() => this.props.editDevice(this.state.device)}
                 >
-                    Apply changes
+                    Edit device
                 </Button>
             </form>
         )

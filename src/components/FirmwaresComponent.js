@@ -54,8 +54,11 @@ class FirmwaresComponent extends Component {
                             </TableHead>
                             <TableBody>
                                 {this.props.firmwares.map(firmware => (
-                                    <TableRow hover key={`tablerow-firmware-${firmware.id}`}
-                                              onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
+                                    <TableRow
+                                        hover
+                                        key={`tablerow-firmware-${firmware.id}`}
+                                        onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}
+                                    >
                                         <TableCell>{firmware.id}</TableCell>
                                         <TableCell>{firmware.title}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
@@ -66,7 +69,10 @@ class FirmwaresComponent extends Component {
                     </TableContainer>
                 </Paper>
                 <Tooltip title="Add Firmware" aria-label="add firmware">
-                    <Fab color="primary" className={classes.fab} onClick={() => this.props.history.push('/firmwares/new')}>
+                    <Fab color="primary"
+                         className={classes.fab}
+                         onClick={() => this.props.history.push('/firmwares/new')}
+                    >
                         <Add/>
                     </Fab>
                 </Tooltip>

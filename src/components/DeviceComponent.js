@@ -3,13 +3,16 @@ import {withRouter} from "react-router-dom";
 import {getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {editDevice, getDevices} from "../actions/devices";
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField, withStyles} from "@material-ui/core";
+import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
 
 const styles = theme => ({
-    submitButton: {
-        marginTop: theme.spacing(1)
+    button: {
+        marginTop: theme.spacing(2)
+    },
+    paper: {
+        padding: '16px'
     }
 });
 
@@ -51,8 +54,9 @@ class DeviceComponent extends Component {
             .find(firmware => firmware.id === this.state.device.current_firmware_id) || new Firmware()
 
         return (
-            <form>
+            <Paper className={classes.paper}>
                 <TextField
+                    InputLabelProps={{shrink: true}}
                     disabled
                     margin="dense"
                     id="id"
@@ -63,6 +67,7 @@ class DeviceComponent extends Component {
                     value={this.state.device.id}
                 />
                 <TextField
+                    InputLabelProps={{shrink: true}}
                     autoFocus
                     margin="dense"
                     id="title"
@@ -74,6 +79,7 @@ class DeviceComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
+                    InputLabelProps={{shrink: true}}
                     margin="dense"
                     id="description"
                     name="description"
@@ -84,6 +90,7 @@ class DeviceComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
+                    InputLabelProps={{shrink: true}}
                     disabled
                     margin="dense"
                     id="model"
@@ -94,6 +101,7 @@ class DeviceComponent extends Component {
                     value={this.state.device.model}
                 />
                 <TextField
+                    InputLabelProps={{shrink: true}}
                     disabled
                     margin="dense"
                     id="current_firmware_id"
@@ -107,7 +115,12 @@ class DeviceComponent extends Component {
                     fullWidth
                     margin="dense"
                 >
-                    <InputLabel id="firmware-select-label">Available firmware</InputLabel>
+                    <InputLabel
+                        id="firmware-select-label"
+                        shrink={true}
+                    >
+                        Available firmware
+                    </InputLabel>
                     <Select
                         labelId="firmware-select-label"
                         id="available_firmware_id"
@@ -128,12 +141,12 @@ class DeviceComponent extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    className={classes.submitButton}
+                    className={classes.button}
                     onClick={() => this.props.editDevice(this.state.device)}
                 >
                     Edit device
                 </Button>
-            </form>
+            </Paper>
         )
     }
 }

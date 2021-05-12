@@ -2,12 +2,15 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
-import {Button, FormControl, TextField, withStyles} from "@material-ui/core";
+import {Button, FormControl, Paper, TextField, withStyles} from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 
 const styles = theme => ({
-    submitButton: {
-        marginTop: theme.spacing(1)
+    button: {
+        marginTop: theme.spacing(2)
+    },
+    paper: {
+        padding: '16px'
     }
 });
 
@@ -59,9 +62,12 @@ class FirmwareComponent extends Component {
     render() {
         const {classes} = this.props;
 
+        let shrink = !!this.props.isPresent
+
         return (
-            <form>
+            <Paper className={classes.paper}>
                 <TextField
+                    InputLabelProps={{shrink: shrink}}
                     disabled
                     margin="dense"
                     id="id"
@@ -72,6 +78,7 @@ class FirmwareComponent extends Component {
                     value={this.state.firmware.id}
                 />
                 <TextField
+                    InputLabelProps={{shrink: shrink}}
                     autoFocus
                     margin="dense"
                     id="title"
@@ -83,6 +90,7 @@ class FirmwareComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
+                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="description"
                     name="description"
@@ -93,6 +101,7 @@ class FirmwareComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
+                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="version"
                     name="version"
@@ -123,12 +132,12 @@ class FirmwareComponent extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    className={classes.submitButton}
+                    className={classes.button}
                     onClick={this.handleSubmit}
                 >
                     {this.props.isPresent ? "Edit firmware" : "Create firmware"}
                 </Button>
-            </form>
+            </Paper>
         )
     }
 }

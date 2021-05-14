@@ -6,6 +6,7 @@ import {editDevice, getDevices} from "../actions/devices";
 import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
+import {getProducts} from "../actions/products";
 
 const styles = theme => ({
     button: {
@@ -27,6 +28,7 @@ class DeviceComponent extends Component {
     componentDidMount() {
         this.props.getFirmwares()
         this.props.getDevices()
+        this.props.getProducts()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -110,7 +112,7 @@ class DeviceComponent extends Component {
                     label="Current Firmware"
                     type="text"
                     fullWidth
-                    value={`${current_firmware.title} (${current_firmware.id})`}
+                    value={current_firmware.id ? `${current_firmware.title} (${current_firmware.id})` : 'none'}
                 />
                 <FormControl
                     fullWidth
@@ -139,6 +141,34 @@ class DeviceComponent extends Component {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControl
+                    fullWidth
+                    margin="dense"
+                >
+                    <InputLabel
+                        id="product-select-label"
+                        shrink={true}
+                    >
+                        Product
+                    </InputLabel>
+                    <Select
+                        labelId="product-select-label"
+                        id="product_id"
+                        name="product_id"
+                        value={this.state.device.product_id}
+                        onChange={this.handleChange}
+                    >
+                        <MenuItem value={''} key={`product-menuitem-none`}>-</MenuItem>
+                        {this.props.products.map(product => (
+                            <MenuItem
+                                value={product.id}
+                                key={`product-menuitem-${product.id}`}
+                            >
+                                {product.title} ({product.id})
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <Button
                     variant="contained"
                     color="primary"
@@ -154,13 +184,15 @@ class DeviceComponent extends Component {
 
 const mapStateToProps = (state) => ({
     devices: state.devicesReducer.devices,
-    firmwares: state.firmwaresReducer.firmwares
+    firmwares: state.firmwaresReducer.firmwares,
+    products: state.productsReducer.products
 })
 
 const mapDispatchToProps = {
     getFirmwares,
     getDevices,
-    editDevice
+    editDevice,
+    getProducts
 };
 
 export default withRouter(

@@ -4,6 +4,8 @@ import {createProduct, editProduct, getProducts} from "../actions/products";
 import {connect} from "react-redux";
 import {Button, Checkbox, FormControlLabel, Paper, TextField, withStyles} from "@material-ui/core";
 import Product from "../data-classes/Product";
+import {getFirmwares} from "../actions/firmwares";
+import {getDevices} from "../actions/devices";
 
 const styles = theme => ({
     button: {
@@ -23,6 +25,8 @@ class ProductComponent extends Component {
     }
 
     componentDidMount() {
+        this.props.getDevices()
+        this.props.getFirmwares()
         this.props.getProducts()
     }
 
@@ -110,6 +114,12 @@ class ProductComponent extends Component {
                     }
                     label="Auto update"
                 />
+                <p>
+                    Devices: {this.props.devices.map(device => device.id).join(', ')}
+                </p>
+                <p>
+                    Firmwares: {this.props.firmwares.map(firmware => firmware.id).join(', ')}
+                </p>
                 <Button
                     variant="contained"
                     color="primary"
@@ -123,11 +133,20 @@ class ProductComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    products: state.productsReducer.products
-})
+const mapStateToProps = (state, ownProps) => {
+    let productId = ownProps.match.params.id
+    let devices = state.devicesReducer.devices.filter(device => device.product_id === productId);
+    let firmwares = state.firmwaresReducer.firmwares.filter(firmware => firmware.product_id === productId);
+    return {
+        products: state.productsReducer.products,
+        devices,
+        firmwares
+    }
+}
 
 const mapDispatchToProps = {
+    getDevices,
+    getFirmwares,
     getProducts,
     createProduct,
     editProduct

@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
-import {Button, FormControl, Paper, TextField, withStyles} from "@material-ui/core";
+import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
+import {getProducts} from "../actions/products";
 
 const styles = theme => ({
     button: {
@@ -24,6 +25,7 @@ class FirmwareComponent extends Component {
     }
 
     componentDidMount() {
+        this.props.getProducts()
         this.props.getFirmwares()
     }
 
@@ -130,6 +132,34 @@ class FirmwareComponent extends Component {
                         className="MuiInputBase-root MuiInput-formControl"
                     />
                 </FormControl>
+                <FormControl
+                    fullWidth
+                    margin="dense"
+                >
+                    <InputLabel
+                        id="product-select-label"
+                        shrink={true}
+                    >
+                        Product
+                    </InputLabel>
+                    <Select
+                        labelId="product-select-label"
+                        id="product_id"
+                        name="product_id"
+                        value={this.state.firmware.product_id}
+                        onChange={this.handleChange}
+                    >
+                        <MenuItem value={''} key={`product-menuitem-none`}>-</MenuItem>
+                        {this.props.products.map(product => (
+                            <MenuItem
+                                value={product.id}
+                                key={`product-menuitem-${product.id}`}
+                            >
+                                {product.title} ({product.id})
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <Button
                     variant="contained"
                     color="primary"
@@ -144,13 +174,15 @@ class FirmwareComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    firmwares: state.firmwaresReducer.firmwares
+    firmwares: state.firmwaresReducer.firmwares,
+    products: state.productsReducer.products
 })
 
 const mapDispatchToProps = {
     getFirmwares,
     createFirmware,
-    editFirmware
+    editFirmware,
+    getProducts
 };
 
 export default withRouter(

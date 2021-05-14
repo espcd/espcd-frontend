@@ -11,13 +11,15 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {DeviceHub, Memory} from "@material-ui/icons";
+import {Apps, DeviceHub, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
-import {Link, Route, Switch, Redirect} from "react-router-dom";
+import {Link, Redirect, Route, Switch} from "react-router-dom";
 import DeviceComponent from "./components/DeviceComponent";
 import FirmwareComponent from "./components/FirmwareComponent";
+import ProductsComponent from "./components/ProductsComponent";
+import ProductComponent from "./components/ProductComponent";
 
 const drawerWidth = 200;
 
@@ -84,6 +86,12 @@ class App extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Firmwares"/>
                                 </ListItem>
+                                <ListItem button key="products" component={Link} to="/products">
+                                    <ListItemIcon>
+                                        <Apps/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Products"/>
+                                </ListItem>
                             </List>
                         </div>
                     </Drawer>
@@ -105,6 +113,15 @@ class App extends Component {
                             </Route>
                             <Route path="/firmwares/:id">
                                 <FirmwareComponent isPresent={true} />
+                            </Route>
+                            <Route exact path="/products">
+                                <ProductsComponent />
+                            </Route>
+                            <Route path="/products/new">
+                                <ProductComponent isPresent={false} />
+                            </Route>
+                            <Route path="/products/:id">
+                                <ProductComponent isPresent={true} />
                             </Route>
                         </Switch>
                     </main>

@@ -77,7 +77,7 @@ class DevicesComponent extends Component {
                                             {device.available_firmware_id}
                                         </Button>
                                     </TableCell>
-                                    <TableCell>{moment(device.last_seen).fromNow()}</TableCell>
+                                    <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
                                     <TableCell align="right">
                                         <Button onClick={() => this.props.history.push(`/devices/${device.id}`)}>
                                             <Edit/>

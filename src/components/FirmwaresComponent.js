@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {
+    Button,
     Fab,
     Paper,
     Table,
@@ -11,7 +12,7 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add} from "@material-ui/icons";
+import {Add, Edit} from "@material-ui/icons";
 import {getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -38,7 +39,6 @@ class FirmwaresComponent extends Component {
 
     render() {
         const {classes} = this.props;
-        const rows = ["ID", "Title", "Version"]
 
         return (
             <React.Fragment>
@@ -47,9 +47,13 @@ class FirmwaresComponent extends Component {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    {rows.map(row => (
-                                        <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
-                                    ))}
+                                    {
+                                        ["Title", "Description", "Version", ""].map(
+                                            row => (
+                                                <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
+                                            )
+                                        )
+                                    }
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -57,11 +61,15 @@ class FirmwaresComponent extends Component {
                                     <TableRow
                                         hover
                                         key={`tablerow-firmware-${firmware.id}`}
-                                        onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}
                                     >
-                                        <TableCell>{firmware.id}</TableCell>
                                         <TableCell>{firmware.title}</TableCell>
+                                        <TableCell>{firmware.description}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
+                                        <TableCell align="right">
+                                            <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
+                                                <Edit/>
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

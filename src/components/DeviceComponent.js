@@ -85,6 +85,7 @@ class DeviceComponent extends Component {
                     name="description"
                     label="Description"
                     type="text"
+                    multiline
                     fullWidth
                     value={this.state.device.description}
                     onChange={this.handleChange}

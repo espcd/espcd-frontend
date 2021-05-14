@@ -96,6 +96,7 @@ class FirmwareComponent extends Component {
                     name="description"
                     label="Description"
                     type="text"
+                    multiline
                     fullWidth
                     value={this.state.firmware.description}
                     onChange={this.handleChange}

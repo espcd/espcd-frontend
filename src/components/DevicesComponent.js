@@ -1,9 +1,26 @@
 import React, {Component} from "react";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    withStyles
+} from "@material-ui/core";
 import {getDevices} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
+import {Edit} from "@material-ui/icons";
+
+const styles = () => ({
+    button: {
+        textTransform: 'none'
+    }
+});
 
 class DevicesComponent extends Component {
     constructor(props) {
@@ -18,7 +35,7 @@ class DevicesComponent extends Component {
     }
 
     render() {
-        const rows = ["ID", "Title", "Description", "Model", "Current Firmware", "Available Firmware", "Last seen"]
+        const {classes} = this.props;
 
         return (
             <Paper>
@@ -26,9 +43,13 @@ class DevicesComponent extends Component {
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
-                                {rows.map(row => (
-                                    <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
-                                ))}
+                                {
+                                    ["Title", "Description", "Model", "Current Firmware", "Available Firmware", "Last seen", ""].map(
+                                        row => (
+                                            <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
+                                        )
+                                    )
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -36,15 +57,32 @@ class DevicesComponent extends Component {
                                 <TableRow
                                     hover
                                     key={`device-table-body-${device.id}`}
-                                    onClick={() => this.props.history.push(`/devices/${device.id}`)}
                                 >
-                                    <TableCell>{device.id}</TableCell>
                                     <TableCell>{device.title}</TableCell>
                                     <TableCell>{device.description}</TableCell>
                                     <TableCell>{device.model}</TableCell>
-                                    <TableCell>{device.current_firmware_id}</TableCell>
-                                    <TableCell>{device.available_firmware_id}</TableCell>
+                                    <TableCell>
+                                        <Button
+                                            className={classes.button}
+                                            onClick={() => this.props.history.push(`/firmwares/${device.current_firmware_id}`)}
+                                        >
+                                            {device.current_firmware_id}
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                            className={classes.button}
+                                            onClick={() => this.props.history.push(`/firmwares/${device.available_firmware_id}`)}
+                                        >
+                                            {device.available_firmware_id}
+                                        </Button>
+                                    </TableCell>
                                     <TableCell>{moment(device.last_seen).fromNow()}</TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick={() => this.props.history.push(`/devices/${device.id}`)}>
+                                            <Edit/>
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -67,6 +105,8 @@ const mapDispatchToProps = {
 
 export default withRouter(
     connect(mapStateToProps, mapDispatchToProps)(
-        DevicesComponent
+        withStyles(styles)(
+            DevicesComponent
+        )
     )
 );

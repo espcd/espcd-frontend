@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {
     AppBar,
+    ButtonBase,
     CssBaseline,
     Drawer,
     List,
@@ -15,7 +16,7 @@ import {Apps, DeviceHub, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
-import {Link, Redirect, Route, Switch} from "react-router-dom";
+import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import DeviceComponent from "./components/DeviceComponent";
 import FirmwareComponent from "./components/FirmwareComponent";
 import ProductsComponent from "./components/ProductsComponent";
@@ -61,7 +62,9 @@ class App extends Component {
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
-                            <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
+                            <ButtonBase onClick={() => this.props.history.push('/')}>
+                                <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
+                            </ButtonBase>
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -131,4 +134,8 @@ class App extends Component {
     }
 }
 
-export default withStyles(styles)(App);
+export default withRouter(
+    withStyles(styles)(
+        App
+    )
+);

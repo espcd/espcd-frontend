@@ -3,6 +3,7 @@ export default class Firmware {
     title = ""
     description = ""
     version = ""
+    model = ""
     product_id = ""
     created_at = ""
     updated_at = ""

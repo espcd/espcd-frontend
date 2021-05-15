@@ -2,12 +2,24 @@ import {backendUrl, parseError, parseJson, removeStaticElements} from "./common"
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS"
+export const ADD_PRODUCT = "ADD_PRODUCT"
+export const EDIT_PRODUCT = "EDIT_PRODUCT"
 
 const baseUrl = `${backendUrl}/products`
 
-export const addProducts = (products) => ({
+export const addProductsAction = (products) => ({
     type: ADD_PRODUCTS,
     data: products,
+});
+
+export const addProductAction = (product) => ({
+    type: ADD_PRODUCT,
+    data: product,
+});
+
+export const editProductAction = (product) => ({
+    type: EDIT_PRODUCT,
+    data: product,
 });
 
 export const getProducts = () => async dispatch => {
@@ -18,7 +30,7 @@ export const getProducts = () => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
-            dispatch(addProducts(response));
+            dispatch(addProductsAction(response));
         })
         .catch(async error => {
             let message = await parseError(error)
@@ -43,8 +55,8 @@ export const createProduct = (product) => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
+            dispatch(addProductAction(response));
             dispatch(addSuccessNotification("Product created"))
-            dispatch(getProducts());
         })
         .catch(async error => {
             let message = await parseError(error)
@@ -69,8 +81,8 @@ export const editProduct = (product) => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
+            dispatch(editProductAction(response));
             dispatch(addSuccessNotification("Product edited"))
-            dispatch(getProducts());
         })
         .catch(async error => {
             let message = await parseError(error)

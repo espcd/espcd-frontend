@@ -2,12 +2,18 @@ import {backendUrl, parseError, parseJson, removeStaticElements} from "./common"
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES"
+export const EDIT_DEVICE = "EDIT_DEVICE"
 
 const baseUrl = `${backendUrl}/devices`
 
-export const addDevices = (devices) => ({
+export const addDevicesAction = (devices) => ({
     type: ADD_DEVICES,
     data: devices,
+});
+
+export const editDeviceAction = (device) => ({
+    type: EDIT_DEVICE,
+    data: device,
 });
 
 export const getDevices = () => async dispatch => {
@@ -18,7 +24,7 @@ export const getDevices = () => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
-            dispatch(addDevices(response));
+            dispatch(addDevicesAction(response));
         })
         .catch(async error => {
             let message = await parseError(error)
@@ -43,8 +49,8 @@ export const editDevice = (device) => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
+            dispatch(editDeviceAction(response));
             dispatch(addSuccessNotification("Device edited"))
-            dispatch(getDevices());
         })
         .catch(async error => {
             let message = await parseError(error)

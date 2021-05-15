@@ -2,12 +2,24 @@ import {backendUrl, parseError, parseJson, removeStaticElements} from "./common"
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES"
+export const ADD_FIRMWARE = "ADD_FIRMWARE"
+export const EDIT_FIRMWARE = "EDIT_FIRMWARE"
 
 const baseUrl = `${backendUrl}/firmwares`
 
-export const addFirmwares = (firmwares) => ({
+export const addFirmwaresAction = (firmwares) => ({
     type: ADD_FIRMWARES,
     data: firmwares,
+});
+
+export const addFirmwareAction = (firmware) => ({
+    type: ADD_FIRMWARE,
+    data: firmware,
+});
+
+export const editFirmwareAction = (firmware) => ({
+    type: EDIT_FIRMWARE,
+    data: firmware,
 });
 
 export const getFirmwares = () => async dispatch => {
@@ -18,7 +30,7 @@ export const getFirmwares = () => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
-            dispatch(addFirmwares(response));
+            dispatch(addFirmwaresAction(response));
         })
         .catch(async error => {
             let message = await parseError(error)
@@ -52,8 +64,8 @@ export const createFirmware = (firmware, content) => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
+            dispatch(addFirmwareAction(response));
             dispatch(addSuccessNotification("Firmware created"))
-            dispatch(getFirmwares());
         })
         .catch(async error => {
             let message = await parseError(error)
@@ -77,8 +89,8 @@ export const editFirmware = (firmware, content) => async dispatch => {
         })
         .then(parseJson)
         .then(response => {
+            dispatch(editFirmwareAction(response));
             dispatch(addSuccessNotification("Firmware edited"))
-            dispatch(getFirmwares());
         })
         .catch(async error => {
             let message = await parseError(error)

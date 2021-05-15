@@ -30,10 +30,6 @@ class DevicesComponent extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.getDevices();
-    }
-
     render() {
         const {classes} = this.props;
 

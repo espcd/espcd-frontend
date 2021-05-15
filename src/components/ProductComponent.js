@@ -24,19 +24,20 @@ class ProductComponent extends Component {
         }
     }
 
+    setProduct() {
+        let product = this.props.products.find(product => product.id === this.props.match.params.id) || new Product()
+        this.setState({
+            product: {...product}
+        })
+    }
+
     componentDidMount() {
-        this.props.getDevices()
-        this.props.getFirmwares()
-        this.props.getProducts()
+        this.setProduct()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.products !== prevProps.products) {
-            let product = this.props.products
-                .find(product => product.id === this.props.match.params.id) || new Product()
-            this.setState({
-                product: {...product}
-            })
+            this.setProduct()
         }
     }
 

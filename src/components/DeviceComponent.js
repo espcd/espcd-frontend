@@ -25,18 +25,20 @@ class DeviceComponent extends Component {
         }
     }
 
+    setDevice() {
+        let device = this.props.devices.find(device => device.id === this.props.match.params.id)
+        this.setState({
+            device: {...device}
+        })
+    }
+
     componentDidMount() {
-        this.props.getFirmwares()
-        this.props.getDevices()
-        this.props.getProducts()
+        this.setDevice()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.devices !== prevProps.devices) {
-            let device = this.props.devices.find(device => device.id === this.props.match.params.id)
-            this.setState({
-                device: {...device}
-            })
+            this.setDevice()
         }
     }
 

@@ -33,10 +33,6 @@ class FirmwaresComponent extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.getFirmwares();
-    }
-
     render() {
         const {classes} = this.props;
 

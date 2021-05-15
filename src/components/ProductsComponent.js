@@ -36,10 +36,6 @@ class ProductsComponent extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.getProducts();
-    }
-
     render() {
         const {classes} = this.props;
 

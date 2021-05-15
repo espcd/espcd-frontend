@@ -24,18 +24,20 @@ class FirmwareComponent extends Component {
         }
     }
 
+    setFirmware() {
+        let firmware = this.props.firmwares.find(firmware => firmware.id === this.props.match.params.id) || new Firmware()
+        this.setState({
+            firmware: {...firmware}
+        })
+    }
+
     componentDidMount() {
-        this.props.getProducts()
-        this.props.getFirmwares()
+        this.setFirmware()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.firmwares !== prevProps.firmwares) {
-            let firmware = this.props.firmwares
-                .find(firmware => firmware.id === this.props.match.params.id) || new Firmware()
-            this.setState({
-                firmware: {...firmware}
-            })
+            this.setFirmware()
         }
     }
 

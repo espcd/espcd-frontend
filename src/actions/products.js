@@ -1,8 +1,7 @@
-import {backendUrl, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS"
-export const PRODUCTS_ERROR = "PRODUCTS_ERROR"
-export const PRODUCTS_LOADED = "PRODUCTSS_LOADED"
 
 const baseUrl = `${backendUrl}/products`
 
@@ -11,29 +10,21 @@ export const addProducts = (products) => ({
     data: products,
 });
 
-export const productsError = (message) => ({
-    type: PRODUCTS_ERROR,
-    data: message
-});
-
-export const productsLoaded = () => ({
-    type: PRODUCTS_LOADED
-});
-
 export const getProducts = () => async dispatch => {
-    fetch(baseUrl)
-        .then(response => response.json())
-        .then(products => {
-            dispatch(addProducts(products));
+    return fetch(baseUrl)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
         })
-        .catch((error) => {
-            console.log(error);
-            dispatch(productsError("Products could not be loaded"));
+        .then(parseJson)
+        .then(response => {
+            dispatch(addProducts(response));
         })
-        .finally(() => {
-            dispatch(productsLoaded());
-        });
-};
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
 
 export const createProduct = (product) => async dispatch => {
     product = removeStaticElements(product)
@@ -46,8 +37,19 @@ export const createProduct = (product) => async dispatch => {
         body: JSON.stringify(product)
     };
     return fetch(baseUrl, requestOptions)
-        .then(response => response.json())
-        .then(() => dispatch(getProducts()));
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(parseJson)
+        .then(response => {
+            dispatch(addSuccessNotification("Product created"))
+            dispatch(getProducts());
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
 }
 
 export const editProduct = (product) => async dispatch => {
@@ -61,5 +63,17 @@ export const editProduct = (product) => async dispatch => {
         body: JSON.stringify(product)
     };
     return fetch(`${baseUrl}/${productId}`, requestOptions)
-        .then(() => dispatch(getProducts()));
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(parseJson)
+        .then(response => {
+            dispatch(addSuccessNotification("Product edited"))
+            dispatch(getProducts());
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
 }

@@ -1,8 +1,7 @@
-import {backendUrl, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES"
-export const DEVICES_ERROR = "DEVICES_ERROR"
-export const DEVICES_LOADED = "DEVICESS_LOADED"
 
 const baseUrl = `${backendUrl}/devices`
 
@@ -11,29 +10,21 @@ export const addDevices = (devices) => ({
     data: devices,
 });
 
-export const devicesError = (message) => ({
-    type: DEVICES_ERROR,
-    data: message
-});
-
-export const devicesLoaded = () => ({
-    type: DEVICES_LOADED
-});
-
 export const getDevices = () => async dispatch => {
-    fetch(baseUrl)
-        .then(response => response.json())
-        .then(devices => {
-            dispatch(addDevices(devices));
+    return fetch(baseUrl)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
         })
-        .catch((error) => {
-            console.log(error);
-            dispatch(devicesError("Devices could not be loaded"));
+        .then(parseJson)
+        .then(response => {
+            dispatch(addDevices(response));
         })
-        .finally(() => {
-            dispatch(devicesLoaded());
-        });
-};
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
 
 export const editDevice = (device) => async dispatch => {
     const deviceId = device.id
@@ -46,5 +37,17 @@ export const editDevice = (device) => async dispatch => {
         body: JSON.stringify(device)
     };
     return fetch(`${baseUrl}/${deviceId}`, requestOptions)
-        .then(() => dispatch(getDevices()));
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(parseJson)
+        .then(response => {
+            dispatch(addSuccessNotification("Device edited"))
+            dispatch(getDevices());
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
 }

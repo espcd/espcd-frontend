@@ -1,8 +1,7 @@
-import {backendUrl, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES"
-export const FIRMWARES_ERROR = "FIRMWARES_ERROR"
-export const FIRMWARES_LOADED = "FIRMWARESS_LOADED"
 
 const baseUrl = `${backendUrl}/firmwares`
 
@@ -11,29 +10,21 @@ export const addFirmwares = (firmwares) => ({
     data: firmwares,
 });
 
-export const firmwaresError = (message) => ({
-    type: FIRMWARES_ERROR,
-    data: message
-});
-
-export const firmwaresLoaded = () => ({
-    type: FIRMWARES_LOADED
-});
-
 export const getFirmwares = () => async dispatch => {
-    fetch(baseUrl)
-        .then(response => response.json())
-        .then(firmwares => {
-            dispatch(addFirmwares(firmwares));
+    return fetch(baseUrl)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
         })
-        .catch((error) => {
-            console.log(error);
-            dispatch(firmwaresError("Firmwares could not be loaded"));
+        .then(parseJson)
+        .then(response => {
+            dispatch(addFirmwares(response));
         })
-        .finally(() => {
-            dispatch(firmwaresLoaded());
-        });
-};
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
 
 const formDataFromFirmware = (firmware, content) => {
     let data = new FormData()
@@ -55,8 +46,19 @@ export const createFirmware = (firmware, content) => async dispatch => {
         body: data
     };
     return fetch(baseUrl, requestOptions)
-        .then(response => response.json())
-        .then(() => dispatch(getFirmwares()));
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(parseJson)
+        .then(response => {
+            dispatch(addSuccessNotification("Firmware created"))
+            dispatch(getFirmwares());
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
 }
 
 export const editFirmware = (firmware, content) => async dispatch => {
@@ -68,6 +70,18 @@ export const editFirmware = (firmware, content) => async dispatch => {
         method: 'PATCH',
         body: data
     };
-    fetch(`${baseUrl}/${firmwareId}`, requestOptions)
-        .then(() => dispatch(getFirmwares()));
+    return fetch(`${baseUrl}/${firmwareId}`, requestOptions)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(parseJson)
+        .then(response => {
+            dispatch(addSuccessNotification("Firmware edited"))
+            dispatch(getFirmwares());
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
 }

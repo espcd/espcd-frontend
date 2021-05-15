@@ -21,6 +21,7 @@ import DeviceComponent from "./components/DeviceComponent";
 import FirmwareComponent from "./components/FirmwareComponent";
 import ProductsComponent from "./components/ProductsComponent";
 import ProductComponent from "./components/ProductComponent";
+import SnackbarComponent from "./components/SnackbarComponent";
 
 const drawerWidth = 200;
 
@@ -57,6 +58,7 @@ class App extends Component {
         return (
             <React.Fragment>
                 <TitleComponent title="espcd-frontend"/>
+                <SnackbarComponent/>
 
                 <div className={classes.root}>
                     <CssBaseline/>

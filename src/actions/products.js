@@ -4,6 +4,7 @@ import {addErrorNotification, addSuccessNotification} from "./notifications";
 export const ADD_PRODUCTS = "ADD_PRODUCTS"
 export const ADD_PRODUCT = "ADD_PRODUCT"
 export const EDIT_PRODUCT = "EDIT_PRODUCT"
+export const DELETE_PRODUCT = "DELETE_PRODUCT"
 
 const baseUrl = `${backendUrl}/products`
 
@@ -20,6 +21,11 @@ export const addProductAction = (product) => ({
 export const editProductAction = (product) => ({
     type: EDIT_PRODUCT,
     data: product,
+});
+
+export const deleteProductAction = (productId) => ({
+    type: DELETE_PRODUCT,
+    data: productId,
 });
 
 export const getProducts = () => async dispatch => {
@@ -83,6 +89,25 @@ export const editProduct = (product) => async dispatch => {
         .then(response => {
             dispatch(editProductAction(response));
             dispatch(addSuccessNotification("Product edited"))
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
+
+export const deleteProduct = (productId) => async dispatch => {
+    const requestOptions = {
+        method: 'DELETE'
+    };
+    return fetch(`${baseUrl}/${productId}`, requestOptions)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(() => {
+            dispatch(deleteProductAction(productId));
+            dispatch(addSuccessNotification("Product deleted"))
         })
         .catch(async error => {
             let message = await parseError(error)

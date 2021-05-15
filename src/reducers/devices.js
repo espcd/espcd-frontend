@@ -1,4 +1,4 @@
-import {ADD_DEVICES, EDIT_DEVICE} from "../actions/devices";
+import {ADD_DEVICES, DELETE_DEVICE, EDIT_DEVICE} from "../actions/devices";
 
 const initialState = {
     devices: []
@@ -15,8 +15,12 @@ export const devicesReducer = (state = initialState, action) => {
         case EDIT_DEVICE:
             return {
                 ...state,
-                devices: state.devices.map(device => device.id === action.data.id ? action.data : device
-                )
+                devices: state.devices.map(device => device.id === action.data.id ? action.data : device)
+            }
+        case DELETE_DEVICE:
+            return {
+                ...state,
+                devices: state.devices.filter(device => device.id !== action.data)
             }
         default:
             return state

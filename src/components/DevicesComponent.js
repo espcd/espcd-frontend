@@ -10,11 +10,11 @@ import {
     TableRow,
     withStyles
 } from "@material-ui/core";
-import {getDevices} from "../actions/devices";
+import {deleteDevice, getDevices} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
-import {Edit} from "@material-ui/icons";
+import {Delete, Edit} from "@material-ui/icons";
 
 const styles = () => ({
     button: {
@@ -78,6 +78,9 @@ class DevicesComponent extends Component {
                                         <Button onClick={() => this.props.history.push(`/devices/${device.id}`)}>
                                             <Edit/>
                                         </Button>
+                                        <Button onClick={() => this.props.deleteDevice(device.id)}>
+                                            <Delete/>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -96,7 +99,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getDevices
+    getDevices,
+    deleteDevice
 };
 
 export default withRouter(

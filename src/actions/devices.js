@@ -3,6 +3,7 @@ import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES"
 export const EDIT_DEVICE = "EDIT_DEVICE"
+export const DELETE_DEVICE = "DELETE_DEVICE"
 
 const baseUrl = `${backendUrl}/devices`
 
@@ -14,6 +15,11 @@ export const addDevicesAction = (devices) => ({
 export const editDeviceAction = (device) => ({
     type: EDIT_DEVICE,
     data: device,
+});
+
+export const deleteDeviceAction = (deviceId) => ({
+    type: DELETE_DEVICE,
+    data: deviceId,
 });
 
 export const getDevices = () => async dispatch => {
@@ -51,6 +57,25 @@ export const editDevice = (device) => async dispatch => {
         .then(response => {
             dispatch(editDeviceAction(response));
             dispatch(addSuccessNotification("Device edited"))
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
+
+export const deleteDevice = (deviceId) => async dispatch => {
+    const requestOptions = {
+        method: 'DELETE'
+    };
+    return fetch(`${baseUrl}/${deviceId}`, requestOptions)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(() => {
+            dispatch(deleteDeviceAction(deviceId));
+            dispatch(addSuccessNotification("Device deleted"))
         })
         .catch(async error => {
             let message = await parseError(error)

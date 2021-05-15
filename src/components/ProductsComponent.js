@@ -12,10 +12,10 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {getProducts} from "../actions/products";
+import {deleteProduct, getProducts} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {Add, Edit} from "@material-ui/icons";
+import {Add, Delete, Edit} from "@material-ui/icons";
 
 const styles = theme => ({
     button: {
@@ -68,6 +68,9 @@ class ProductsComponent extends Component {
                                             <Button onClick={() => this.props.history.push(`/products/${product.id}`)}>
                                                 <Edit/>
                                             </Button>
+                                            <Button onClick={() => this.props.deleteProduct(product.id)}>
+                                                <Delete/>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -95,7 +98,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getProducts
+    getProducts,
+    deleteProduct
 };
 
 export default withRouter(

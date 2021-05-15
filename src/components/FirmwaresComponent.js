@@ -12,8 +12,8 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Edit} from "@material-ui/icons";
-import {getFirmwares} from "../actions/firmwares";
+import {Add, Delete, Edit} from "@material-ui/icons";
+import {deleteFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 
@@ -66,6 +66,9 @@ class FirmwaresComponent extends Component {
                                             <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                                 <Edit/>
                                             </Button>
+                                            <Button onClick={() => this.props.deleteFirmware(firmware.id)}>
+                                                <Delete/>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -91,7 +94,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getFirmwares
+    getFirmwares,
+    deleteFirmware
 };
 
 export default withRouter(

@@ -1,4 +1,4 @@
-import {ADD_PRODUCT, ADD_PRODUCTS, EDIT_PRODUCT} from "../actions/products"
+import {ADD_PRODUCT, ADD_PRODUCTS, DELETE_PRODUCT, EDIT_PRODUCT} from "../actions/products"
 
 const initialState = {
     products: []
@@ -20,8 +20,12 @@ export const productsReducer = (state = initialState, action) => {
         case EDIT_PRODUCT:
             return {
                 ...state,
-                products: state.products.map(product => product.id === action.data.id ? action.data : product
-                )
+                products: state.products.map(product => product.id === action.data.id ? action.data : product)
+            }
+        case DELETE_PRODUCT:
+            return {
+                ...state,
+                products: state.products.filter(product => product.id !== action.data)
             }
         default:
             return state

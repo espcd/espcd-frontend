@@ -4,6 +4,7 @@ import {addErrorNotification, addSuccessNotification} from "./notifications";
 export const ADD_FIRMWARES = "ADD_FIRMWARES"
 export const ADD_FIRMWARE = "ADD_FIRMWARE"
 export const EDIT_FIRMWARE = "EDIT_FIRMWARE"
+export const DELETE_FIRMWARE = "DELETE_FIRMWARE"
 
 const baseUrl = `${backendUrl}/firmwares`
 
@@ -20,6 +21,11 @@ export const addFirmwareAction = (firmware) => ({
 export const editFirmwareAction = (firmware) => ({
     type: EDIT_FIRMWARE,
     data: firmware,
+});
+
+export const deleteFirmwareAction = (firmwareId) => ({
+    type: DELETE_FIRMWARE,
+    data: firmwareId,
 });
 
 export const getFirmwares = () => async dispatch => {
@@ -91,6 +97,25 @@ export const editFirmware = (firmware, content) => async dispatch => {
         .then(response => {
             dispatch(editFirmwareAction(response));
             dispatch(addSuccessNotification("Firmware edited"))
+        })
+        .catch(async error => {
+            let message = await parseError(error)
+            dispatch(addErrorNotification("Error: " + message))
+        })
+}
+
+export const deleteFirmware = (firmwareId) => async dispatch => {
+    const requestOptions = {
+        method: 'DELETE'
+    };
+    return fetch(`${baseUrl}/${firmwareId}`, requestOptions)
+        .then(response => {
+            if (!response.ok) throw response
+            return response
+        })
+        .then(() => {
+            dispatch(deleteFirmwareAction(firmwareId));
+            dispatch(addSuccessNotification("Firmware deleted"))
         })
         .catch(async error => {
             let message = await parseError(error)

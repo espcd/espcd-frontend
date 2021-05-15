@@ -1,4 +1,4 @@
-import {ADD_FIRMWARE, ADD_FIRMWARES, EDIT_FIRMWARE} from "../actions/firmwares";
+import {ADD_FIRMWARE, ADD_FIRMWARES, DELETE_FIRMWARE, EDIT_FIRMWARE} from "../actions/firmwares";
 
 const initialState = {
     firmwares: []
@@ -20,8 +20,12 @@ export const firmwaresReducer = (state = initialState, action) => {
         case EDIT_FIRMWARE:
             return {
                 ...state,
-                firmwares: state.firmwares.map(firmware => firmware.id === action.data.id ? action.data : firmware
-                )
+                firmwares: state.firmwares.map(firmware => firmware.id === action.data.id ? action.data : firmware)
+            }
+        case DELETE_FIRMWARE:
+            return {
+                ...state,
+                firmwares: state.firmwares.filter(firmware => firmware.id !== action.data)
             }
         default:
             return state

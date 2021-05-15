@@ -106,23 +106,23 @@ class FirmwareComponent extends Component {
                 <TextField
                     InputLabelProps={{shrink: shrink}}
                     margin="dense"
-                    id="version"
-                    name="version"
-                    label="Version"
-                    type="text"
-                    fullWidth
-                    value={this.state.firmware.version}
-                    onChange={this.handleChange}
-                />
-                <TextField
-                    InputLabelProps={{shrink: shrink}}
-                    margin="dense"
                     id="model"
                     name="model"
                     label="Model"
                     type="text"
                     fullWidth
                     value={this.state.firmware.model}
+                    onChange={this.handleChange}
+                />
+                <TextField
+                    InputLabelProps={{shrink: shrink}}
+                    margin="dense"
+                    id="version"
+                    name="version"
+                    label="Version"
+                    type="text"
+                    fullWidth
+                    value={this.state.firmware.version}
                     onChange={this.handleChange}
                 />
                 <FormControl

@@ -40,7 +40,7 @@ class DevicesComponent extends Component {
                         <TableHead>
                             <TableRow>
                                 {
-                                    ["Title", "Description", "Model", "Current Firmware", "Available Firmware", "Last seen", ""].map(
+                                    ["Title", "Description", "Model", "Product", "Installed firmware", "Last seen", ""].map(
                                         row => (
                                             <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
                                         )
@@ -58,20 +58,28 @@ class DevicesComponent extends Component {
                                     <TableCell>{device.description}</TableCell>
                                     <TableCell>{device.model}</TableCell>
                                     <TableCell>
-                                        <Button
-                                            className={classes.button}
-                                            onClick={() => this.props.history.push(`/firmwares/${device.current_firmware_id}`)}
-                                        >
-                                            {device.current_firmware_id}
-                                        </Button>
+                                        {
+                                            device.product_id ?
+                                            <Button
+                                                className={classes.button}
+                                                onClick={() => this.props.history.push(`/products/${device.product_id}`)}
+                                            >
+                                                {device.product_id}
+                                            </Button> :
+                                            "none"
+                                        }
                                     </TableCell>
                                     <TableCell>
-                                        <Button
-                                            className={classes.button}
-                                            onClick={() => this.props.history.push(`/firmwares/${device.available_firmware_id}`)}
-                                        >
-                                            {device.available_firmware_id}
-                                        </Button>
+                                        {
+                                            device.firmware_id ?
+                                            <Button
+                                                className={classes.button}
+                                                onClick={() => this.props.history.push(`/firmwares/${device.firmware_id}`)}
+                                            >
+                                                {device.firmware_id}
+                                            </Button> :
+                                            "none"
+                                        }
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
                                     <TableCell align="right">

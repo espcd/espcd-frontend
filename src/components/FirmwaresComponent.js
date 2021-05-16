@@ -44,7 +44,7 @@ class FirmwaresComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Model", "Version", ""].map(
+                                        ["Title", "Description", "Model", "Version", "Product", ""].map(
                                             row => (
                                                 <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
                                             )
@@ -62,6 +62,7 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.description}</TableCell>
                                         <TableCell>{firmware.model}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
+                                        <TableCell>{firmware.product_id}</TableCell>
                                         <TableCell align="right">
                                             <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                                 <Edit/>

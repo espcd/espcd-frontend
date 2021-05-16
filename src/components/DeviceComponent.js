@@ -5,6 +5,7 @@ import {editDevice} from "../actions/devices";
 import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
+import moment from 'moment';
 
 const styles = theme => ({
     button: {
@@ -52,8 +53,7 @@ class DeviceComponent extends Component {
     render() {
         const {classes} = this.props;
 
-        let current_firmware = this.props.firmwares
-            .find(firmware => firmware.id === this.state.device.current_firmware_id) || new Firmware()
+        let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware()
 
         return (
             <Paper className={classes.paper}>
@@ -103,44 +103,6 @@ class DeviceComponent extends Component {
                     fullWidth
                     value={this.state.device.model}
                 />
-                <TextField
-                    InputLabelProps={{shrink: true}}
-                    disabled
-                    margin="dense"
-                    id="current_firmware_id"
-                    name="current_firmware_id"
-                    label="Current Firmware"
-                    type="text"
-                    fullWidth
-                    value={current_firmware.id ? `${current_firmware.title} (${current_firmware.id})` : 'none'}
-                />
-                <FormControl
-                    fullWidth
-                    margin="dense"
-                >
-                    <InputLabel
-                        id="firmware-select-label"
-                        shrink={true}
-                    >
-                        Available firmware
-                    </InputLabel>
-                    <Select
-                        labelId="firmware-select-label"
-                        id="available_firmware_id"
-                        name="available_firmware_id"
-                        value={this.state.device.available_firmware_id}
-                        onChange={this.handleChange}
-                    >
-                        {this.props.firmwares.map(firmware => (
-                            <MenuItem
-                                value={firmware.id}
-                                key={`firmware-menuitem-${firmware.id}`}
-                            >
-                                {firmware.title} ({firmware.id})
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
                 <FormControl
                     fullWidth
                     margin="dense"
@@ -158,7 +120,7 @@ class DeviceComponent extends Component {
                         value={this.state.device.product_id}
                         onChange={this.handleChange}
                     >
-                        <MenuItem value={''} key={`product-menuitem-none`}>-</MenuItem>
+                        <MenuItem value={''} key={`product-menuitem-`}>-</MenuItem>
                         {this.props.products.map(product => (
                             <MenuItem
                                 value={product.id}
@@ -169,6 +131,28 @@ class DeviceComponent extends Component {
                         ))}
                     </Select>
                 </FormControl>
+                <TextField
+                    InputLabelProps={{shrink: true}}
+                    disabled
+                    margin="dense"
+                    id="firmware_id"
+                    name="firmware_id"
+                    label="Installed firmware"
+                    type="text"
+                    fullWidth
+                    value={firmware.id ? `${firmware.title} (${firmware.id})` : 'none'}
+                />
+                <TextField
+                    InputLabelProps={{shrink: true}}
+                    disabled
+                    margin="dense"
+                    id="last_seen"
+                    name="last_seen"
+                    label="Last seen"
+                    type="text"
+                    fullWidth
+                    value={this.state.device.last_seen ? moment(this.state.device.last_seen).fromNow() : "never"}
+                />
                 <Button
                     variant="contained"
                     color="primary"

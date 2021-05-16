@@ -2,7 +2,18 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {createProduct, editProduct, getProducts} from "../actions/products";
 import {connect} from "react-redux";
-import {Button, Checkbox, FormControlLabel, Paper, TextField, withStyles} from "@material-ui/core";
+import {
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+    withStyles
+} from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {getFirmwares} from "../actions/firmwares";
 import {getDevices} from "../actions/devices";
@@ -115,12 +126,34 @@ class ProductComponent extends Component {
                     }
                     label="Auto update"
                 />
-                <p>
-                    Devices: {this.props.devices.map(device => device.id).join(', ')}
-                </p>
-                <p>
-                    Firmwares: {this.props.firmwares.map(firmware => firmware.id).join(', ')}
-                </p>
+                <FormControl
+                    fullWidth
+                    margin="dense"
+                >
+                    <InputLabel
+                        id="firmware-select-label"
+                        shrink={true}
+                    >
+                        Latest firmware
+                    </InputLabel>
+                    <Select
+                        labelId="firmware-select-label"
+                        id="firmware_id"
+                        name="firmware_id"
+                        value={this.state.product.firmware_id}
+                        onChange={this.handleChange}
+                    >
+                        <MenuItem value={''} key={`firmware-menuitem-`}>-</MenuItem>
+                        {this.props.firmwares.map(firmware => (
+                            <MenuItem
+                                value={firmware.id}
+                                key={`firmware-menuitem-${firmware.id}`}
+                            >
+                                {firmware.title} ({firmware.id})
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <Button
                     variant="contained"
                     color="primary"
@@ -136,11 +169,9 @@ class ProductComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     let productId = ownProps.match.params.id
-    let devices = state.devicesReducer.devices.filter(device => device.product_id === productId);
     let firmwares = state.firmwaresReducer.firmwares.filter(firmware => firmware.product_id === productId);
     return {
         products: state.productsReducer.products,
-        devices,
         firmwares
     }
 }

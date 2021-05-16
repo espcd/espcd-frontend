@@ -47,7 +47,7 @@ class ProductsComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Auto update", ""].map(
+                                        ["Title", "Description", "Auto update", "Latest firmware", ""].map(
                                             row => (
                                                 <TableCell key={`products-table-head-${row}`}>{row}</TableCell>
                                             )
@@ -64,6 +64,7 @@ class ProductsComponent extends Component {
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.description}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
+                                        <TableCell>{product.firmware_id}</TableCell>
                                         <TableCell align="right">
                                             <Button onClick={() => this.props.history.push(`/products/${product.id}`)}>
                                                 <Edit/>

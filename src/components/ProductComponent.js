@@ -72,12 +72,9 @@ class ProductComponent extends Component {
     render() {
         const {classes} = this.props
 
-        let shrink = !!this.props.isPresent
-
         return (
             <Paper className={classes.paper}>
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     disabled
                     margin="dense"
                     id="id"
@@ -88,7 +85,6 @@ class ProductComponent extends Component {
                     value={this.state.product.id}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     autoFocus
                     margin="dense"
                     id="title"
@@ -100,7 +96,6 @@ class ProductComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="description"
                     name="description"
@@ -128,10 +123,7 @@ class ProductComponent extends Component {
                     fullWidth
                     margin="dense"
                 >
-                    <InputLabel
-                        id="firmware-select-label"
-                        shrink={true}
-                    >
+                    <InputLabel id="firmware-select-label">
                         Latest firmware
                     </InputLabel>
                     <Select

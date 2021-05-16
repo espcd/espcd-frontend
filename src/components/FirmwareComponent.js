@@ -65,12 +65,9 @@ class FirmwareComponent extends Component {
     render() {
         const {classes} = this.props;
 
-        let shrink = !!this.props.isPresent
-
         return (
             <Paper className={classes.paper}>
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     disabled
                     margin="dense"
                     id="id"
@@ -81,7 +78,6 @@ class FirmwareComponent extends Component {
                     value={this.state.firmware.id}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     autoFocus
                     margin="dense"
                     id="title"
@@ -93,7 +89,6 @@ class FirmwareComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="description"
                     name="description"
@@ -101,11 +96,10 @@ class FirmwareComponent extends Component {
                     type="text"
                     multiline
                     fullWidth
-                    value={this.state.firmware.description}
+                    value={this.state.firmware.description ? this.state.firmware.description : ""}
                     onChange={this.handleChange}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="model"
                     name="model"
@@ -116,7 +110,6 @@ class FirmwareComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <TextField
-                    InputLabelProps={{shrink: shrink}}
                     margin="dense"
                     id="version"
                     name="version"
@@ -148,10 +141,7 @@ class FirmwareComponent extends Component {
                     fullWidth
                     margin="dense"
                 >
-                    <InputLabel
-                        id="product-select-label"
-                        shrink={true}
-                    >
+                    <InputLabel id="product-select-label">
                         Product
                     </InputLabel>
                     <Select

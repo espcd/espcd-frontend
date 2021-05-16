@@ -10,7 +10,7 @@ import {
     TableRow,
     withStyles
 } from "@material-ui/core";
-import {deleteDevice, getDevices} from "../actions/devices";
+import {deleteDevice} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
@@ -99,7 +99,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getDevices,
     deleteDevice
 };
 

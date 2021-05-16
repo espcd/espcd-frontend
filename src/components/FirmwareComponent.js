@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-import {createFirmware, editFirmware, getFirmwares} from "../actions/firmwares";
+import {createFirmware, editFirmware} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
-import {getProducts} from "../actions/products";
 
 const styles = theme => ({
     button: {
@@ -192,10 +191,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    getFirmwares,
     createFirmware,
-    editFirmware,
-    getProducts
+    editFirmware
 };
 
 export default withRouter(

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-import {createProduct, editProduct, getProducts} from "../actions/products";
+import {createProduct, editProduct} from "../actions/products";
 import {connect} from "react-redux";
 import {
     Button,
@@ -15,8 +15,6 @@ import {
     withStyles
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
-import {getFirmwares} from "../actions/firmwares";
-import {getDevices} from "../actions/devices";
 
 const styles = theme => ({
     button: {
@@ -177,9 +175,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-    getDevices,
-    getFirmwares,
-    getProducts,
     createProduct,
     editProduct
 };

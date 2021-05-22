@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  espcd-frontend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 80:80

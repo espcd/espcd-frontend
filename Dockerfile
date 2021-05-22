@@ -6,17 +6,18 @@ ENV \
     PATH=/app/node_modules/.bin:$PATH \
     GENERATE_SOURCEMAP=false
 
-COPY . .
+ADD package.json yarn.lock ./
+RUN npm install --silent
 
-RUN set -x \
-    && npm install --silent \
-    && npm run build
+COPY . ./
+RUN npm run build
 
 
 FROM nginx:stable-alpine
 
-COPY --from=BUILD /app/build /usr/share/nginx/html
-
 EXPOSE 80
+
+COPY --from=BUILD /app/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=BUILD /app/build /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]

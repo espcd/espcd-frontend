@@ -9,6 +9,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
@@ -34,7 +35,8 @@ class FirmwaresComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firmwares: []
+            firmwares: [],
+            query: ""
         }
     }
 
@@ -46,8 +48,30 @@ class FirmwaresComponent extends Component {
         )
     }
 
+    handleSearch = (event) => {
+        let target = event.target
+        let value = target.value
+
+        this.setState({
+            query: value
+        })
+    }
+
     render() {
         const {classes} = this.props;
+
+        let query = this.state.query
+        let firmwares
+        if (query) {
+            firmwares = this.props.firmwares.filter(firmware => {
+                return Object.keys(firmware).some(key => {
+                    let value = firmware[key];
+                    return value && String(value).includes(query);
+                })
+            })
+        } else {
+            firmwares = this.props.firmwares
+        }
 
         return (
             <React.Fragment>
@@ -57,16 +81,19 @@ class FirmwaresComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Model", "Version", "Product", ""].map(
+                                        ["Title", "Description", "Model", "Version", "Product"].map(
                                             row => (
                                                 <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
                                             )
                                         )
                                     }
+                                    <TableCell key={`firmwares-table-head-search`} align="right">
+                                        <TextField label="Search..." onChange={this.handleSearch}/>
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.props.firmwares.map(firmware => (
+                                {firmwares.map(firmware => (
                                     <TableRow
                                         hover
                                         key={`tablerow-firmware-${firmware.id}`}

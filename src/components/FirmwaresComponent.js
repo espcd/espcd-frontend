@@ -2,9 +2,6 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
-    Grid,
-    IconButton,
-    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -12,16 +9,16 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Clear, Delete, Edit, GetApp} from "@material-ui/icons";
+import {Add, Delete, Edit, GetApp} from "@material-ui/icons";
 import {deleteFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
 import {openConfirmationDialog,} from "../actions/confirmationDialog";
+import TableSearchComponent from "./TableSearchComponent";
 
 const styles = theme => ({
     fab: {
@@ -38,8 +35,7 @@ class FirmwaresComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firmwares: [],
-            search: ""
+            firmwares: []
         }
     }
 
@@ -51,35 +47,24 @@ class FirmwaresComponent extends Component {
         )
     }
 
-    handleSearch = (event) => {
-        let target = event.target
-        let value = target.value
-
+    setFirmwares = (firmwares) => {
         this.setState({
-            search: value
+            firmwares: firmwares
         })
     }
 
-    clearSearch = () => {
-        this.setState({
-            search: ""
-        })
+    componentDidMount() {
+        this.setFirmwares(this.props.firmwares)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.firmwares !== prevProps.firmwares) {
+            this.setFirmwares(this.props.firmwares)
+        }
     }
 
     render() {
         const {classes} = this.props;
-
-        let firmwares
-        if (this.state.search) {
-            firmwares = this.props.firmwares.filter(firmware => {
-                return Object.keys(firmware).some(key => {
-                    let value = firmware[key];
-                    return value && String(value).includes(this.state.search);
-                })
-            })
-        } else {
-            firmwares = this.props.firmwares
-        }
 
         return (
             <React.Fragment>
@@ -96,27 +81,15 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
-                                            <TextField
-                                                label="Search..."
-                                                value={this.state.search}
-                                                onChange={this.handleSearch}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <IconButton onClick={this.clearSearch}>
-                                                                <Clear/>
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        </Grid>
+                                        <TableSearchComponent
+                                            items={this.props.firmwares}
+                                            handleFilter={this.setFirmwares}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {firmwares.map(firmware => (
+                                {this.state.firmwares.map(firmware => (
                                     <TableRow
                                         hover
                                         key={`tablerow-firmware-${firmware.id}`}

@@ -22,9 +22,12 @@ const styles = theme => ({
         textTransform: 'none'
     },
     fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing(2),
         right: theme.spacing(2)
+    },
+    spacing: {
+        height: theme.spacing(8)
     }
 });
 
@@ -79,6 +82,7 @@ class ProductsComponent extends Component {
                         </Table>
                     </TableContainer>
                 </Paper>
+                <div className={classes.spacing}/>
                 <Tooltip title="Add Product" aria-label="add product">
                     <Fab color="primary"
                          className={classes.fab}

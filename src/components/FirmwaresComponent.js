@@ -20,9 +20,12 @@ import {backendUrl} from "../actions/common";
 
 const styles = theme => ({
     fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing(2),
         right: theme.spacing(2)
+    },
+    spacing: {
+        height: theme.spacing(8)
     }
 });
 
@@ -83,6 +86,7 @@ class FirmwaresComponent extends Component {
                         </Table>
                     </TableContainer>
                 </Paper>
+                <div className={classes.spacing}/>
                 <Tooltip title="Add Firmware" aria-label="add firmware">
                     <Fab color="primary"
                          className={classes.fab}

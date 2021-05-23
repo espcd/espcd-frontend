@@ -31,8 +31,8 @@ class SnackbarComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    message: state.notificationsReducer.message,
     open: state.notificationsReducer.open,
+    message: state.notificationsReducer.message,
     severity: state.notificationsReducer.severity
 });
 

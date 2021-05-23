@@ -17,6 +17,7 @@ import {deleteFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
+import {openConfirmationDialog,} from "../actions/confirmationDialog";
 
 const styles = theme => ({
     fab: {
@@ -35,6 +36,14 @@ class FirmwaresComponent extends Component {
         this.state = {
             firmwares: []
         }
+    }
+
+    deleteFirmware(firmware) {
+        this.props.openConfirmationDialog(
+            "Delete Firmware",
+            `Are you sure you want to delete the firmware ${firmware.id}?`,
+            () => this.props.deleteFirmware(firmware.id)
+        )
     }
 
     render() {
@@ -76,7 +85,7 @@ class FirmwaresComponent extends Component {
                                             <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                                 <Edit/>
                                             </Button>
-                                            <Button onClick={() => this.props.deleteFirmware(firmware.id)}>
+                                            <Button onClick={() => this.deleteFirmware(firmware)}>
                                                 <Delete/>
                                             </Button>
                                         </TableCell>
@@ -106,7 +115,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     getFirmwares,
-    deleteFirmware
+    deleteFirmware,
+    openConfirmationDialog
 };
 
 export default withRouter(

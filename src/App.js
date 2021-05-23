@@ -22,6 +22,7 @@ import FirmwareComponent from "./components/FirmwareComponent";
 import ProductsComponent from "./components/ProductsComponent";
 import ProductComponent from "./components/ProductComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
+import DeleteConfirmationDialog from "./components/DeleteConfirmationDialog";
 
 const drawerWidth = 200;
 
@@ -59,6 +60,7 @@ class App extends Component {
             <React.Fragment>
                 <TitleComponent title="espcd-frontend"/>
                 <SnackbarComponent/>
+                <DeleteConfirmationDialog/>
 
                 <div className={classes.root}>
                     <CssBaseline/>

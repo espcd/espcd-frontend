@@ -12,10 +12,11 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Delete, Edit} from "@material-ui/icons";
+import {Add, Delete, Edit, GetApp} from "@material-ui/icons";
 import {deleteFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
+import {backendUrl} from "../actions/common";
 
 const styles = theme => ({
     fab: {
@@ -64,6 +65,11 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.version}</TableCell>
                                         <TableCell>{firmware.product_id}</TableCell>
                                         <TableCell align="right">
+                                            <a href={`${backendUrl}/firmwares/${firmware.id}/content`} download>
+                                                <Button>
+                                                    <GetApp/>
+                                                </Button>
+                                            </a>
                                             <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                                 <Edit/>
                                             </Button>

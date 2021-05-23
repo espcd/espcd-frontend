@@ -140,7 +140,7 @@ class DeviceComponent extends Component {
                     label="Installed firmware"
                     type="text"
                     fullWidth
-                    value={firmware.id ? `${firmware.title} (${firmware.id})` : 'none'}
+                    value={firmware.id ? `${firmware.title} (${firmware.id})` : 'unknown'}
                 />
                 <TextField
                     InputLabelProps={{shrink: true}}

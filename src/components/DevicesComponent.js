@@ -78,7 +78,7 @@ class DevicesComponent extends Component {
                                             >
                                                 {device.firmware_id}
                                             </Button> :
-                                            "none"
+                                            "unknown"
                                         }
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>

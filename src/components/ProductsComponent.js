@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
+import TableSearchComponent from "./TableSearchComponent";
 
 const styles = theme => ({
     button: {
@@ -48,6 +49,22 @@ class ProductsComponent extends Component {
         )
     }
 
+    setProducts = (products) => {
+        this.setState({
+            products: products
+        })
+    }
+
+    componentDidMount() {
+        this.setProducts(this.props.products)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.products !== prevProps.products) {
+            this.setProducts(this.props.products)
+        }
+    }
+
     render() {
         const {classes} = this.props;
 
@@ -59,16 +76,22 @@ class ProductsComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Auto update", "Latest firmware", ""].map(
+                                        ["Title", "Description", "Auto update", "Latest firmware"].map(
                                             row => (
                                                 <TableCell key={`products-table-head-${row}`}>{row}</TableCell>
                                             )
                                         )
                                     }
+                                    <TableCell key={`products-table-head-search`} align="right">
+                                        <TableSearchComponent
+                                            items={this.props.products}
+                                            handleFilter={this.setProducts}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.props.products.map(product => (
+                                {this.state.products.map(product => (
                                     <TableRow
                                         hover
                                         key={`product-table-body-${product.id}`}

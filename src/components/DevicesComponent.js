@@ -16,6 +16,7 @@ import {withRouter} from "react-router-dom";
 import moment from 'moment';
 import {Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
+import TableSearchComponent from "./TableSearchComponent";
 
 const styles = () => ({
     button: {
@@ -39,6 +40,22 @@ class DevicesComponent extends Component {
         )
     }
 
+    setDevices = (devices) => {
+        this.setState({
+            devices: devices
+        })
+    }
+
+    componentDidMount() {
+        this.setDevices(this.props.devices)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.devices !== prevProps.devices) {
+            this.setDevices(this.props.devices)
+        }
+    }
+
     render() {
         const {classes} = this.props;
 
@@ -49,16 +66,22 @@ class DevicesComponent extends Component {
                         <TableHead>
                             <TableRow>
                                 {
-                                    ["Title", "Description", "Model", "Product", "Installed firmware", "Last seen", ""].map(
+                                    ["Title", "Description", "Model", "Product", "Installed firmware", "Last seen"].map(
                                         row => (
                                             <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
                                         )
                                     )
                                 }
+                                <TableCell key={`products-table-head-search`} align="right">
+                                    <TableSearchComponent
+                                        items={this.props.devices}
+                                        handleFilter={this.setDevices}
+                                    />
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.props.devices.map(device => (
+                            {this.state.devices.map(device => (
                                 <TableRow
                                     hover
                                     key={`device-table-body-${device.id}`}

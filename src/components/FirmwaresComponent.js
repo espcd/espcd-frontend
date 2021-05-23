@@ -40,7 +40,7 @@ class FirmwaresComponent extends Component {
 
     deleteFirmware(firmware) {
         this.props.openConfirmationDialog(
-            "Delete Firmware",
+            "Delete firmware",
             `Are you sure you want to delete the firmware ${firmware.id}?`,
             () => this.props.deleteFirmware(firmware.id)
         )

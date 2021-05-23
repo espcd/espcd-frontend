@@ -15,6 +15,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
 import {Delete, Edit} from "@material-ui/icons";
+import {openConfirmationDialog} from "../actions/confirmationDialog";
 
 const styles = () => ({
     button: {
@@ -28,6 +29,14 @@ class DevicesComponent extends Component {
         this.state = {
             devices: []
         }
+    }
+
+    deleteDevice(device) {
+        this.props.openConfirmationDialog(
+            "Delete device",
+            `Are you sure you want to delete the device ${device.id}?`,
+            () => this.props.deleteDevice(device.id)
+        )
     }
 
     render() {
@@ -86,7 +95,7 @@ class DevicesComponent extends Component {
                                         <Button onClick={() => this.props.history.push(`/devices/${device.id}`)}>
                                             <Edit/>
                                         </Button>
-                                        <Button onClick={() => this.props.deleteDevice(device.id)}>
+                                        <Button onClick={() => this.deleteDevice(device)}>
                                             <Delete/>
                                         </Button>
                                     </TableCell>
@@ -107,7 +116,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    deleteDevice
+    deleteDevice,
+    openConfirmationDialog
 };
 
 export default withRouter(

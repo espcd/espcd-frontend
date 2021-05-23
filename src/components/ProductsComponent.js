@@ -16,6 +16,7 @@ import {deleteProduct, getProducts} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
+import {openConfirmationDialog} from "../actions/confirmationDialog";
 
 const styles = theme => ({
     button: {
@@ -37,6 +38,14 @@ class ProductsComponent extends Component {
         this.state = {
             products: []
         }
+    }
+
+    deleteProduct(product) {
+        this.props.openConfirmationDialog(
+            "Delete product",
+            `Are you sure you want to delete the product ${product.id}?`,
+            () => this.props.deleteProduct(product.id)
+        )
     }
 
     render() {
@@ -72,7 +81,7 @@ class ProductsComponent extends Component {
                                             <Button onClick={() => this.props.history.push(`/products/${product.id}`)}>
                                                 <Edit/>
                                             </Button>
-                                            <Button onClick={() => this.props.deleteProduct(product.id)}>
+                                            <Button onClick={() => this.deleteProduct(product)}>
                                                 <Delete/>
                                             </Button>
                                         </TableCell>
@@ -104,7 +113,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     getProducts,
-    deleteProduct
+    deleteProduct,
+    openConfirmationDialog
 };
 
 export default withRouter(

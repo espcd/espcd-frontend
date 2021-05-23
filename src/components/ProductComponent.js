@@ -28,6 +28,7 @@ const styles = theme => ({
 class ProductComponent extends Component {
     constructor(props) {
         super(props);
+        this.updates = {}
         this.state = {
             product: new Product()
         }
@@ -51,22 +52,27 @@ class ProductComponent extends Component {
     }
 
     handleChange = (event) => {
-        const target = event.target
+        let target = event.target
+        let key = target.name
+        let value = target.type === 'checkbox' ? target.checked : target.value
+
+        this.updates[key] = value
+
         let product = this.state.product
-        if (target.type === 'checkbox') {
-            product[target.name] = target.checked
-        } else {
-            product[target.name] = target.value
-        }
+        product[key] = value
         this.setState({
             product: product
         })
     }
 
     handleSubmit = () => {
+        let productId = this.state.product.id
+        let payload = this.updates
+
         this.props.isPresent ?
-            this.props.editProduct(this.state.product) :
-            this.props.createProduct(this.state.product)
+            this.props.editProduct(productId, payload)
+            :
+            this.props.createProduct(payload)
     }
 
     render() {

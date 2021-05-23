@@ -19,6 +19,7 @@ const styles = theme => ({
 class DeviceComponent extends Component {
     constructor(props) {
         super(props);
+        this.updates = {}
         this.state = {
             device: new Device()
         }
@@ -42,12 +43,24 @@ class DeviceComponent extends Component {
     }
 
     handleChange = (event) => {
-        const target = event.target
+        let target = event.target
+        let key = target.name
+        let value = target.value
+
+        this.updates[key] = value
+
         let device = this.state.device
-        device[target.name] = target.value
+        device[key] = value
         this.setState({
             device: device
         })
+    }
+
+    handleSubmit = () => {
+        let deviceId = this.state.device.id
+        let payload = this.updates
+
+        this.props.editDevice(deviceId, payload)
     }
 
     render() {
@@ -157,7 +170,7 @@ class DeviceComponent extends Component {
                     variant="contained"
                     color="primary"
                     className={classes.button}
-                    onClick={() => this.props.editDevice(this.state.device)}
+                    onClick={this.handleSubmit}
                 >
                     Edit device
                 </Button>

@@ -1,4 +1,4 @@
-import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson} from "./common";
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES"
@@ -38,15 +38,18 @@ export const getDevices = () => async dispatch => {
         })
 }
 
-export const editDevice = (device) => async dispatch => {
-    const deviceId = device.id
-    device = removeStaticElements(device)
+export const editDevice = (deviceId, payload) => async dispatch => {
+    if (Object.keys(payload).length === 0) {
+        dispatch(addErrorNotification("Payload empty"))
+        return
+    }
+
     const requestOptions = {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(device)
+        body: JSON.stringify(payload)
     };
     return fetch(`${baseUrl}/${deviceId}`, requestOptions)
         .then(response => {

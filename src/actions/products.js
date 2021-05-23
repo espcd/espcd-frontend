@@ -1,4 +1,4 @@
-import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson} from "./common";
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS"
@@ -44,15 +44,18 @@ export const getProducts = () => async dispatch => {
         })
 }
 
-export const createProduct = (product) => async dispatch => {
-    product = removeStaticElements(product)
+export const createProduct = (payload) => async dispatch => {
+    if (Object.keys(payload).length === 0) {
+        dispatch(addErrorNotification("Payload empty"))
+        return
+    }
 
     const requestOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(product)
+        body: JSON.stringify(payload)
     };
     return fetch(baseUrl, requestOptions)
         .then(response => {
@@ -70,15 +73,18 @@ export const createProduct = (product) => async dispatch => {
         })
 }
 
-export const editProduct = (product) => async dispatch => {
-    const productId = product.id
-    product = removeStaticElements(product)
+export const editProduct = (productId, payload) => async dispatch => {
+    if (Object.keys(payload).length === 0) {
+        dispatch(addErrorNotification("Payload empty"))
+        return
+    }
+
     const requestOptions = {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(product)
+        body: JSON.stringify(payload)
     };
     return fetch(`${baseUrl}/${productId}`, requestOptions)
         .then(response => {

@@ -1,4 +1,4 @@
-import {backendUrl, parseError, parseJson, removeStaticElements} from "./common";
+import {backendUrl, parseError, parseJson} from "./common";
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES"
@@ -55,10 +55,13 @@ const formDataFromFirmware = (firmware, content) => {
     return data
 }
 
-export const createFirmware = (firmware, content) => async dispatch => {
-    firmware = removeStaticElements(firmware)
-    let data = formDataFromFirmware(firmware, content)
+export const createFirmware = (payload, content) => async dispatch => {
+    if (Object.keys(payload).length === 0) {
+        dispatch(addErrorNotification("Payload empty"))
+        return
+    }
 
+    let data = formDataFromFirmware(payload, content)
     const requestOptions = {
         method: 'POST',
         body: data
@@ -79,11 +82,13 @@ export const createFirmware = (firmware, content) => async dispatch => {
         })
 }
 
-export const editFirmware = (firmware, content) => async dispatch => {
-    const firmwareId = firmware.id
-    firmware = removeStaticElements(firmware)
-    let data = formDataFromFirmware(firmware, content)
+export const editFirmware = (firmwareId, payload, content) => async dispatch => {
+    if (Object.keys(payload).length === 0) {
+        dispatch(addErrorNotification("Payload empty"))
+        return
+    }
 
+    let data = formDataFromFirmware(payload, content)
     const requestOptions = {
         method: 'PATCH',
         body: data

@@ -17,6 +17,7 @@ const styles = theme => ({
 class FirmwareComponent extends Component {
     constructor(props) {
         super(props);
+        this.updates = {}
         this.state = {
             firmware: new Firmware(),
             selectedFile: null
@@ -41,21 +42,31 @@ class FirmwareComponent extends Component {
     }
 
     handleChange = (event) => {
-        const target = event.target
+        let target = event.target
+        let key = target.name
+        let value = target.value
+
+        this.updates[key] = value
+
         let firmware = this.state.firmware
-        firmware[target.name] = target.value
+        firmware[key] = value
         this.setState({
             firmware: firmware
         })
     }
 
     handleSubmit = () => {
+        let firmwareId = this.state.firmware.id
+        let payload = this.updates
+        let file = this.selectedFile
+
         this.props.isPresent ?
-            this.props.editFirmware(this.state.firmware, this.state.selectedFile) :
-            this.props.createFirmware(this.state.firmware, this.state.selectedFile)
+            this.props.editFirmware(firmwareId, payload, file)
+            :
+            this.props.createFirmware(payload, file)
     }
 
-    selectFile = (event) => {
+    selectFile(event) {
         const target = event.target;
         this.setState({
             selectedFile: target.files[0]

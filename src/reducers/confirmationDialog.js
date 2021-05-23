@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export const confirmationDialogReducer = (state = initialState, action) => {
-    console.log("from reducer")
     switch (action.type) {
         case OPEN_CONFIRMATION_DIALOG:
             return {

@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
+    Grid,
+    IconButton,
+    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -13,7 +16,7 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Delete, Edit, GetApp} from "@material-ui/icons";
+import {Add, Clear, Delete, Edit, GetApp} from "@material-ui/icons";
 import {deleteFirmware, getFirmwares} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -36,7 +39,7 @@ class FirmwaresComponent extends Component {
         super(props);
         this.state = {
             firmwares: [],
-            query: ""
+            search: ""
         }
     }
 
@@ -53,20 +56,25 @@ class FirmwaresComponent extends Component {
         let value = target.value
 
         this.setState({
-            query: value
+            search: value
+        })
+    }
+
+    clearSearch = () => {
+        this.setState({
+            search: ""
         })
     }
 
     render() {
         const {classes} = this.props;
 
-        let query = this.state.query
         let firmwares
-        if (query) {
+        if (this.state.search) {
             firmwares = this.props.firmwares.filter(firmware => {
                 return Object.keys(firmware).some(key => {
                     let value = firmware[key];
-                    return value && String(value).includes(query);
+                    return value && String(value).includes(this.state.search);
                 })
             })
         } else {
@@ -88,7 +96,22 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <TextField label="Search..." onChange={this.handleSearch}/>
+                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                            <TextField
+                                                label="Search..."
+                                                value={this.state.search}
+                                                onChange={this.handleSearch}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton onClick={this.clearSearch}>
+                                                                <Clear/>
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </Grid>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -109,7 +132,8 @@ class FirmwaresComponent extends Component {
                                                     <GetApp/>
                                                 </Button>
                                             </a>
-                                            <Button onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
+                                            <Button
+                                                onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
                                                 <Edit/>
                                             </Button>
                                             <Button onClick={() => this.deleteFirmware(firmware)}>

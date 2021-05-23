@@ -2,7 +2,18 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {createFirmware, editFirmware} from "../actions/firmwares";
 import {connect} from "react-redux";
-import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
+import {
+    Button,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+    Typography,
+    withStyles
+} from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 
 const styles = theme => ({
@@ -58,7 +69,7 @@ class FirmwareComponent extends Component {
     handleSubmit = () => {
         let firmwareId = this.state.firmware.id
         let payload = this.updates
-        let file = this.selectedFile
+        let file = this.state.selectedFile
 
         this.props.isPresent ?
             this.props.editFirmware(firmwareId, payload, file)
@@ -66,10 +77,11 @@ class FirmwareComponent extends Component {
             this.props.createFirmware(payload, file)
     }
 
-    selectFile(event) {
-        const target = event.target;
+    selectFile = (event) => {
+        let target = event.target;
+        let file = target.files[0]
         this.setState({
-            selectedFile: target.files[0]
+            selectedFile: file
         })
     }
 
@@ -130,23 +142,32 @@ class FirmwareComponent extends Component {
                     value={this.state.firmware.version}
                     onChange={this.handleChange}
                 />
-                <FormControl
-                    fullWidth
-                    margin="dense"
-                >
-                    <label
-                        htmlFor="firmware-file-label"
-                        className="MuiFormLabel-root MuiInputLabel-formControl MuiInputLabel-shrink"
-                    >
+                <FormControl margin="dense">
+                    <div className="MuiFormLabel-root MuiInputLabel-shrink">
                         File
-                    </label>
-                    <input
-                        id="firmware-file-label"
-                        name="content"
-                        type="file"
-                        onChange={this.selectFile}
-                        className="MuiInputBase-root MuiInput-formControl"
-                    />
+                    </div>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item>
+                            <input
+                                id="firmware-file-label"
+                                name="content"
+                                type="file"
+                                accept=".bin"
+                                onChange={this.selectFile}
+                                hidden
+                            />
+                            <label htmlFor="firmware-file-label">
+                                <Button variant="contained" component="span" size="small">
+                                    Select file
+                                </Button>
+                            </label>
+                        </Grid>
+                        <Grid item>
+                            <Typography>
+                                {this.state.selectedFile ? this.state.selectedFile.name : "none"}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </FormControl>
                 <FormControl
                     fullWidth

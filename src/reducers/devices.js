@@ -1,7 +1,8 @@
-import {ADD_DEVICES, DELETE_DEVICE, EDIT_DEVICE} from "../actions/devices";
+import {ADD_DEVICES, DELETE_DEVICE, EDIT_DEVICE, SET_DEVICE_QUERY} from "../actions/devices";
 
 const initialState = {
-    devices: []
+    devices: [],
+    query: ""
 };
 
 export const devicesReducer = (state = initialState, action) => {
@@ -9,8 +10,7 @@ export const devicesReducer = (state = initialState, action) => {
         case ADD_DEVICES:
             return {
                 ...state,
-                devices: action.data,
-                error: ""
+                devices: action.data
             }
         case EDIT_DEVICE:
             return {
@@ -21,6 +21,11 @@ export const devicesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 devices: state.devices.filter(device => device.id !== action.data)
+            }
+        case SET_DEVICE_QUERY:
+            return {
+                ...state,
+                query: action.data
             }
         default:
             return state

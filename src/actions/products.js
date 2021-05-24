@@ -5,6 +5,7 @@ export const ADD_PRODUCTS = "ADD_PRODUCTS"
 export const ADD_PRODUCT = "ADD_PRODUCT"
 export const EDIT_PRODUCT = "EDIT_PRODUCT"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
+export const SET_PRODUCT_QUERY = "SET_PRODUCT_QUERY"
 
 const baseUrl = `${backendUrl}/products`
 
@@ -119,4 +120,11 @@ export const deleteProduct = (productId) => async dispatch => {
             let message = await parseError(error)
             dispatch(addErrorNotification("Error: " + message))
         })
+}
+
+export const setProductQuery = (query) => async dispatch => {
+    dispatch({
+        type: SET_PRODUCT_QUERY,
+        data: query,
+    })
 }

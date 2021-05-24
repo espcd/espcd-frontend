@@ -1,7 +1,8 @@
-import {ADD_FIRMWARE, ADD_FIRMWARES, DELETE_FIRMWARE, EDIT_FIRMWARE} from "../actions/firmwares";
+import {ADD_FIRMWARE, ADD_FIRMWARES, DELETE_FIRMWARE, EDIT_FIRMWARE, SET_FIRMWARE_QUERY} from "../actions/firmwares";
 
 const initialState = {
-    firmwares: []
+    firmwares: [],
+    query: ""
 };
 
 export const firmwaresReducer = (state = initialState, action) => {
@@ -9,8 +10,7 @@ export const firmwaresReducer = (state = initialState, action) => {
         case ADD_FIRMWARES:
             return {
                 ...state,
-                firmwares: action.data,
-                error: ""
+                firmwares: action.data
             }
         case ADD_FIRMWARE:
             return {
@@ -26,6 +26,11 @@ export const firmwaresReducer = (state = initialState, action) => {
             return {
                 ...state,
                 firmwares: state.firmwares.filter(firmware => firmware.id !== action.data)
+            }
+        case SET_FIRMWARE_QUERY:
+            return {
+                ...state,
+                query: action.data
             }
         default:
             return state

@@ -5,6 +5,7 @@ export const ADD_FIRMWARES = "ADD_FIRMWARES"
 export const ADD_FIRMWARE = "ADD_FIRMWARE"
 export const EDIT_FIRMWARE = "EDIT_FIRMWARE"
 export const DELETE_FIRMWARE = "DELETE_FIRMWARE"
+export const SET_FIRMWARE_QUERY = "SET_FIRMWARE_QUERY"
 
 const baseUrl = `${backendUrl}/firmwares`
 
@@ -126,4 +127,11 @@ export const deleteFirmware = (firmwareId) => async dispatch => {
             let message = await parseError(error)
             dispatch(addErrorNotification("Error: " + message))
         })
+}
+
+export const setFirmwareQuery = (query) => async dispatch => {
+    dispatch({
+        type: SET_FIRMWARE_QUERY,
+        data: query,
+    })
 }

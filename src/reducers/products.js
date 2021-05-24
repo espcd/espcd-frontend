@@ -1,7 +1,8 @@
-import {ADD_PRODUCT, ADD_PRODUCTS, DELETE_PRODUCT, EDIT_PRODUCT} from "../actions/products"
+import {ADD_PRODUCT, ADD_PRODUCTS, DELETE_PRODUCT, EDIT_PRODUCT, SET_PRODUCT_QUERY} from "../actions/products"
 
 const initialState = {
-    products: []
+    products: [],
+    query: ""
 };
 
 export const productsReducer = (state = initialState, action) => {
@@ -9,8 +10,7 @@ export const productsReducer = (state = initialState, action) => {
         case ADD_PRODUCTS:
             return {
                 ...state,
-                products: action.data,
-                error: ""
+                products: action.data
             }
         case ADD_PRODUCT:
             return {
@@ -26,6 +26,11 @@ export const productsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: state.products.filter(product => product.id !== action.data)
+            }
+        case SET_PRODUCT_QUERY:
+            return {
+                ...state,
+                query: action.data
             }
         default:
             return state

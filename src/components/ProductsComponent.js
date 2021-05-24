@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
+    Grid,
+    IconButton,
+    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -9,15 +12,16 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {deleteProduct, getProducts} from "../actions/products";
+import {deleteProduct, setProductQuery} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {Add, Delete, Edit} from "@material-ui/icons";
+import {Add, Clear, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
-import TableSearchComponent from "./TableSearchComponent";
+import {getFilteredProducts} from "../selectors/products";
 
 const styles = theme => ({
     button: {
@@ -34,35 +38,12 @@ const styles = theme => ({
 });
 
 class ProductsComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: []
-        }
-    }
-
     deleteProduct(product) {
         this.props.openConfirmationDialog(
             "Delete product",
             `Are you sure you want to delete the product ${product.id}?`,
             () => this.props.deleteProduct(product.id)
         )
-    }
-
-    setProducts = (products) => {
-        this.setState({
-            products: products
-        })
-    }
-
-    componentDidMount() {
-        this.setProducts(this.props.products)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.products !== prevProps.products) {
-            this.setProducts(this.props.products)
-        }
     }
 
     render() {
@@ -83,15 +64,27 @@ class ProductsComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`products-table-head-search`} align="right">
-                                        <TableSearchComponent
-                                            items={this.props.products}
-                                            handleFilter={this.setProducts}
-                                        />
+                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                            <TextField
+                                                label="Search..."
+                                                value={this.props.query}
+                                                onChange={event => this.props.setProductQuery(event.target.value)}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton onClick={() => this.props.setProductQuery("")}>
+                                                                <Clear/>
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </Grid>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.products.map(product => (
+                                {this.props.products.map(product => (
                                     <TableRow
                                         hover
                                         key={`product-table-body-${product.id}`}
@@ -129,14 +122,13 @@ class ProductsComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    products: state.productsReducer.products,
-    error: state.productsReducer.error,
-    loaded: state.productsReducer.loaded
+    products: getFilteredProducts(state),
+    query: state.productsReducer.query
 });
 
 const mapDispatchToProps = {
-    getProducts,
     deleteProduct,
+    setProductQuery,
     openConfirmationDialog
 };
 

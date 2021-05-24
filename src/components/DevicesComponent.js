@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import {
     Button,
+    Grid,
+    IconButton,
+    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -8,15 +11,16 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     withStyles
 } from "@material-ui/core";
-import {deleteDevice} from "../actions/devices";
+import {deleteDevice, setDeviceQuery} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
-import {Delete, Edit} from "@material-ui/icons";
+import {Clear, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
-import TableSearchComponent from "./TableSearchComponent";
+import {getFilteredDevices} from "../selectors/devices";
 
 const styles = () => ({
     button: {
@@ -25,35 +29,12 @@ const styles = () => ({
 });
 
 class DevicesComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            devices: []
-        }
-    }
-
     deleteDevice(device) {
         this.props.openConfirmationDialog(
             "Delete device",
             `Are you sure you want to delete the device ${device.id}?`,
             () => this.props.deleteDevice(device.id)
         )
-    }
-
-    setDevices = (devices) => {
-        this.setState({
-            devices: devices
-        })
-    }
-
-    componentDidMount() {
-        this.setDevices(this.props.devices)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.devices !== prevProps.devices) {
-            this.setDevices(this.props.devices)
-        }
     }
 
     render() {
@@ -73,15 +54,27 @@ class DevicesComponent extends Component {
                                     )
                                 }
                                 <TableCell key={`products-table-head-search`} align="right">
-                                    <TableSearchComponent
-                                        items={this.props.devices}
-                                        handleFilter={this.setDevices}
-                                    />
+                                    <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                        <TextField
+                                            label="Search..."
+                                            value={this.props.query}
+                                            onChange={event => this.props.setDeviceQuery(event.target.value)}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton onClick={() => this.props.setDeviceQuery("")}>
+                                                            <Clear/>
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.devices.map(device => (
+                            {this.props.devices.map(device => (
                                 <TableRow
                                     hover
                                     key={`device-table-body-${device.id}`}
@@ -92,25 +85,25 @@ class DevicesComponent extends Component {
                                     <TableCell>
                                         {
                                             device.product_id ?
-                                            <Button
-                                                className={classes.button}
-                                                onClick={() => this.props.history.push(`/products/${device.product_id}`)}
-                                            >
-                                                {device.product_id}
-                                            </Button> :
-                                            "none"
+                                                <Button
+                                                    className={classes.button}
+                                                    onClick={() => this.props.history.push(`/products/${device.product_id}`)}
+                                                >
+                                                    {device.product_id}
+                                                </Button> :
+                                                "none"
                                         }
                                     </TableCell>
                                     <TableCell>
                                         {
                                             device.firmware_id ?
-                                            <Button
-                                                className={classes.button}
-                                                onClick={() => this.props.history.push(`/firmwares/${device.firmware_id}`)}
-                                            >
-                                                {device.firmware_id}
-                                            </Button> :
-                                            "unknown"
+                                                <Button
+                                                    className={classes.button}
+                                                    onClick={() => this.props.history.push(`/firmwares/${device.firmware_id}`)}
+                                                >
+                                                    {device.firmware_id}
+                                                </Button> :
+                                                "unknown"
                                         }
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
@@ -133,13 +126,13 @@ class DevicesComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    devices: state.devicesReducer.devices,
-    error: state.devicesReducer.error,
-    loaded: state.devicesReducer.loaded
+    devices: getFilteredDevices(state),
+    query: state.devicesReducer.query
 });
 
 const mapDispatchToProps = {
     deleteDevice,
+    setDeviceQuery,
     openConfirmationDialog
 };
 

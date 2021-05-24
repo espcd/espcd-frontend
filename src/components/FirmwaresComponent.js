@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
+    Grid,
+    IconButton,
+    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -9,16 +12,17 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Delete, Edit, GetApp} from "@material-ui/icons";
-import {deleteFirmware, getFirmwares} from "../actions/firmwares";
+import {Add, Clear, Delete, Edit, GetApp} from "@material-ui/icons";
+import {deleteFirmware, setFirmwareQuery} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
 import {openConfirmationDialog,} from "../actions/confirmationDialog";
-import TableSearchComponent from "./TableSearchComponent";
+import {getFilteredFirmwares} from "../selectors/firmwares";
 
 const styles = theme => ({
     fab: {
@@ -32,35 +36,12 @@ const styles = theme => ({
 });
 
 class FirmwaresComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            firmwares: []
-        }
-    }
-
     deleteFirmware(firmware) {
         this.props.openConfirmationDialog(
             "Delete firmware",
             `Are you sure you want to delete the firmware ${firmware.id}?`,
             () => this.props.deleteFirmware(firmware.id)
         )
-    }
-
-    setFirmwares = (firmwares) => {
-        this.setState({
-            firmwares: firmwares
-        })
-    }
-
-    componentDidMount() {
-        this.setFirmwares(this.props.firmwares)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.firmwares !== prevProps.firmwares) {
-            this.setFirmwares(this.props.firmwares)
-        }
     }
 
     render() {
@@ -81,15 +62,27 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <TableSearchComponent
-                                            items={this.props.firmwares}
-                                            handleFilter={this.setFirmwares}
-                                        />
+                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                            <TextField
+                                                label="Search..."
+                                                value={this.props.query}
+                                                onChange={event => this.props.setFirmwareQuery(event.target.value)}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton onClick={() => this.props.setFirmwareQuery("")}>
+                                                                <Clear/>
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </Grid>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.firmwares.map(firmware => (
+                                {this.props.firmwares.map(firmware => (
                                     <TableRow
                                         hover
                                         key={`tablerow-firmware-${firmware.id}`}
@@ -134,12 +127,13 @@ class FirmwaresComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    firmwares: state.firmwaresReducer.firmwares,
+    firmwares: getFilteredFirmwares(state),
+    query: state.firmwaresReducer.query
 });
 
 const mapDispatchToProps = {
-    getFirmwares,
     deleteFirmware,
+    setFirmwareQuery,
     openConfirmationDialog
 };
 

@@ -4,6 +4,7 @@ import {addErrorNotification, addSuccessNotification} from "./notifications";
 export const ADD_DEVICES = "ADD_DEVICES"
 export const EDIT_DEVICE = "EDIT_DEVICE"
 export const DELETE_DEVICE = "DELETE_DEVICE"
+export const SET_DEVICE_QUERY = "SET_DEVICE_QUERY"
 
 const baseUrl = `${backendUrl}/devices`
 
@@ -84,4 +85,11 @@ export const deleteDevice = (deviceId) => async dispatch => {
             let message = await parseError(error)
             dispatch(addErrorNotification("Error: " + message))
         })
+}
+
+export const setDeviceQuery = (query) => async dispatch => {
+    dispatch({
+        type: SET_DEVICE_QUERY,
+        data: query,
+    })
 }

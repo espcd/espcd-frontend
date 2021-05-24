@@ -11,16 +11,17 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
     TextField,
     withStyles
 } from "@material-ui/core";
-import {deleteDevice, setDeviceQuery} from "../actions/devices";
+import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from 'moment';
 import {Clear, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
-import {getFilteredDevices} from "../selectors/devices";
+import {getFilteredAndSortedDevices} from "../selectors/devices";
 
 const styles = () => ({
     button: {
@@ -47,9 +48,24 @@ class DevicesComponent extends Component {
                         <TableHead>
                             <TableRow>
                                 {
-                                    ["Title", "Description", "Model", "Product", "Installed firmware", "Last seen"].map(
+                                    [
+                                        {key: "title", label: "Title"},
+                                        {key: "description", label: "Description"},
+                                        {key: "model", label: "Model"},
+                                        {key: "product_id", label: "Product"},
+                                        {key: "firmware_id", label: "Installed firmware"},
+                                        {key: "last_seen", label: "Last seen"},
+                                    ].map(
                                         row => (
-                                            <TableCell key={`devices-table-head-${row}`}>{row}</TableCell>
+                                            <TableCell key={`devices-table-head-${row.key}`}>
+                                                <TableSortLabel
+                                                    active={this.props.sortBy === row.key}
+                                                    direction={this.props.sortOrder}
+                                                    onClick={() => this.props.setDeviceSort(row.key, this.props.sortOrder)}
+                                                >
+                                                    {row.label}
+                                                </TableSortLabel>
+                                            </TableCell>
                                         )
                                     )
                                 }
@@ -126,13 +142,16 @@ class DevicesComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    devices: getFilteredDevices(state),
-    query: state.devicesReducer.query
+    devices: getFilteredAndSortedDevices(state),
+    query: state.devicesReducer.query,
+    sortBy: state.devicesReducer.sortBy,
+    sortOrder: state.devicesReducer.sortOrder
 });
 
 const mapDispatchToProps = {
     deleteDevice,
     setDeviceQuery,
+    setDeviceSort,
     openConfirmationDialog
 };
 

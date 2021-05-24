@@ -6,6 +6,7 @@ export const ADD_PRODUCT = "ADD_PRODUCT"
 export const EDIT_PRODUCT = "EDIT_PRODUCT"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
 export const SET_PRODUCT_QUERY = "SET_PRODUCT_QUERY"
+export const SET_PRODUCT_SORT = "SET_PRODUCT_SORT"
 
 const baseUrl = `${backendUrl}/products`
 
@@ -126,5 +127,15 @@ export const setProductQuery = (query) => async dispatch => {
     dispatch({
         type: SET_PRODUCT_QUERY,
         data: query,
+    })
+}
+
+export const setProductSort = (sortBy, sortOrder) => async dispatch => {
+    dispatch({
+        type: SET_PRODUCT_SORT,
+        data: {
+            sortBy,
+            sortOrder
+        },
     })
 }

@@ -1,8 +1,17 @@
-import {ADD_FIRMWARE, ADD_FIRMWARES, DELETE_FIRMWARE, EDIT_FIRMWARE, SET_FIRMWARE_QUERY} from "../actions/firmwares";
+import {
+    ADD_FIRMWARE,
+    ADD_FIRMWARES,
+    DELETE_FIRMWARE,
+    EDIT_FIRMWARE,
+    SET_FIRMWARE_QUERY,
+    SET_FIRMWARE_SORT
+} from "../actions/firmwares";
 
 const initialState = {
     firmwares: [],
-    query: ""
+    query: "",
+    sortBy: "title",
+    sortOrder: "asc"
 };
 
 export const firmwaresReducer = (state = initialState, action) => {
@@ -31,6 +40,21 @@ export const firmwaresReducer = (state = initialState, action) => {
             return {
                 ...state,
                 query: action.data
+            }
+        case SET_FIRMWARE_SORT:
+            let sortBy = action.data.sortBy;
+            let sortOrder = action.data.sortOrder;
+
+            if (sortBy === state.sortBy) {
+                sortOrder = sortOrder === "asc" ? "desc" : "asc";
+            } else {
+                sortOrder = "asc";
+            }
+
+            return {
+                ...state,
+                sortBy: sortBy,
+                sortOrder: sortOrder,
             }
         default:
             return state

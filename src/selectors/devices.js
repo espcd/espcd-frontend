@@ -1,14 +1,13 @@
 import {createSelector} from 'reselect'
+import {filterItems, sortItems} from "./common";
 
 const getDevices = (state) => state.devicesReducer.devices
 const getQuery = (state) => state.devicesReducer.query
+const getSortBy = (state) => state.devicesReducer.sortBy
+const getSortOrder = (state) => state.devicesReducer.sortOrder
 
-export const getFilteredDevices = createSelector(
-    [getDevices, getQuery],
-    (devices, query) => devices.filter(device => {
-        return Object.keys(device).some(key => {
-            let value = device[key]
-            return value && String(value).includes(query)
-        })
-    })
+export const getFilteredAndSortedDevices = createSelector(
+    [getDevices, getQuery, getSortBy, getSortOrder],
+    (devices, query, sortBy, sortOrder) =>
+        sortItems(filterItems(devices, query), sortBy, sortOrder)
 )

@@ -12,16 +12,17 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
     TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {deleteProduct, setProductQuery} from "../actions/products";
+import {deleteProduct, setProductQuery, setProductSort} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Clear, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
-import {getFilteredProducts} from "../selectors/products";
+import {getFilteredAndSortedProducts} from "../selectors/products";
 
 const styles = theme => ({
     button: {
@@ -57,9 +58,22 @@ class ProductsComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Auto update", "Latest firmware"].map(
+                                        [
+                                            {key: "title", label: "Title"},
+                                            {key: "description", label: "Description"},
+                                            {key: "auto_update", label: "Auto update"},
+                                            {key: "firmware_id", label: "Latest firmware"},
+                                        ].map(
                                             row => (
-                                                <TableCell key={`products-table-head-${row}`}>{row}</TableCell>
+                                                <TableCell key={`products-table-head-${row.key}`}>
+                                                    <TableSortLabel
+                                                        active={this.props.sortBy === row.key}
+                                                        direction={this.props.sortOrder}
+                                                        onClick={() => this.props.setProductSort(row.key, this.props.sortOrder)}
+                                                    >
+                                                        {row.label}
+                                                    </TableSortLabel>
+                                                </TableCell>
                                             )
                                         )
                                     }
@@ -122,13 +136,16 @@ class ProductsComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    products: getFilteredProducts(state),
-    query: state.productsReducer.query
+    products: getFilteredAndSortedProducts(state),
+    query: state.productsReducer.query,
+    sortBy: state.productsReducer.sortBy,
+    sortOrder: state.productsReducer.sortOrder
 });
 
 const mapDispatchToProps = {
     deleteProduct,
     setProductQuery,
+    setProductSort,
     openConfirmationDialog
 };
 

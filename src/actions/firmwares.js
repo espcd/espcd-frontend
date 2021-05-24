@@ -6,6 +6,7 @@ export const ADD_FIRMWARE = "ADD_FIRMWARE"
 export const EDIT_FIRMWARE = "EDIT_FIRMWARE"
 export const DELETE_FIRMWARE = "DELETE_FIRMWARE"
 export const SET_FIRMWARE_QUERY = "SET_FIRMWARE_QUERY"
+export const SET_FIRMWARE_SORT = "SET_FIRMWARE_SORT"
 
 const baseUrl = `${backendUrl}/firmwares`
 
@@ -133,5 +134,15 @@ export const setFirmwareQuery = (query) => async dispatch => {
     dispatch({
         type: SET_FIRMWARE_QUERY,
         data: query,
+    })
+}
+
+export const setFirmwareSort = (sortBy, sortOrder) => async dispatch => {
+    dispatch({
+        type: SET_FIRMWARE_SORT,
+        data: {
+            sortBy,
+            sortOrder
+        },
     })
 }

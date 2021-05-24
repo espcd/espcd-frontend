@@ -1,14 +1,13 @@
 import {createSelector} from 'reselect'
+import {filterItems, sortItems} from "./common";
 
 const getFirmwares = (state) => state.firmwaresReducer.firmwares
 const getQuery = (state) => state.firmwaresReducer.query
+const getSortBy = (state) => state.firmwaresReducer.sortBy
+const getSortOrder = (state) => state.firmwaresReducer.sortOrder
 
-export const getFilteredFirmwares = createSelector(
-    [getFirmwares, getQuery],
-    (firmwares, query) => firmwares.filter(firmware => {
-        return Object.keys(firmware).some(key => {
-            let value = firmware[key]
-            return value && String(value).includes(query)
-        })
-    })
+export const getFilteredAndSortedFirmwares = createSelector(
+    [getFirmwares, getQuery, getSortBy, getSortOrder],
+    (firmwares, query, sortBy, sortOrder) =>
+        sortItems(filterItems(firmwares, query), sortBy, sortOrder)
 )

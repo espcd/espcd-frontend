@@ -12,17 +12,18 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
     TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
 import {Add, Clear, Delete, Edit, GetApp} from "@material-ui/icons";
-import {deleteFirmware, setFirmwareQuery} from "../actions/firmwares";
+import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
 import {openConfirmationDialog,} from "../actions/confirmationDialog";
-import {getFilteredFirmwares} from "../selectors/firmwares";
+import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 
 const styles = theme => ({
     fab: {
@@ -55,9 +56,23 @@ class FirmwaresComponent extends Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        ["Title", "Description", "Model", "Version", "Product"].map(
+                                        [
+                                            {key: "title", label: "Title"},
+                                            {key: "description", label: "Description"},
+                                            {key: "model", label: "Model"},
+                                            {key: "version", label: "Version"},
+                                            {key: "product_id", label: "Product"}
+                                        ].map(
                                             row => (
-                                                <TableCell key={`firmwares-table-head-${row}`}>{row}</TableCell>
+                                                <TableCell key={`firmwares-table-head-${row.key}`}>
+                                                    <TableSortLabel
+                                                        active={this.props.sortBy === row.key}
+                                                        direction={this.props.sortOrder}
+                                                        onClick={() => this.props.setFirmwareSort(row.key, this.props.sortOrder)}
+                                                    >
+                                                        {row.label}
+                                                    </TableSortLabel>
+                                                </TableCell>
                                             )
                                         )
                                     }
@@ -127,15 +142,18 @@ class FirmwaresComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    firmwares: getFilteredFirmwares(state),
-    query: state.firmwaresReducer.query
-});
+    firmwares: getFilteredAndSortedFirmwares(state),
+    query: state.firmwaresReducer.query,
+    sortBy: state.firmwaresReducer.sortBy,
+    sortOrder: state.firmwaresReducer.sortOrder
+})
 
 const mapDispatchToProps = {
     deleteFirmware,
     setFirmwareQuery,
+    setFirmwareSort,
     openConfirmationDialog
-};
+}
 
 export default withRouter(
     connect(mapStateToProps, mapDispatchToProps)(
@@ -143,4 +161,4 @@ export default withRouter(
             FirmwaresComponent
         )
     )
-);
+)

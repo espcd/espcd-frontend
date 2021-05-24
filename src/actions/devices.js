@@ -5,6 +5,7 @@ export const ADD_DEVICES = "ADD_DEVICES"
 export const EDIT_DEVICE = "EDIT_DEVICE"
 export const DELETE_DEVICE = "DELETE_DEVICE"
 export const SET_DEVICE_QUERY = "SET_DEVICE_QUERY"
+export const SET_DEVICE_SORT = "SET_DEVICE_SORT"
 
 const baseUrl = `${backendUrl}/devices`
 
@@ -91,5 +92,15 @@ export const setDeviceQuery = (query) => async dispatch => {
     dispatch({
         type: SET_DEVICE_QUERY,
         data: query,
+    })
+}
+
+export const setDeviceSort = (sortBy, sortOrder) => async dispatch => {
+    dispatch({
+        type: SET_DEVICE_SORT,
+        data: {
+            sortBy,
+            sortOrder
+        },
     })
 }

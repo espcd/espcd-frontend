@@ -5,68 +5,68 @@ import {editDevice} from "../actions/devices";
 import {Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, withStyles} from "@material-ui/core";
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
-import moment from 'moment';
+import moment from "moment";
 
 const styles = theme => ({
     button: {
         marginTop: theme.spacing(2)
     },
     paper: {
-        padding: '16px'
+        padding: "16px"
     }
 });
 
 class DeviceComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {}
+        this.updates = {};
         this.state = {
             device: new Device()
-        }
+        };
     }
 
     setDevice() {
-        let device = this.props.devices.find(device => device.id === this.props.match.params.id)
+        let device = this.props.devices.find(device => device.id === this.props.match.params.id);
         this.setState({
             device: {...device}
-        })
+        });
     }
 
     componentDidMount() {
-        this.setDevice()
+        this.setDevice();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.devices !== prevProps.devices) {
-            this.setDevice()
+            this.setDevice();
         }
     }
 
     handleChange = (event) => {
-        let target = event.target
-        let key = target.name
-        let value = target.value
+        let target = event.target;
+        let key = target.name;
+        let value = target.value;
 
-        this.updates[key] = value
+        this.updates[key] = value;
 
-        let device = this.state.device
-        device[key] = value
+        let device = this.state.device;
+        device[key] = value;
         this.setState({
             device: device
-        })
-    }
+        });
+    };
 
     handleSubmit = () => {
-        let deviceId = this.state.device.id
-        let payload = this.updates
+        let deviceId = this.state.device.id;
+        let payload = this.updates;
 
-        this.props.editDevice(deviceId, payload)
-    }
+        this.props.editDevice(deviceId, payload);
+    };
 
     render() {
         const {classes} = this.props;
 
-        let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware()
+        let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware();
 
         return (
             <Paper className={classes.paper}>
@@ -133,7 +133,7 @@ class DeviceComponent extends Component {
                         value={this.state.device.product_id}
                         onChange={this.handleChange}
                     >
-                        <MenuItem value={''} key={`product-menuitem-`}>-</MenuItem>
+                        <MenuItem value={""} key={`product-menuitem-`}>-</MenuItem>
                         {this.props.products.map(product => (
                             <MenuItem
                                 value={product.id}
@@ -153,7 +153,7 @@ class DeviceComponent extends Component {
                     label="Installed firmware"
                     type="text"
                     fullWidth
-                    value={firmware.id ? `${firmware.title} (${firmware.id})` : 'unknown'}
+                    value={firmware.id ? `${firmware.title} (${firmware.id})` : "unknown"}
                 />
                 <TextField
                     InputLabelProps={{shrink: true}}
@@ -175,7 +175,7 @@ class DeviceComponent extends Component {
                     Edit device
                 </Button>
             </Paper>
-        )
+        );
     }
 }
 
@@ -183,7 +183,7 @@ const mapStateToProps = (state) => ({
     devices: state.devicesReducer.devices,
     firmwares: state.firmwaresReducer.firmwares,
     products: state.productsReducer.products
-})
+});
 
 const mapDispatchToProps = {
     editDevice

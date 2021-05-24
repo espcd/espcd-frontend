@@ -26,10 +26,10 @@ import {getFilteredAndSortedProducts} from "../selectors/products";
 
 const styles = theme => ({
     button: {
-        textTransform: 'none'
+        textTransform: "none"
     },
     fab: {
-        position: 'fixed',
+        position: "fixed",
         bottom: theme.spacing(2),
         right: theme.spacing(2)
     },
@@ -44,7 +44,7 @@ class ProductsComponent extends Component {
             "Delete product",
             `Are you sure you want to delete the product ${product.id}?`,
             () => this.props.deleteProduct(product.id)
-        )
+        );
     }
 
     render() {
@@ -78,7 +78,7 @@ class ProductsComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`products-table-head-search`} align="right">
-                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                        <Grid container style={{alignItems: "center"}} justify="flex-end">
                                             <TextField
                                                 label="Search..."
                                                 value={this.props.query}
@@ -125,13 +125,13 @@ class ProductsComponent extends Component {
                 <Tooltip title="Add Product" aria-label="add product">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.props.history.push('/products/new')}
+                         onClick={() => this.props.history.push("/products/new")}
                     >
                         <Add/>
                     </Fab>
                 </Tooltip>
             </React.Fragment>
-        )
+        );
     }
 }
 

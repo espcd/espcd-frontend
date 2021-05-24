@@ -21,69 +21,69 @@ const styles = theme => ({
         marginTop: theme.spacing(2)
     },
     paper: {
-        padding: '16px'
+        padding: "16px"
     }
 });
 
 class FirmwareComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {}
+        this.updates = {};
         this.state = {
             firmware: new Firmware(),
             selectedFile: null
-        }
+        };
     }
 
     setFirmware() {
-        let firmware = this.props.firmwares.find(firmware => firmware.id === this.props.match.params.id) || new Firmware()
+        let firmware = this.props.firmwares.find(firmware => firmware.id === this.props.match.params.id) || new Firmware();
         this.setState({
             firmware: {...firmware}
-        })
+        });
     }
 
     componentDidMount() {
-        this.setFirmware()
+        this.setFirmware();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.firmwares !== prevProps.firmwares) {
-            this.setFirmware()
+            this.setFirmware();
         }
     }
 
     handleChange = (event) => {
-        let target = event.target
-        let key = target.name
-        let value = target.value
+        let target = event.target;
+        let key = target.name;
+        let value = target.value;
 
-        this.updates[key] = value
+        this.updates[key] = value;
 
-        let firmware = this.state.firmware
-        firmware[key] = value
+        let firmware = this.state.firmware;
+        firmware[key] = value;
         this.setState({
             firmware: firmware
-        })
-    }
+        });
+    };
 
     handleSubmit = () => {
-        let firmwareId = this.state.firmware.id
-        let payload = this.updates
-        let file = this.state.selectedFile
+        let firmwareId = this.state.firmware.id;
+        let payload = this.updates;
+        let file = this.state.selectedFile;
 
         this.props.isPresent ?
             this.props.editFirmware(firmwareId, payload, file)
             :
-            this.props.createFirmware(payload, file)
-    }
+            this.props.createFirmware(payload, file);
+    };
 
     selectFile = (event) => {
         let target = event.target;
-        let file = target.files[0]
+        let file = target.files[0];
         this.setState({
             selectedFile: file
-        })
-    }
+        });
+    };
 
     render() {
         const {classes} = this.props;
@@ -183,7 +183,7 @@ class FirmwareComponent extends Component {
                         value={this.state.firmware.product_id}
                         onChange={this.handleChange}
                     >
-                        <MenuItem value={''} key={`product-menuitem-none`}>-</MenuItem>
+                        <MenuItem value={""} key={`product-menuitem-none`}>-</MenuItem>
                         {this.props.products.map(product => (
                             <MenuItem
                                 value={product.id}
@@ -203,14 +203,14 @@ class FirmwareComponent extends Component {
                     {this.props.isPresent ? "Edit firmware" : "Create firmware"}
                 </Button>
             </Paper>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state) => ({
     firmwares: state.firmwaresReducer.firmwares,
     products: state.productsReducer.products
-})
+});
 
 const mapDispatchToProps = {
     createFirmware,

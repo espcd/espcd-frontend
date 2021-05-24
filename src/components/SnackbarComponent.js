@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Snackbar} from "@material-ui/core";
 import {connect} from "react-redux";
 import {clearNotification} from "../actions/notifications";
-import {Alert} from '@material-ui/lab';
+import {Alert} from "@material-ui/lab";
 
 
 class SnackbarComponent extends Component {
@@ -10,8 +10,8 @@ class SnackbarComponent extends Component {
         return (
             <Snackbar
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: "bottom",
+                    horizontal: "left",
                 }}
                 open={this.props.open}
                 autoHideDuration={6000}
@@ -26,7 +26,7 @@ class SnackbarComponent extends Component {
                     {this.props.message}
                 </Alert>
             </Snackbar>
-        )
+        );
     }
 }
 

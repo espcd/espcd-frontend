@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {
     AppBar,
     ButtonBase,
@@ -28,7 +28,7 @@ const drawerWidth = 200;
 
 const styles = theme => ({
     root: {
-        display: 'flex'
+        display: "flex"
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1
@@ -41,7 +41,7 @@ const styles = theme => ({
         width: drawerWidth
     },
     drawerContainer: {
-        overflow: 'auto'
+        overflow: "auto"
     },
     content: {
         flexGrow: 1,
@@ -66,7 +66,7 @@ class App extends Component {
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
-                            <ButtonBase onClick={() => this.props.history.push('/')}>
+                            <ButtonBase onClick={() => this.props.history.push("/")}>
                                 <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
                             </ButtonBase>
                         </Toolbar>
@@ -107,28 +107,28 @@ class App extends Component {
                         <Switch>
                             <Redirect exact from="/" to="/devices"/>
                             <Route exact path="/devices">
-                                <DevicesComponent />
+                                <DevicesComponent/>
                             </Route>
                             <Route path="/devices/:id">
-                                <DeviceComponent />
+                                <DeviceComponent/>
                             </Route>
                             <Route exact path="/firmwares">
-                                <FirmwaresComponent />
+                                <FirmwaresComponent/>
                             </Route>
                             <Route path="/firmwares/new">
-                                <FirmwareComponent isPresent={false} />
+                                <FirmwareComponent isPresent={false}/>
                             </Route>
                             <Route path="/firmwares/:id">
-                                <FirmwareComponent isPresent={true} />
+                                <FirmwareComponent isPresent={true}/>
                             </Route>
                             <Route exact path="/products">
-                                <ProductsComponent />
+                                <ProductsComponent/>
                             </Route>
                             <Route path="/products/new">
-                                <ProductComponent isPresent={false} />
+                                <ProductComponent isPresent={false}/>
                             </Route>
                             <Route path="/products/:id">
-                                <ProductComponent isPresent={true} />
+                                <ProductComponent isPresent={true}/>
                             </Route>
                         </Switch>
                     </main>

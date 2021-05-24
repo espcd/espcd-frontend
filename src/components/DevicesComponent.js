@@ -18,14 +18,14 @@ import {
 import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import moment from 'moment';
+import moment from "moment";
 import {Clear, Delete, Edit} from "@material-ui/icons";
 import {openConfirmationDialog} from "../actions/confirmationDialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 
 const styles = () => ({
     button: {
-        textTransform: 'none'
+        textTransform: "none"
     }
 });
 
@@ -35,7 +35,7 @@ class DevicesComponent extends Component {
             "Delete device",
             `Are you sure you want to delete the device ${device.id}?`,
             () => this.props.deleteDevice(device.id)
-        )
+        );
     }
 
     render() {
@@ -70,7 +70,7 @@ class DevicesComponent extends Component {
                                     )
                                 }
                                 <TableCell key={`products-table-head-search`} align="right">
-                                    <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                    <Grid container style={{alignItems: "center"}} justify="flex-end">
                                         <TextField
                                             label="Search..."
                                             value={this.props.query}
@@ -137,7 +137,7 @@ class DevicesComponent extends Component {
                     </Table>
                 </TableContainer>
             </Paper>
-        )
+        );
     }
 }
 

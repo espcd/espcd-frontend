@@ -13,13 +13,13 @@ export const notificationsReducer = (state = initialState, action) => {
                 ...state,
                 open: true,
                 ...action.data
-            }
+            };
         case CLEAR_NOTIFICATION:
             return {
                 ...state,
                 open: false
-            }
+            };
         default:
-            return state
+            return state;
     }
 };

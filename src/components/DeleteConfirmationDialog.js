@@ -19,8 +19,8 @@ class DeleteConfirmationDialog extends Component {
                         Cancel
                     </Button>
                     <Button onClick={() => {
-                        this.props.handleOk()
-                        this.props.closeConfirmationDialog()
+                        this.props.handleOk();
+                        this.props.closeConfirmationDialog();
                     }} color="primary">
                         Ok
                     </Button>

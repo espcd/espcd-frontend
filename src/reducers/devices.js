@@ -13,22 +13,22 @@ export const devicesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 devices: action.data
-            }
+            };
         case EDIT_DEVICE:
             return {
                 ...state,
                 devices: state.devices.map(device => device.id === action.data.id ? action.data : device)
-            }
+            };
         case DELETE_DEVICE:
             return {
                 ...state,
                 devices: state.devices.filter(device => device.id !== action.data)
-            }
+            };
         case SET_DEVICE_QUERY:
             return {
                 ...state,
                 query: action.data
-            }
+            };
         case SET_DEVICE_SORT:
             let sortBy = action.data.sortBy;
             let sortOrder = action.data.sortOrder;
@@ -43,8 +43,8 @@ export const devicesReducer = (state = initialState, action) => {
                 ...state,
                 sortBy: sortBy,
                 sortOrder: sortOrder,
-            }
+            };
         default:
-            return state
+            return state;
     }
 };

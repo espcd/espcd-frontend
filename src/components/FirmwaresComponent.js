@@ -27,7 +27,7 @@ import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 
 const styles = theme => ({
     fab: {
-        position: 'fixed',
+        position: "fixed",
         bottom: theme.spacing(2),
         right: theme.spacing(2)
     },
@@ -42,7 +42,7 @@ class FirmwaresComponent extends Component {
             "Delete firmware",
             `Are you sure you want to delete the firmware ${firmware.id}?`,
             () => this.props.deleteFirmware(firmware.id)
-        )
+        );
     }
 
     render() {
@@ -77,7 +77,7 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <Grid container style={{alignItems: 'center'}} justify="flex-end">
+                                        <Grid container style={{alignItems: "center"}} justify="flex-end">
                                             <TextField
                                                 label="Search..."
                                                 value={this.props.query}
@@ -131,13 +131,13 @@ class FirmwaresComponent extends Component {
                 <Tooltip title="Add Firmware" aria-label="add firmware">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.props.history.push('/firmwares/new')}
+                         onClick={() => this.props.history.push("/firmwares/new")}
                     >
                         <Add/>
                     </Fab>
                 </Tooltip>
             </React.Fragment>
-        )
+        );
     }
 }
 
@@ -146,14 +146,14 @@ const mapStateToProps = (state) => ({
     query: state.firmwaresReducer.query,
     sortBy: state.firmwaresReducer.sortBy,
     sortOrder: state.firmwaresReducer.sortOrder
-})
+});
 
 const mapDispatchToProps = {
     deleteFirmware,
     setFirmwareQuery,
     setFirmwareSort,
     openConfirmationDialog
-}
+};
 
 export default withRouter(
     connect(mapStateToProps, mapDispatchToProps)(
@@ -161,4 +161,4 @@ export default withRouter(
             FirmwaresComponent
         )
     )
-)
+);

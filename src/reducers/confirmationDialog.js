@@ -1,10 +1,11 @@
-import {OPEN_CONFIRMATION_DIALOG, CLOSE_CONFIRMATION_DIALOG} from "../actions/confirmationDialog";
+import {CLOSE_CONFIRMATION_DIALOG, OPEN_CONFIRMATION_DIALOG} from "../actions/confirmationDialog";
 
 const initialState = {
     open: false,
     title: "",
     content: "",
-    handleOk: () => {}
+    handleOk: () => {
+    }
 };
 
 export const confirmationDialogReducer = (state = initialState, action) => {
@@ -14,13 +15,13 @@ export const confirmationDialogReducer = (state = initialState, action) => {
                 ...state,
                 open: true,
                 ...action.data
-            }
+            };
         case CLOSE_CONFIRMATION_DIALOG:
             return {
                 ...state,
                 open: false
-            }
+            };
         default:
-            return state
+            return state;
     }
 };

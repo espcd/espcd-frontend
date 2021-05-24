@@ -21,62 +21,62 @@ const styles = theme => ({
         marginTop: theme.spacing(2)
     },
     paper: {
-        padding: '16px'
+        padding: "16px"
     }
 });
 
 class ProductComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {}
+        this.updates = {};
         this.state = {
             product: new Product()
-        }
+        };
     }
 
     setProduct() {
-        let product = this.props.products.find(product => product.id === this.props.match.params.id) || new Product()
+        let product = this.props.products.find(product => product.id === this.props.match.params.id) || new Product();
         this.setState({
             product: {...product}
-        })
+        });
     }
 
     componentDidMount() {
-        this.setProduct()
+        this.setProduct();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.products !== prevProps.products) {
-            this.setProduct()
+            this.setProduct();
         }
     }
 
     handleChange = (event) => {
-        let target = event.target
-        let key = target.name
-        let value = target.type === 'checkbox' ? target.checked : target.value
+        let target = event.target;
+        let key = target.name;
+        let value = target.type === "checkbox" ? target.checked : target.value;
 
-        this.updates[key] = value
+        this.updates[key] = value;
 
-        let product = this.state.product
-        product[key] = value
+        let product = this.state.product;
+        product[key] = value;
         this.setState({
             product: product
-        })
-    }
+        });
+    };
 
     handleSubmit = () => {
-        let productId = this.state.product.id
-        let payload = this.updates
+        let productId = this.state.product.id;
+        let payload = this.updates;
 
         this.props.isPresent ?
             this.props.editProduct(productId, payload)
             :
-            this.props.createProduct(payload)
-    }
+            this.props.createProduct(payload);
+    };
 
     render() {
-        const {classes} = this.props
+        const {classes} = this.props;
 
         return (
             <Paper className={classes.paper}>
@@ -113,7 +113,7 @@ class ProductComponent extends Component {
                     onChange={this.handleChange}
                 />
                 <FormControlLabel
-                    style={{width: '100%'}}
+                    style={{width: "100%"}}
                     control={
                         <Checkbox
                             checked={this.state.product.auto_update}
@@ -139,7 +139,7 @@ class ProductComponent extends Component {
                         value={this.state.product.firmware_id}
                         onChange={this.handleChange}
                     >
-                        <MenuItem value={''} key={`firmware-menuitem-`}>-</MenuItem>
+                        <MenuItem value={""} key={`firmware-menuitem-`}>-</MenuItem>
                         {this.props.firmwares.map(firmware => (
                             <MenuItem
                                 value={firmware.id}
@@ -159,18 +159,18 @@ class ProductComponent extends Component {
                     {this.props.isPresent ? "Edit product" : "Create product"}
                 </Button>
             </Paper>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    let productId = ownProps.match.params.id
+    let productId = ownProps.match.params.id;
     let firmwares = state.firmwaresReducer.firmwares.filter(firmware => firmware.product_id === productId);
     return {
         products: state.productsReducer.products,
         firmwares
-    }
-}
+    };
+};
 
 const mapDispatchToProps = {
     createProduct,

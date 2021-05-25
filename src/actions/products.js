@@ -43,11 +43,6 @@ export const getProducts = () => async dispatch => {
 };
 
 export const createProduct = (payload) => async dispatch => {
-    if (Object.keys(payload).length === 0) {
-        dispatch(addErrorNotification("Payload empty"));
-        return;
-    }
-
     const requestOptions = {
         method: "POST",
         headers: {
@@ -64,11 +59,6 @@ export const createProduct = (payload) => async dispatch => {
 };
 
 export const editProduct = (productId, payload) => async dispatch => {
-    if (Object.keys(payload).length === 0) {
-        dispatch(addErrorNotification("Payload empty"));
-        return;
-    }
-
     const requestOptions = {
         method: "PATCH",
         headers: {

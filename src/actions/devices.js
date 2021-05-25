@@ -43,11 +43,6 @@ export const getDevices = () => async dispatch => {
 };
 
 export const editDevice = (deviceId, payload) => async dispatch => {
-    if (Object.keys(payload).length === 0) {
-        dispatch(addErrorNotification("Payload empty"));
-        return;
-    }
-
     const requestOptions = {
         method: "PATCH",
         headers: {

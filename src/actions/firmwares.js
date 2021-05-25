@@ -54,11 +54,6 @@ const formDataFromFirmware = (firmware, content) => {
 };
 
 export const createFirmware = (payload, content) => async dispatch => {
-    if (Object.keys(payload).length === 0) {
-        dispatch(addErrorNotification("Payload empty"));
-        return;
-    }
-
     let data = formDataFromFirmware(payload, content);
     const requestOptions = {
         method: "POST",
@@ -73,11 +68,6 @@ export const createFirmware = (payload, content) => async dispatch => {
 };
 
 export const editFirmware = (firmwareId, payload, content) => async dispatch => {
-    if (Object.keys(payload).length === 0) {
-        dispatch(addErrorNotification("Payload empty"));
-        return;
-    }
-
     let data = formDataFromFirmware(payload, content);
     const requestOptions = {
         method: "PATCH",

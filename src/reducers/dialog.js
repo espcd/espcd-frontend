@@ -17,7 +17,8 @@ export const dialogReducer = (state = initialState, action) => {
         case CLOSE_DIALOG:
             return {
                 ...state,
-                open: false
+                open: false,
+                type: initialState.type,
             };
         default:
             return state;

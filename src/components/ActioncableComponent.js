@@ -16,7 +16,6 @@ class ActioncableComponent extends Component {
             {channel: "DevicesChannel"},
             {
                 received: payload => {
-                    console.log(payload);
                     let type = payload.type;
                     let device = payload.device;
                     switch (type) {
@@ -30,7 +29,7 @@ class ActioncableComponent extends Component {
                             this.props.dispatchDeleteDevice(device.id);
                             break;
                         default:
-                            console.log("unknown device payload type: " + type);
+                            console.error("unknown device payload type: " + type);
                     }
                 }
             }
@@ -54,7 +53,7 @@ class ActioncableComponent extends Component {
                             this.props.dispatchDeleteFirmware(firmware.id);
                             break;
                         default:
-                            console.log("unknown firmware payload type: " + type);
+                            console.error("unknown firmware payload type: " + type);
                     }
                 }
             }
@@ -78,7 +77,7 @@ class ActioncableComponent extends Component {
                             this.props.dispatchDeleteProduct(product.id);
                             break;
                         default:
-                            console.log("unknown product payload type: " + type);
+                            console.error("unknown product payload type: " + type);
                     }
                 }
             }

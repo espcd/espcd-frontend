@@ -60,7 +60,15 @@ class FirmwareDialogComponent extends Component {
         });
     };
 
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
+        this.props.closeDialog();
+
         let firmwareId = this.state.firmware.id;
         let payload = this.updates;
         let file = this.state.selectedFile;
@@ -84,6 +92,7 @@ class FirmwareDialogComponent extends Component {
             <Dialog
                 open={this.props.open}
                 onClose={this.props.closeDialog}
+                onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
                     {this.props.firmwareId ? "Edit firmware" : "Add firmware"}
@@ -218,10 +227,7 @@ class FirmwareDialogComponent extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => {
-                            this.handleSubmit();
-                            this.props.closeDialog();
-                        }}
+                        onClick={this.handleSubmit}
                     >
                         Ok
                     </Button>

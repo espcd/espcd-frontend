@@ -4,11 +4,23 @@ import {closeDialog} from "../actions/dialog";
 import {connect} from "react-redux";
 
 class DeleteConfirmationDialog extends Component {
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.handleOk();
+        }
+    }
+
+    handleOk = () => {
+        this.props.handleOk();
+        this.props.closeDialog();
+    }
+
     render() {
         return (
             <Dialog
                 open={this.props.open}
                 onClose={this.props.closeDialog}
+                onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>{this.props.title}</DialogTitle>
                 <DialogContent>
@@ -25,10 +37,8 @@ class DeleteConfirmationDialog extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => {
-                            this.props.handleOk();
-                            this.props.closeDialog();
-                        }}
+                        type="submit"
+                        onClick={this.handleOk}
                     >
                         Ok
                     </Button>

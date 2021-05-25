@@ -58,7 +58,15 @@ class DeviceDialogComponent extends Component {
         });
     };
 
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
+        this.props.closeDialog();
+
         let deviceId = this.state.device.id;
         let payload = this.updates;
 
@@ -72,6 +80,7 @@ class DeviceDialogComponent extends Component {
             <Dialog
                 open={this.props.open}
                 onClose={this.props.closeDialog}
+                onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
                     Edit device
@@ -185,10 +194,7 @@ class DeviceDialogComponent extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => {
-                            this.handleSubmit();
-                            this.props.closeDialog();
-                        }}
+                        onClick={this.handleSubmit}
                     >
                         Ok
                     </Button>

@@ -59,7 +59,15 @@ class ProductDialogComponent extends Component {
         });
     };
 
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
+        this.props.closeDialog();
+
         let productId = this.state.product.id;
         let payload = this.updates;
 
@@ -74,6 +82,7 @@ class ProductDialogComponent extends Component {
             <Dialog
                 open={this.props.open}
                 onClose={this.props.closeDialog}
+                onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
                     {this.props.productId ? "Edit product" : "Add product"}
@@ -184,10 +193,7 @@ class ProductDialogComponent extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => {
-                            this.handleSubmit();
-                            this.props.closeDialog();
-                        }}
+                        onClick={this.handleSubmit}
                     >
                         Ok
                     </Button>

@@ -62,15 +62,14 @@ class DeviceDialogComponent extends Component {
         if (event.key === "Enter") {
             this.handleSubmit();
         }
-    }
+    };
 
     handleSubmit = () => {
-        this.props.closeDialog();
-
         let deviceId = this.state.device.id;
         let payload = this.updates;
 
-        this.props.editDevice(deviceId, payload);
+        this.props.editDevice(deviceId, payload)
+            .then(() => this.props.closeDialog());
     };
 
     render() {
@@ -211,15 +210,15 @@ const mapStateToProps = (state) => {
     let products = state.productsReducer.products.filter(product => {
         let productModel = product.model ? product.model.toLocaleLowerCase() : null;
         let deviceModel = device.model.toLocaleLowerCase();
-        return productModel === deviceModel
-    })
+        return productModel === deviceModel;
+    });
     return {
         open: state.dialogReducer.open,
         deviceId,
         devices,
         firmwares: state.firmwaresReducer.firmwares,
         products
-    }
+    };
 };
 
 const mapDispatchToProps = {

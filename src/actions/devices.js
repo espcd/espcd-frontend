@@ -1,5 +1,4 @@
 import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
-import {addErrorNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES";
 export const ADD_DEVICE = "ADD_DEVICE";
@@ -50,7 +49,7 @@ export const editDevice = (deviceId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${deviceId}`,
         requestOptions,
@@ -62,7 +61,7 @@ export const deleteDevice = (deviceId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${deviceId}`,
         requestOptions,

@@ -37,16 +37,19 @@ export const fetchGet = (dispatch, url, onSuccess) => {
 };
 
 export const fetchPatchDelete = (dispatch, url, requestOptions, successMessage) => {
-    fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(() => {
-            dispatch(addSuccessNotification(successMessage));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification(message));
-        });
+    return new Promise((resolve) => {
+        fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok) throw response;
+                return response;
+            })
+            .then(() => {
+                dispatch(addSuccessNotification(successMessage));
+                resolve();
+            })
+            .catch(async error => {
+                let message = await parseError(error);
+                dispatch(addErrorNotification(message));
+            });
+    });
 };

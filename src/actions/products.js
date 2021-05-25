@@ -1,5 +1,4 @@
 import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
-import {addErrorNotification} from "./notifications";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS";
 export const ADD_PRODUCT = "ADD_PRODUCT";
@@ -50,7 +49,7 @@ export const createProduct = (payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         baseUrl,
         requestOptions,
@@ -66,7 +65,7 @@ export const editProduct = (productId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${productId}`,
         requestOptions,
@@ -78,7 +77,7 @@ export const deleteProduct = (productId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${productId}`,
         requestOptions,

@@ -63,18 +63,19 @@ class ProductDialogComponent extends Component {
         if (event.key === "Enter") {
             this.handleSubmit();
         }
-    }
+    };
 
     handleSubmit = () => {
-        this.props.closeDialog();
-
         let productId = this.state.product.id;
         let payload = this.updates;
 
-        this.props.productId ?
+        if (this.props.productId) {
             this.props.editProduct(productId, payload)
-            :
-            this.props.createProduct(payload);
+                .then(() => this.props.closeDialog());
+        } else {
+            this.props.createProduct(payload)
+                .then(() => this.props.closeDialog());
+        }
     };
 
     render() {

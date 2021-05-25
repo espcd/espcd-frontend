@@ -1,5 +1,4 @@
 import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
-import {addErrorNotification} from "./notifications";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES";
 export const ADD_FIRMWARE = "ADD_FIRMWARE";
@@ -59,7 +58,7 @@ export const createFirmware = (payload, content) => async dispatch => {
         method: "POST",
         body: data
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         baseUrl,
         requestOptions,
@@ -73,7 +72,7 @@ export const editFirmware = (firmwareId, payload, content) => async dispatch => 
         method: "PATCH",
         body: data
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${firmwareId}`,
         requestOptions,
@@ -85,7 +84,7 @@ export const deleteFirmware = (firmwareId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    fetchPatchDelete(
+    return fetchPatchDelete(
         dispatch,
         `${baseUrl}/${firmwareId}`,
         requestOptions,

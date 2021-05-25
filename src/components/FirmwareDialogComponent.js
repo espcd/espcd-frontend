@@ -64,19 +64,20 @@ class FirmwareDialogComponent extends Component {
         if (event.key === "Enter") {
             this.handleSubmit();
         }
-    }
+    };
 
     handleSubmit = () => {
-        this.props.closeDialog();
-
         let firmwareId = this.state.firmware.id;
         let payload = this.updates;
         let file = this.state.selectedFile;
 
-        this.props.firmwareId ?
+        if (this.props.firmwareId) {
             this.props.editFirmware(firmwareId, payload, file)
-            :
-            this.props.createFirmware(payload, file);
+                .then(() => this.props.closeDialog());
+        } else {
+            this.props.createFirmware(payload, file)
+                .then(() => this.props.closeDialog());
+        }
     };
 
     selectFile = (event) => {

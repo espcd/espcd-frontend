@@ -198,13 +198,23 @@ class DeviceDialogComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
-    deviceId: state.dialogReducer.props.deviceId,
-    devices: state.devicesReducer.devices,
-    firmwares: state.firmwaresReducer.firmwares,
-    products: state.productsReducer.products
-});
+const mapStateToProps = (state) => {
+    let deviceId = state.dialogReducer.props.deviceId;
+    let devices = state.devicesReducer.devices;
+    let device = devices.find(device => device.id === deviceId);
+    let products = state.productsReducer.products.filter(product => {
+        let productModel = product.model ? product.model.toLocaleLowerCase() : null;
+        let deviceModel = device.model.toLocaleLowerCase();
+        return productModel === deviceModel
+    })
+    return {
+        open: state.dialogReducer.open,
+        deviceId,
+        devices,
+        firmwares: state.firmwaresReducer.firmwares,
+        products
+    }
+};
 
 const mapDispatchToProps = {
     closeDialog,

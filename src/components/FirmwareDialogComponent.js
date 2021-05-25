@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
+import {getModels} from "../selectors/devices";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -120,16 +121,29 @@ class FirmwareDialogComponent extends Component {
                         value={this.state.firmware.description ? this.state.firmware.description : ""}
                         onChange={this.handleChange}
                     />
-                    <TextField
-                        margin="dense"
-                        id="model"
-                        name="model"
-                        label="Model"
-                        type="text"
+                    <FormControl
                         fullWidth
-                        value={this.state.firmware.model}
-                        onChange={this.handleChange}
-                    />
+                        margin="dense"
+                    >
+                        <InputLabel id="model-select-label">Model</InputLabel>
+                        <Select
+                            labelId="model-select-label"
+                            id="model"
+                            name="model"
+                            value={this.state.firmware.model}
+                            onChange={this.handleChange}
+                        >
+                            <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
+                            {this.props.models.map(model => (
+                                <MenuItem
+                                    value={model}
+                                    key={`model-menuitem-${model}`}
+                                >
+                                    {model}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <TextField
                         margin="dense"
                         id="version"
@@ -221,7 +235,8 @@ const mapStateToProps = (state) => ({
     open: state.dialogReducer.open,
     firmwareId: state.dialogReducer.props.firmwareId,
     firmwares: state.firmwaresReducer.firmwares,
-    products: state.productsReducer.products
+    products: state.productsReducer.products,
+    models: getModels(state)
 });
 
 const mapDispatchToProps = {

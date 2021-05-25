@@ -11,3 +11,11 @@ export const getFilteredAndSortedDevices = createSelector(
     (devices, query, sortBy, sortOrder) =>
         sortItems(filterItems(devices, query), sortBy, sortOrder)
 );
+
+export const getModels = createSelector(
+    getDevices,
+    (devices) => {
+        let models = devices.map(device => device.model.toLocaleLowerCase())
+        return [...new Set(models)]
+    }
+)

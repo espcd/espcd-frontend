@@ -73,6 +73,7 @@ class ProductsComponent extends Component {
                                         [
                                             {key: "title", label: "Title"},
                                             {key: "description", label: "Description"},
+                                            {key: "model", label: "Model"},
                                             {key: "auto_update", label: "Auto update"},
                                             {key: "firmware_id", label: "Latest firmware"},
                                         ].map(
@@ -117,6 +118,7 @@ class ProductsComponent extends Component {
                                     >
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.description}</TableCell>
+                                        <TableCell>{product.model}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
                                         <TableCell>{product.firmware_id}</TableCell>
                                         <TableCell align="right">

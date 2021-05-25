@@ -13,7 +13,8 @@ const parseJson = async response => {
 
 const parseError = async error => {
     try {
-        return await error.text();
+        let text = await error.text();
+        return JSON.parse(text).message;
     } catch (e) {
         return error.message;
     }
@@ -31,7 +32,7 @@ export const fetchGet = (dispatch, url, onSuccess) => {
         })
         .catch(async error => {
             let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
+            dispatch(addErrorNotification(message));
         });
 };
 
@@ -46,6 +47,6 @@ export const fetchPatchDelete = (dispatch, url, requestOptions, successMessage) 
         })
         .catch(async error => {
             let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
+            dispatch(addErrorNotification(message));
         });
 };

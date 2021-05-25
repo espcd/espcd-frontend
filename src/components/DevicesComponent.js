@@ -20,7 +20,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from "moment";
 import {Clear, Delete, Edit} from "@material-ui/icons";
-import {openConfirmationDialog} from "../actions/confirmationDialog";
+import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 
 const styles = () => ({
@@ -31,10 +31,13 @@ const styles = () => ({
 
 class DevicesComponent extends Component {
     deleteDevice(device) {
-        this.props.openConfirmationDialog(
-            "Delete device",
-            `Are you sure you want to delete the device ${device.id}?`,
-            () => this.props.deleteDevice(device.id)
+        this.props.openDialog(
+            CONFIRMATION_DIALOG,
+            {
+                title: "Delete device",
+                content: `Are you sure you want to delete the device ${device.id}?`,
+                handleOk: () => this.props.deleteDevice(device.id)
+            }
         );
     }
 
@@ -152,7 +155,7 @@ const mapDispatchToProps = {
     deleteDevice,
     setDeviceQuery,
     setDeviceSort,
-    openConfirmationDialog
+    openDialog
 };
 
 export default withRouter(

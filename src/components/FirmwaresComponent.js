@@ -22,7 +22,7 @@ import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firm
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
-import {openConfirmationDialog,} from "../actions/confirmationDialog";
+import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 
 const styles = theme => ({
@@ -38,10 +38,13 @@ const styles = theme => ({
 
 class FirmwaresComponent extends Component {
     deleteFirmware(firmware) {
-        this.props.openConfirmationDialog(
-            "Delete firmware",
-            `Are you sure you want to delete the firmware ${firmware.id}?`,
-            () => this.props.deleteFirmware(firmware.id)
+        this.props.openDialog(
+            CONFIRMATION_DIALOG,
+            {
+                title: "Delete firmware",
+                content: `Are you sure you want to delete the firmware ${firmware.id}?`,
+                handleOk: () => this.props.deleteFirmware(firmware.id)
+            }
         );
     }
 
@@ -152,7 +155,7 @@ const mapDispatchToProps = {
     deleteFirmware,
     setFirmwareQuery,
     setFirmwareSort,
-    openConfirmationDialog
+    openDialog
 };
 
 export default withRouter(

@@ -1,22 +1,20 @@
-import {CLOSE_CONFIRMATION_DIALOG, OPEN_CONFIRMATION_DIALOG} from "../actions/confirmationDialog";
+import {CLOSE_DIALOG, OPEN_DIALOG} from "../actions/dialog";
 
 const initialState = {
     open: false,
-    title: "",
-    content: "",
-    handleOk: () => {
-    }
+    type: null,
+    props: {}
 };
 
-export const confirmationDialogReducer = (state = initialState, action) => {
+export const dialogReducer = (state = initialState, action) => {
     switch (action.type) {
-        case OPEN_CONFIRMATION_DIALOG:
+        case OPEN_DIALOG:
             return {
                 ...state,
                 open: true,
                 ...action.data
             };
-        case CLOSE_CONFIRMATION_DIALOG:
+        case CLOSE_DIALOG:
             return {
                 ...state,
                 open: false

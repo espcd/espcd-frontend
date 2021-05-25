@@ -21,7 +21,7 @@ import {deleteProduct, setProductQuery, setProductSort} from "../actions/product
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Clear, Delete, Edit} from "@material-ui/icons";
-import {openConfirmationDialog} from "../actions/confirmationDialog";
+import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 
 const styles = theme => ({
@@ -40,10 +40,13 @@ const styles = theme => ({
 
 class ProductsComponent extends Component {
     deleteProduct(product) {
-        this.props.openConfirmationDialog(
-            "Delete product",
-            `Are you sure you want to delete the product ${product.id}?`,
-            () => this.props.deleteProduct(product.id)
+        this.props.openDialog(
+            CONFIRMATION_DIALOG,
+            {
+                title: "Delete product",
+                content: `Are you sure you want to delete the product ${product.id}?`,
+                handleOk: () => this.props.deleteProduct(product.id)
+            }
         );
     }
 
@@ -146,7 +149,7 @@ const mapDispatchToProps = {
     deleteProduct,
     setProductQuery,
     setProductSort,
-    openConfirmationDialog
+    openDialog
 };
 
 export default withRouter(

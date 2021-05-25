@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
-import {closeConfirmationDialog} from "../actions/confirmationDialog";
+import {closeDialog} from "../actions/dialog";
 import {connect} from "react-redux";
 
 class DeleteConfirmationDialog extends Component {
@@ -8,19 +8,19 @@ class DeleteConfirmationDialog extends Component {
         return (
             <Dialog
                 open={this.props.open}
-                onClose={this.props.closeConfirmationDialog}
+                onClose={this.props.closeDialog}
             >
                 <DialogTitle>{this.props.title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>{this.props.content}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.closeConfirmationDialog} color="primary">
+                    <Button onClick={this.props.closeDialog} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={() => {
                         this.props.handleOk();
-                        this.props.closeConfirmationDialog();
+                        this.props.closeDialog();
                     }} color="primary">
                         Ok
                     </Button>
@@ -31,15 +31,14 @@ class DeleteConfirmationDialog extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    open: state.confirmationDialogReducer.open,
-    title: state.confirmationDialogReducer.title,
-    content: state.confirmationDialogReducer.content,
-    handleOk: state.confirmationDialogReducer.handleOk
+    open: state.dialogReducer.open,
+    title: state.dialogReducer.props.title,
+    content: state.dialogReducer.props.content,
+    handleOk: state.dialogReducer.props.handleOk
 });
 
-
 const mapDispatchToProps = {
-    closeConfirmationDialog
+    closeDialog
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

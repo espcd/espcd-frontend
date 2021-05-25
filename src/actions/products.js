@@ -30,6 +30,10 @@ export const deleteProductAction = (productId) => ({
     data: productId,
 });
 
+export const dispatchAddProduct = (product) => async dispatch => dispatch(addProductAction(product));
+export const dispatchEditProduct = (product) => async dispatch => dispatch(editProductAction(product));
+export const dispatchDeleteProduct = (productId) => async dispatch => dispatch(deleteProductAction(productId));
+
 export const getProducts = () => async dispatch => {
     return fetch(baseUrl)
         .then(response => {

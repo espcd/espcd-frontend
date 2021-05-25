@@ -30,6 +30,10 @@ export const deleteFirmwareAction = (firmwareId) => ({
     data: firmwareId,
 });
 
+export const dispatchAddFirmware = (firmware) => async dispatch => dispatch(addFirmwareAction(firmware));
+export const dispatchEditFirmware = (firmware) => async dispatch => dispatch(editFirmwareAction(firmware));
+export const dispatchDeleteFirmware = (firmwareId) => async dispatch => dispatch(deleteFirmwareAction(firmwareId));
+
 export const getFirmwares = () => async dispatch => {
     return fetch(baseUrl)
         .then(response => {

@@ -22,7 +22,7 @@ import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firm
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
-import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 
 const styles = theme => ({
@@ -44,6 +44,15 @@ class FirmwaresComponent extends Component {
                 title: "Delete firmware",
                 content: `Are you sure you want to delete the firmware ${firmware.id}?`,
                 handleOk: () => this.props.deleteFirmware(firmware.id)
+            }
+        );
+    }
+
+    openDeviceDialog(firmwareId = null) {
+        this.props.openDialog(
+            FIRMWARE_DIALOG,
+            {
+                firmwareId
             }
         );
     }
@@ -116,8 +125,7 @@ class FirmwaresComponent extends Component {
                                                     <GetApp/>
                                                 </Button>
                                             </a>
-                                            <Button
-                                                onClick={() => this.props.history.push(`/firmwares/${firmware.id}`)}>
+                                            <Button onClick={() => this.openDeviceDialog(firmware.id)}>
                                                 <Edit/>
                                             </Button>
                                             <Button onClick={() => this.deleteFirmware(firmware)}>
@@ -134,7 +142,7 @@ class FirmwaresComponent extends Component {
                 <Tooltip title="Add Firmware" aria-label="add firmware">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.props.history.push("/firmwares/new")}
+                         onClick={() => this.openDeviceDialog()}
                     >
                         <Add/>
                     </Fab>

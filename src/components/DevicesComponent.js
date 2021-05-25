@@ -20,7 +20,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from "moment";
 import {Clear, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, DEVICE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 
 const styles = () => ({
@@ -37,6 +37,15 @@ class DevicesComponent extends Component {
                 title: "Delete device",
                 content: `Are you sure you want to delete the device ${device.id}?`,
                 handleOk: () => this.props.deleteDevice(device.id)
+            }
+        );
+    }
+
+    openDeviceDialog(deviceId) {
+        this.props.openDialog(
+            DEVICE_DIALOG,
+            {
+                deviceId
             }
         );
     }
@@ -127,7 +136,7 @@ class DevicesComponent extends Component {
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
                                     <TableCell align="right">
-                                        <Button onClick={() => this.props.history.push(`/devices/${device.id}`)}>
+                                        <Button onClick={() => this.openDeviceDialog(device.id)}>
                                             <Edit/>
                                         </Button>
                                         <Button onClick={() => this.deleteDevice(device)}>

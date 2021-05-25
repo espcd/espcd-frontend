@@ -21,7 +21,7 @@ import {deleteProduct, setProductQuery, setProductSort} from "../actions/product
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Clear, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 
 const styles = theme => ({
@@ -46,6 +46,15 @@ class ProductsComponent extends Component {
                 title: "Delete product",
                 content: `Are you sure you want to delete the product ${product.id}?`,
                 handleOk: () => this.props.deleteProduct(product.id)
+            }
+        );
+    }
+
+    openDeviceDialog(productId = null) {
+        this.props.openDialog(
+            PRODUCT_DIALOG,
+            {
+                productId
             }
         );
     }
@@ -111,7 +120,7 @@ class ProductsComponent extends Component {
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
                                         <TableCell>{product.firmware_id}</TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={() => this.props.history.push(`/products/${product.id}`)}>
+                                            <Button onClick={() => this.openDeviceDialog(product.id)}>
                                                 <Edit/>
                                             </Button>
                                             <Button onClick={() => this.deleteProduct(product)}>
@@ -128,7 +137,7 @@ class ProductsComponent extends Component {
                 <Tooltip title="Add Product" aria-label="add product">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.props.history.push("/products/new")}
+                         onClick={() => this.openDeviceDialog()}
                     >
                         <Add/>
                     </Fab>

@@ -17,10 +17,7 @@ import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
 import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
-import DeviceComponent from "./components/DeviceComponent";
-import FirmwareComponent from "./components/FirmwareComponent";
 import ProductsComponent from "./components/ProductsComponent";
-import ProductComponent from "./components/ProductComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import DialogComponent from "./components/DialogComponent";
 
@@ -109,26 +106,11 @@ class App extends Component {
                             <Route exact path="/devices">
                                 <DevicesComponent/>
                             </Route>
-                            <Route path="/devices/:id">
-                                <DeviceComponent/>
-                            </Route>
                             <Route exact path="/firmwares">
                                 <FirmwaresComponent/>
                             </Route>
-                            <Route path="/firmwares/new">
-                                <FirmwareComponent isPresent={false}/>
-                            </Route>
-                            <Route path="/firmwares/:id">
-                                <FirmwareComponent isPresent={true}/>
-                            </Route>
                             <Route exact path="/products">
                                 <ProductsComponent/>
-                            </Route>
-                            <Route path="/products/new">
-                                <ProductComponent isPresent={false}/>
-                            </Route>
-                            <Route path="/products/:id">
-                                <ProductComponent isPresent={true}/>
                             </Route>
                         </Switch>
                     </main>

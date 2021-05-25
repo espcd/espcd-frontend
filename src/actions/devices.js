@@ -2,6 +2,7 @@ import {backendUrl, parseError, parseJson} from "./common";
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES";
+export const ADD_DEVICE = "ADD_DEVICE";
 export const EDIT_DEVICE = "EDIT_DEVICE";
 export const DELETE_DEVICE = "DELETE_DEVICE";
 export const SET_DEVICE_QUERY = "SET_DEVICE_QUERY";
@@ -14,6 +15,11 @@ export const addDevicesAction = (devices) => ({
     data: devices,
 });
 
+export const addDeviceAction = (device) => ({
+    type: ADD_DEVICE,
+    data: device,
+});
+
 export const editDeviceAction = (device) => ({
     type: EDIT_DEVICE,
     data: device,
@@ -23,6 +29,10 @@ export const deleteDeviceAction = (deviceId) => ({
     type: DELETE_DEVICE,
     data: deviceId,
 });
+
+export const dispatchAddDevice = (device) => async dispatch => dispatch(addDeviceAction(device));
+export const dispatchEditDevice = (device) => async dispatch => dispatch(editDeviceAction(device));
+export const dispatchDeleteDevice = (deviceId) => async dispatch => dispatch(deleteDeviceAction(deviceId));
 
 export const getDevices = () => async dispatch => {
     return fetch(baseUrl)

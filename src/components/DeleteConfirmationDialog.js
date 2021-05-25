@@ -26,7 +26,7 @@ class DeleteConfirmationDialog extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            this.handleOk();
+                            this.props.handleOk();
                             this.props.closeDialog();
                         }}
                     >

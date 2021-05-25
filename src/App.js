@@ -20,6 +20,7 @@ import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import ProductsComponent from "./components/ProductsComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import DialogComponent from "./components/DialogComponent";
+import ActioncableComponent from "./components/ActioncableComponent";
 
 const drawerWidth = 200;
 
@@ -58,6 +59,7 @@ class App extends Component {
                 <TitleComponent title="espcd-frontend"/>
                 <SnackbarComponent/>
                 <DialogComponent/>
+                <ActioncableComponent/>
 
                 <div className={classes.root}>
                     <CssBaseline/>

@@ -1,5 +1,5 @@
-import {backendUrl, parseError, parseJson} from "./common";
-import {addErrorNotification, addSuccessNotification} from "./notifications";
+import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {addErrorNotification} from "./notifications";
 
 export const ADD_DEVICES = "ADD_DEVICES";
 export const ADD_DEVICE = "ADD_DEVICE";
@@ -35,19 +35,11 @@ export const dispatchEditDevice = (device) => async dispatch => dispatch(editDev
 export const dispatchDeleteDevice = (deviceId) => async dispatch => dispatch(deleteDeviceAction(deviceId));
 
 export const getDevices = () => async dispatch => {
-    return fetch(baseUrl)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(addDevicesAction(response));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchGet(
+        dispatch,
+        baseUrl,
+        response => dispatch(addDevicesAction(response))
+    );
 };
 
 export const editDevice = (deviceId, payload) => async dispatch => {
@@ -63,39 +55,24 @@ export const editDevice = (deviceId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetch(`${baseUrl}/${deviceId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(editDeviceAction(response));
-            dispatch(addSuccessNotification("Device edited"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${deviceId}`,
+        requestOptions,
+        "Device edited"
+    );
 };
 
 export const deleteDevice = (deviceId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetch(`${baseUrl}/${deviceId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(() => {
-            dispatch(deleteDeviceAction(deviceId));
-            dispatch(addSuccessNotification("Device deleted"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${deviceId}`,
+        requestOptions,
+        "Device deleted"
+    );
 };
 
 export const setDeviceQuery = (query) => async dispatch => {

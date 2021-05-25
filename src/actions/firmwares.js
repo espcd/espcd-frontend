@@ -1,5 +1,5 @@
-import {backendUrl, parseError, parseJson} from "./common";
-import {addErrorNotification, addSuccessNotification} from "./notifications";
+import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {addErrorNotification} from "./notifications";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES";
 export const ADD_FIRMWARE = "ADD_FIRMWARE";
@@ -35,19 +35,11 @@ export const dispatchEditFirmware = (firmware) => async dispatch => dispatch(edi
 export const dispatchDeleteFirmware = (firmwareId) => async dispatch => dispatch(deleteFirmwareAction(firmwareId));
 
 export const getFirmwares = () => async dispatch => {
-    return fetch(baseUrl)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(addFirmwaresAction(response));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchGet(
+        dispatch,
+        baseUrl,
+        response => dispatch(addFirmwaresAction(response))
+    );
 };
 
 const formDataFromFirmware = (firmware, content) => {
@@ -72,20 +64,12 @@ export const createFirmware = (payload, content) => async dispatch => {
         method: "POST",
         body: data
     };
-    return fetch(baseUrl, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(addFirmwareAction(response));
-            dispatch(addSuccessNotification("Firmware created"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        baseUrl,
+        requestOptions,
+        "Firmware created"
+    );
 };
 
 export const editFirmware = (firmwareId, payload, content) => async dispatch => {
@@ -99,39 +83,24 @@ export const editFirmware = (firmwareId, payload, content) => async dispatch => 
         method: "PATCH",
         body: data
     };
-    return fetch(`${baseUrl}/${firmwareId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(editFirmwareAction(response));
-            dispatch(addSuccessNotification("Firmware edited"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${firmwareId}`,
+        requestOptions,
+        "Firmware edited"
+    );
 };
 
 export const deleteFirmware = (firmwareId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetch(`${baseUrl}/${firmwareId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(() => {
-            dispatch(deleteFirmwareAction(firmwareId));
-            dispatch(addSuccessNotification("Firmware deleted"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${firmwareId}`,
+        requestOptions,
+        "Firmware deleted"
+    );
 };
 
 export const setFirmwareQuery = (query) => async dispatch => {

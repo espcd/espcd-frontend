@@ -1,5 +1,5 @@
-import {backendUrl, parseError, parseJson} from "./common";
-import {addErrorNotification, addSuccessNotification} from "./notifications";
+import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {addErrorNotification} from "./notifications";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS";
 export const ADD_PRODUCT = "ADD_PRODUCT";
@@ -35,19 +35,11 @@ export const dispatchEditProduct = (product) => async dispatch => dispatch(editP
 export const dispatchDeleteProduct = (productId) => async dispatch => dispatch(deleteProductAction(productId));
 
 export const getProducts = () => async dispatch => {
-    return fetch(baseUrl)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(addProductsAction(response));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchGet(
+        dispatch,
+        baseUrl,
+        response => dispatch(addProductsAction(response))
+    );
 };
 
 export const createProduct = (payload) => async dispatch => {
@@ -63,20 +55,12 @@ export const createProduct = (payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetch(baseUrl, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(addProductAction(response));
-            dispatch(addSuccessNotification("Product created"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        baseUrl,
+        requestOptions,
+        "Product created"
+    );
 };
 
 export const editProduct = (productId, payload) => async dispatch => {
@@ -92,39 +76,24 @@ export const editProduct = (productId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetch(`${baseUrl}/${productId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            dispatch(editProductAction(response));
-            dispatch(addSuccessNotification("Product edited"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${productId}`,
+        requestOptions,
+        "Product edited"
+    );
 };
 
 export const deleteProduct = (productId) => async dispatch => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetch(`${baseUrl}/${productId}`, requestOptions)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(() => {
-            dispatch(deleteProductAction(productId));
-            dispatch(addSuccessNotification("Product deleted"));
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            dispatch(addErrorNotification("Error: " + message));
-        });
+    fetchPatchDelete(
+        dispatch,
+        `${baseUrl}/${productId}`,
+        requestOptions,
+        "Product deleted"
+    );
 };
 
 export const setProductQuery = (query) => async dispatch => {

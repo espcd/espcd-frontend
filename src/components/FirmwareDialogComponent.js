@@ -85,7 +85,7 @@ class FirmwareDialogComponent extends Component {
                 onClose={this.props.closeDialog}
             >
                 <DialogTitle>
-                    {this.props.firmwareId ? "Edit firmware" : "Create firmware"}
+                    {this.props.firmwareId ? "Edit firmware" : "Add firmware"}
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -162,7 +162,7 @@ class FirmwareDialogComponent extends Component {
                             </Grid>
                             <Grid item>
                                 <Typography>
-                                    {this.state.selectedFile ? this.state.selectedFile.name : "none"}
+                                    {this.state.selectedFile ? this.state.selectedFile.name : ""}
                                 </Typography>
                             </Grid>
                         </Grid>

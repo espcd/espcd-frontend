@@ -75,7 +75,7 @@ class ProductDialogComponent extends Component {
                 onClose={this.props.closeDialog}
             >
                 <DialogTitle>
-                    {this.props.productId ? "Edit product" : "Create product"}
+                    {this.props.productId ? "Edit product" : "Add product"}
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField

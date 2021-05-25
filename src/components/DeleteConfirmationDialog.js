@@ -15,13 +15,21 @@ class DeleteConfirmationDialog extends Component {
                     <DialogContentText>{this.props.content}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.closeDialog} color="primary">
+                    <Button
+                        variant="contained"
+                        color="default"
+                        onClick={this.props.closeDialog}
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={() => {
-                        this.props.handleOk();
-                        this.props.closeDialog();
-                    }} color="primary">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            this.handleOk();
+                            this.props.closeDialog();
+                        }}
+                    >
                         Ok
                     </Button>
                 </DialogActions>

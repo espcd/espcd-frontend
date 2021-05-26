@@ -56,7 +56,7 @@ class App extends Component {
 
         return (
             <React.Fragment>
-                <TitleComponent title="espcd-frontend"/>
+                <TitleComponent/>
                 <SnackbarComponent/>
                 <DialogComponent/>
                 <ActioncableComponent/>

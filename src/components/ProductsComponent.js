@@ -2,9 +2,6 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
-    Grid,
-    IconButton,
-    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -13,16 +10,16 @@ import {
     TableHead,
     TableRow,
     TableSortLabel,
-    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
 import {deleteProduct, setProductQuery, setProductSort} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {Add, Clear, Delete, Edit} from "@material-ui/icons";
+import {Add, Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
+import TableSearchComponent from "./TableSearchComponent";
 
 const styles = theme => ({
     button: {
@@ -91,22 +88,7 @@ class ProductsComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`products-table-head-search`} align="right">
-                                        <Grid container style={{alignItems: "center"}} justify="flex-end">
-                                            <TextField
-                                                label="Search..."
-                                                value={this.props.query}
-                                                onChange={event => this.props.setProductQuery(event.target.value)}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <IconButton onClick={() => this.props.setProductQuery("")}>
-                                                                <Clear/>
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        </Grid>
+                                        <TableSearchComponent setQuery={this.props.setProductQuery}/>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

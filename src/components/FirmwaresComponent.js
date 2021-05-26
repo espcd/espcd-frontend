@@ -2,9 +2,6 @@ import React, {Component} from "react";
 import {
     Button,
     Fab,
-    Grid,
-    IconButton,
-    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -13,17 +10,17 @@ import {
     TableHead,
     TableRow,
     TableSortLabel,
-    TextField,
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {Add, Clear, Delete, Edit, GetApp} from "@material-ui/icons";
+import {Add, Delete, Edit, GetApp} from "@material-ui/icons";
 import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firmwares";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
 import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
+import TableSearchComponent from "./TableSearchComponent";
 
 const styles = theme => ({
     fab: {
@@ -89,22 +86,7 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <Grid container style={{alignItems: "center"}} justify="flex-end">
-                                            <TextField
-                                                label="Search..."
-                                                value={this.props.query}
-                                                onChange={event => this.props.setFirmwareQuery(event.target.value)}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <IconButton onClick={() => this.props.setFirmwareQuery("")}>
-                                                                <Clear/>
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        </Grid>
+                                        <TableSearchComponent setQuery={this.props.setFirmwareQuery}/>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

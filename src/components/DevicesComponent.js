@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import {
     Button,
-    Grid,
-    IconButton,
-    InputAdornment,
     Paper,
     Table,
     TableBody,
@@ -11,23 +8,16 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TableSortLabel,
-    TextField,
-    withStyles
+    TableSortLabel
 } from "@material-ui/core";
 import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import moment from "moment";
-import {Clear, Delete, Edit} from "@material-ui/icons";
+import {Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, DEVICE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
-
-const styles = () => ({
-    button: {
-        textTransform: "none"
-    }
-});
+import TableSearchComponent from "./TableSearchComponent";
 
 class DevicesComponent extends Component {
     deleteDevice(device) {
@@ -51,8 +41,6 @@ class DevicesComponent extends Component {
     }
 
     render() {
-        const {classes} = this.props;
-
         return (
             <Paper>
                 <TableContainer>
@@ -82,22 +70,7 @@ class DevicesComponent extends Component {
                                     )
                                 }
                                 <TableCell key={`products-table-head-search`} align="right">
-                                    <Grid container style={{alignItems: "center"}} justify="flex-end">
-                                        <TextField
-                                            label="Search..."
-                                            value={this.props.query}
-                                            onChange={event => this.props.setDeviceQuery(event.target.value)}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton onClick={() => this.props.setDeviceQuery("")}>
-                                                            <Clear/>
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                    </Grid>
+                                    <TableSearchComponent setQuery={this.props.setDeviceQuery}/>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -149,10 +122,4 @@ const mapDispatchToProps = {
     openDialog
 };
 
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(
-        withStyles(styles)(
-            DevicesComponent
-        )
-    )
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DevicesComponent));

@@ -5,7 +5,7 @@ export default class TitleComponent extends Component {
     render() {
         return (
             <Helmet>
-                <title>{this.props.title}</title>
+                <title>espcd-frontend</title>
             </Helmet>
         );
     }

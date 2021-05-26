@@ -108,9 +108,16 @@ class DeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent disabled model={this.state.device.model} onChange={this.handleChange}/>
-                    <ProductSelectComponent product_id={this.state.device.product_id} products={this.props.products}
-                                            onChange={this.handleChange}/>
+                    <ModelSelectComponent
+                        disabled
+                        model={this.state.device.model}
+                        onChange={this.handleChange}
+                    />
+                    <ProductSelectComponent
+                        product_id={this.state.device.product_id}
+                        products={this.props.products}
+                        onChange={this.handleChange}
+                    />
                     <TextField
                         disabled
                         margin="dense"

@@ -8,12 +8,12 @@ class DeleteConfirmationDialog extends Component {
         if (event.key === "Enter") {
             this.handleOk();
         }
-    }
+    };
 
     handleOk = () => {
         this.props.handleOk();
         this.props.closeDialog();
-    }
+    };
 
     render() {
         return (

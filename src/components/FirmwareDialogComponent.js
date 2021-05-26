@@ -129,8 +129,12 @@ class FirmwareDialogComponent extends Component {
                         value={this.state.firmware.description ? this.state.firmware.description : ""}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent model={this.state.firmware.model} onChange={this.handleChange}/>
+                    <ModelSelectComponent
+                        model={this.state.firmware.model}
+                        onChange={this.handleChange}
+                    />
                     <TextField
+                        required
                         margin="dense"
                         id="version"
                         name="version"
@@ -143,6 +147,7 @@ class FirmwareDialogComponent extends Component {
                     <FormControl margin="dense">
                         <div className="MuiFormLabel-root MuiInputLabel-shrink">
                             File
+                            <span aria-hidden="true" className="MuiFormLabel-asterisk MuiInputLabel-asterisk">*</span>
                         </div>
                         <Grid container spacing={1} alignItems="center">
                             <Grid item>
@@ -167,8 +172,11 @@ class FirmwareDialogComponent extends Component {
                             </Grid>
                         </Grid>
                     </FormControl>
-                    <ProductSelectComponent product_id={this.state.firmware.product_id} products={this.props.products}
-                                            onChange={this.handleChange}/>
+                    <ProductSelectComponent
+                        product_id={this.state.firmware.product_id}
+                        products={this.props.products}
+                        onChange={this.handleChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button

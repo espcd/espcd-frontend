@@ -121,7 +121,10 @@ class ProductDialogComponent extends Component {
                         value={this.state.product.description}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent model={this.state.product.model} onChange={this.handleChange}/>
+                    <ModelSelectComponent
+                        model={this.state.product.model}
+                        onChange={this.handleChange}
+                    />
                     <FormControlLabel
                         style={{width: "100%"}}
                         control={

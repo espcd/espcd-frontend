@@ -9,6 +9,7 @@ class ModelSelectComponent extends Component {
                 fullWidth
                 margin="dense"
                 disabled={this.props.disabled}
+                required
             >
                 <InputLabel id="model-select-label">Model</InputLabel>
                 <Select

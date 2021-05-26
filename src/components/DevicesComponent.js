@@ -70,7 +70,10 @@ class DevicesComponent extends Component {
                                     )
                                 }
                                 <TableCell key={`products-table-head-search`} align="right">
-                                    <TableSearchComponent setQuery={this.props.setDeviceQuery}/>
+                                    <TableSearchComponent
+                                        query={this.props.query}
+                                        setQuery={this.props.setDeviceQuery}
+                                    />
                                 </TableCell>
                             </TableRow>
                         </TableHead>

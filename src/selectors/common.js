@@ -1,7 +1,8 @@
 export const filterItems = (items, query) => items.filter(item => {
     return Object.keys(item).some(key => {
         let value = item[key];
-        return value && String(value).includes(query);
+        let valueStr = value ? String(value).toLowerCase() : "";
+        return valueStr.includes(query.toLowerCase());
     });
 });
 

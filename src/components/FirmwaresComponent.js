@@ -86,7 +86,10 @@ class FirmwaresComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`firmwares-table-head-search`} align="right">
-                                        <TableSearchComponent setQuery={this.props.setFirmwareQuery}/>
+                                        <TableSearchComponent
+                                            query={this.props.query}
+                                            setQuery={this.props.setFirmwareQuery}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

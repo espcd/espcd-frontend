@@ -88,7 +88,10 @@ class ProductsComponent extends Component {
                                         )
                                     }
                                     <TableCell key={`products-table-head-search`} align="right">
-                                        <TableSearchComponent setQuery={this.props.setProductQuery}/>
+                                        <TableSearchComponent
+                                            query={this.props.query}
+                                            setQuery={this.props.setProductQuery}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

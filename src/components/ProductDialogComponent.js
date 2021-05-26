@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
-import {getModels} from "../selectors/devices";
+import Models from "../data-classes/Models";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -134,7 +134,7 @@ class ProductDialogComponent extends Component {
                             onChange={this.handleChange}
                         >
                             <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
-                            {this.props.models.map(model => (
+                            {Models.map(model => (
                                 <MenuItem
                                     value={model}
                                     key={`model-menuitem-${model}`}
@@ -211,8 +211,7 @@ const mapStateToProps = (state) => {
         open: state.dialogReducer.open,
         productId,
         products: state.productsReducer.products,
-        firmwares,
-        models: getModels(state)
+        firmwares
     };
 };
 

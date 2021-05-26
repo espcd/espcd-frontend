@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
-import {getModels} from "../selectors/devices";
+import Models from "../data-classes/Models";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -144,7 +144,7 @@ class FirmwareDialogComponent extends Component {
                             onChange={this.handleChange}
                         >
                             <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
-                            {this.props.models.map(model => (
+                            {Models.map(model => (
                                 <MenuItem
                                     value={model}
                                     key={`model-menuitem-${model}`}
@@ -242,8 +242,7 @@ const mapStateToProps = (state) => ({
     open: state.dialogReducer.open,
     firmwareId: state.dialogReducer.props.firmwareId,
     firmwares: state.firmwaresReducer.firmwares,
-    products: state.productsReducer.products,
-    models: getModels(state)
+    products: state.productsReducer.products
 });
 
 const mapDispatchToProps = {

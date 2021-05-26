@@ -17,6 +17,7 @@ import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
 import moment from "moment";
 import {closeDialog} from "../actions/dialog";
+import Models from "../data-classes/Models";
 
 class DeviceDialogComponent extends Component {
     constructor(props) {
@@ -120,17 +121,30 @@ class DeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleChange}
                     />
-                    <TextField
-                        InputLabelProps={{shrink: true}}
-                        disabled
-                        margin="dense"
-                        id="model"
-                        name="model"
-                        label="Model"
-                        type="text"
+                    <FormControl
                         fullWidth
-                        value={this.state.device.model}
-                    />
+                        margin="dense"
+                        disabled
+                    >
+                        <InputLabel id="model-select-label">Model</InputLabel>
+                        <Select
+                            labelId="model-select-label"
+                            id="model"
+                            name="model"
+                            value={this.state.device.model}
+                            onChange={this.handleChange}
+                        >
+                            <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
+                            {Models.map(model => (
+                                <MenuItem
+                                    value={model}
+                                    key={`model-menuitem-${model}`}
+                                >
+                                    {model}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <FormControl
                         fullWidth
                         margin="dense"
@@ -154,7 +168,7 @@ class DeviceDialogComponent extends Component {
                                     value={product.id}
                                     key={`product-menuitem-${product.id}`}
                                 >
-                                    {product.title} ({product.id})
+                                    {product.title ? product.title : product.id} ({product.model})
                                 </MenuItem>
                             ))}
                         </Select>

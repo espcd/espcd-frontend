@@ -111,28 +111,10 @@ class DevicesComponent extends Component {
                                     <TableCell>{device.description}</TableCell>
                                     <TableCell>{device.model}</TableCell>
                                     <TableCell>
-                                        {
-                                            device.product_id ?
-                                                <Button
-                                                    className={classes.button}
-                                                    onClick={() => this.props.history.push(`/products/${device.product_id}`)}
-                                                >
-                                                    {device.product_id}
-                                                </Button> :
-                                                "none"
-                                        }
+                                        {device.product_id ? device.product_id : "none"}
                                     </TableCell>
                                     <TableCell>
-                                        {
-                                            device.firmware_id ?
-                                                <Button
-                                                    className={classes.button}
-                                                    onClick={() => this.props.history.push(`/firmwares/${device.firmware_id}`)}
-                                                >
-                                                    {device.firmware_id}
-                                                </Button> :
-                                                "unknown"
-                                        }
+                                        {device.firmware_id ? device.firmware_id : "unknown"}
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
                                     <TableCell align="right">

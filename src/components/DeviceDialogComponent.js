@@ -87,7 +87,6 @@ class DeviceDialogComponent extends Component {
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField
-                        InputLabelProps={{shrink: true}}
                         disabled
                         margin="dense"
                         id="id"
@@ -98,7 +97,6 @@ class DeviceDialogComponent extends Component {
                         value={this.state.device.id}
                     />
                     <TextField
-                        InputLabelProps={{shrink: true}}
                         autoFocus
                         margin="dense"
                         id="title"
@@ -110,7 +108,6 @@ class DeviceDialogComponent extends Component {
                         onChange={this.handleChange}
                     />
                     <TextField
-                        InputLabelProps={{shrink: true}}
                         margin="dense"
                         id="description"
                         name="description"
@@ -151,7 +148,6 @@ class DeviceDialogComponent extends Component {
                     >
                         <InputLabel
                             id="product-select-label"
-                            shrink={true}
                         >
                             Product
                         </InputLabel>
@@ -174,7 +170,6 @@ class DeviceDialogComponent extends Component {
                         </Select>
                     </FormControl>
                     <TextField
-                        InputLabelProps={{shrink: true}}
                         disabled
                         margin="dense"
                         id="firmware_id"
@@ -185,7 +180,6 @@ class DeviceDialogComponent extends Component {
                         value={firmware.id ? `${firmware.title} (${firmware.id})` : "unknown"}
                     />
                     <TextField
-                        InputLabelProps={{shrink: true}}
                         disabled
                         margin="dense"
                         id="last_seen"

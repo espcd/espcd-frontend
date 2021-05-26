@@ -66,6 +66,13 @@ class DeviceDialogComponent extends Component {
     render() {
         let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware();
 
+        let model = this.updates.model ? this.updates.model : this.state.device.model;
+        let products = this.props.products.filter(product => {
+            let productModel = product.model ? product.model.toLocaleLowerCase() : null;
+            let modelLow = model ? model.toLocaleLowerCase() : null;
+            return productModel === modelLow;
+        });
+
         return (
             <Dialog
                 open={this.props.open}
@@ -115,7 +122,7 @@ class DeviceDialogComponent extends Component {
                     />
                     <ProductSelectComponent
                         product_id={this.state.device.product_id}
-                        products={this.props.products}
+                        products={products}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -160,23 +167,13 @@ class DeviceDialogComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    let deviceId = state.dialogReducer.props.deviceId;
-    let devices = state.devicesReducer.devices;
-    let device = devices.find(device => device.id === deviceId);
-    let products = state.productsReducer.products.filter(product => {
-        let productModel = product.model ? product.model.toLocaleLowerCase() : null;
-        let deviceModel = device.model.toLocaleLowerCase();
-        return productModel === deviceModel;
-    });
-    return {
-        open: state.dialogReducer.open,
-        deviceId,
-        devices,
-        firmwares: state.firmwaresReducer.firmwares,
-        products
-    };
-};
+const mapStateToProps = (state) => ({
+    open: state.dialogReducer.open,
+    deviceId: state.dialogReducer.props.deviceId,
+    devices: state.devicesReducer.devices,
+    firmwares: state.firmwaresReducer.firmwares,
+    products: state.productsReducer.products
+});
 
 const mapDispatchToProps = {
     closeDialog,

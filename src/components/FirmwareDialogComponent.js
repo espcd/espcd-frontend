@@ -87,6 +87,13 @@ class FirmwareDialogComponent extends Component {
     };
 
     render() {
+        let model = this.updates.model ? this.updates.model : this.state.firmware.model;
+        let products = this.props.products.filter(product => {
+            let productModel = product.model ? product.model.toLocaleLowerCase() : null;
+            let modelLow = model ? model.toLocaleLowerCase() : null;
+            return productModel === modelLow;
+        });
+
         return (
             <Dialog
                 open={this.props.open}
@@ -175,7 +182,7 @@ class FirmwareDialogComponent extends Component {
                     </FormControl>
                     <ProductSelectComponent
                         product_id={this.state.firmware.product_id}
-                        products={this.props.products}
+                        products={products}
                         onChange={this.handleChange}
                     />
                 </DialogContent>

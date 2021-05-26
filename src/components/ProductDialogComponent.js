@@ -40,7 +40,7 @@ class ProductDialogComponent extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.products !== prevProps.products || this.props.productId !== prevProps.productId) {
+        if (this.props.productId !== prevProps.productId) {
             this.setProduct();
         }
     }

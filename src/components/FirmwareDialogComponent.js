@@ -39,7 +39,7 @@ class FirmwareDialogComponent extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.firmwares !== prevProps.firmwares || this.props.firmwareId !== prevProps.firmwareId) {
+        if (this.props.firmwareId !== prevProps.firmwareId) {
             this.setFirmware();
         }
     }
@@ -130,6 +130,7 @@ class FirmwareDialogComponent extends Component {
                         onChange={this.handleChange}
                     />
                     <ModelSelectComponent
+                        disabled={this.props.firmwareId}
                         model={this.state.firmware.model}
                         onChange={this.handleChange}
                     />

@@ -30,7 +30,7 @@ class DeviceDialogComponent extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.devices !== prevProps.devices || this.props.deviceId !== prevProps.deviceId) {
+        if (this.props.deviceId !== prevProps.deviceId) {
             this.setDevice();
         }
     }

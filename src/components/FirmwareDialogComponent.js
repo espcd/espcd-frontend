@@ -9,15 +9,13 @@ import {
     DialogTitle,
     FormControl,
     Grid,
-    InputLabel,
-    MenuItem,
-    Select,
     TextField,
     Typography
 } from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
-import Models from "../data-classes/Models";
+import ModelSelectComponent from "./ModelSelectComponent";
+import ProductSelectComponent from "./ProductSelectComponent";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -131,29 +129,7 @@ class FirmwareDialogComponent extends Component {
                         value={this.state.firmware.description ? this.state.firmware.description : ""}
                         onChange={this.handleChange}
                     />
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                    >
-                        <InputLabel id="model-select-label">Model</InputLabel>
-                        <Select
-                            labelId="model-select-label"
-                            id="model"
-                            name="model"
-                            value={this.state.firmware.model}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
-                            {Models.map(model => (
-                                <MenuItem
-                                    value={model}
-                                    key={`model-menuitem-${model}`}
-                                >
-                                    {model}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <ModelSelectComponent model={this.state.firmware.model} onChange={this.handleChange}/>
                     <TextField
                         margin="dense"
                         id="version"
@@ -191,31 +167,8 @@ class FirmwareDialogComponent extends Component {
                             </Grid>
                         </Grid>
                     </FormControl>
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                    >
-                        <InputLabel id="product-select-label">
-                            Product
-                        </InputLabel>
-                        <Select
-                            labelId="product-select-label"
-                            id="product_id"
-                            name="product_id"
-                            value={this.state.firmware.product_id}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`product-menuitem-none`}>-</MenuItem>
-                            {this.props.products.map(product => (
-                                <MenuItem
-                                    value={product.id}
-                                    key={`product-menuitem-${product.id}`}
-                                >
-                                    {product.title} ({product.id})
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <ProductSelectComponent product_id={this.state.firmware.product_id} products={this.props.products}
+                                            onChange={this.handleChange}/>
                 </DialogContent>
                 <DialogActions>
                     <Button

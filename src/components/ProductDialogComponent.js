@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
-import Models from "../data-classes/Models";
+import ModelSelectComponent from "./ModelSelectComponent";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -121,29 +121,7 @@ class ProductDialogComponent extends Component {
                         value={this.state.product.description}
                         onChange={this.handleChange}
                     />
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                    >
-                        <InputLabel id="model-select-label">Model</InputLabel>
-                        <Select
-                            labelId="model-select-label"
-                            id="model"
-                            name="model"
-                            value={this.state.product.model}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
-                            {Models.map(model => (
-                                <MenuItem
-                                    value={model}
-                                    key={`model-menuitem-${model}`}
-                                >
-                                    {model}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <ModelSelectComponent model={this.state.product.model} onChange={this.handleChange}/>
                     <FormControlLabel
                         style={{width: "100%"}}
                         control={

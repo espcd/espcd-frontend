@@ -1,23 +1,13 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {editDevice} from "../actions/devices";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField
-} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
 import moment from "moment";
 import {closeDialog} from "../actions/dialog";
-import Models from "../data-classes/Models";
+import ModelSelectComponent from "./ModelSelectComponent";
+import ProductSelectComponent from "./ProductSelectComponent";
 
 class DeviceDialogComponent extends Component {
     constructor(props) {
@@ -118,57 +108,9 @@ class DeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleChange}
                     />
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                        disabled
-                    >
-                        <InputLabel id="model-select-label">Model</InputLabel>
-                        <Select
-                            labelId="model-select-label"
-                            id="model"
-                            name="model"
-                            value={this.state.device.model}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`model-menuitem-`}>-</MenuItem>
-                            {Models.map(model => (
-                                <MenuItem
-                                    value={model}
-                                    key={`model-menuitem-${model}`}
-                                >
-                                    {model}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                    >
-                        <InputLabel
-                            id="product-select-label"
-                        >
-                            Product
-                        </InputLabel>
-                        <Select
-                            labelId="product-select-label"
-                            id="product_id"
-                            name="product_id"
-                            value={this.state.device.product_id}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`product-menuitem-`}>-</MenuItem>
-                            {this.props.products.map(product => (
-                                <MenuItem
-                                    value={product.id}
-                                    key={`product-menuitem-${product.id}`}
-                                >
-                                    {product.title ? product.title : product.id} ({product.model})
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <ModelSelectComponent disabled model={this.state.device.model} onChange={this.handleChange}/>
+                    <ProductSelectComponent product_id={this.state.device.product_id} products={this.props.products}
+                                            onChange={this.handleChange}/>
                     <TextField
                         disabled
                         margin="dense"

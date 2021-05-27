@@ -8,6 +8,7 @@ import moment from "moment";
 import {closeDialog} from "../actions/dialog";
 import ModelSelectComponent from "./ModelSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
+import {lower} from "../common";
 
 class DeviceDialogComponent extends Component {
     constructor(props) {
@@ -67,11 +68,7 @@ class DeviceDialogComponent extends Component {
         let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware();
 
         let model = this.updates.model ? this.updates.model : this.state.device.model;
-        let products = this.props.products.filter(product => {
-            let productModel = product.model ? product.model.toLocaleLowerCase() : null;
-            let modelLow = model ? model.toLocaleLowerCase() : null;
-            return productModel === modelLow;
-        });
+        let products = this.props.products.filter(product => lower(product.model) === lower(model));
 
         return (
             <Dialog

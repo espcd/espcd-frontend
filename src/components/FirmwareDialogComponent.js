@@ -16,6 +16,7 @@ import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
 import ModelSelectComponent from "./ModelSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
+import {lower} from "../common";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -88,11 +89,7 @@ class FirmwareDialogComponent extends Component {
 
     render() {
         let model = this.updates.model ? this.updates.model : this.state.firmware.model;
-        let products = this.props.products.filter(product => {
-            let productModel = product.model ? product.model.toLocaleLowerCase() : null;
-            let modelLow = model ? model.toLocaleLowerCase() : null;
-            return productModel === modelLow;
-        });
+        let products = this.props.products.filter(product => lower(product.model) === lower(model));
 
         return (
             <Dialog

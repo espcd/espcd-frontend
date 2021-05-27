@@ -1,6 +1,7 @@
 import {addErrorNotification, addSuccessNotification} from "./notifications";
 
-export const backendUrl = "http://localhost:3000";
+const scheme = process.env.REACT_APP_BACKEND_SECURE === "true" ? "https" : "http";
+export const backendUrl = `${scheme}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
 const parseJson = async response => {
     const text = await response.text();

@@ -8,7 +8,9 @@ import {dispatchAddProduct, dispatchDeleteProduct, dispatchEditProduct} from "..
 class ActioncableComponent extends Component {
     constructor(props) {
         super(props);
-        this.cable = ActionCable.createConsumer("ws://localhost:3000/cable");
+        let scheme = process.env.REACT_APP_BACKEND_SECURE === "true" ? "wss" : "ws";
+        let url = `${scheme}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/cable`;
+        this.cable = ActionCable.createConsumer(url);
     }
 
     componentDidMount() {

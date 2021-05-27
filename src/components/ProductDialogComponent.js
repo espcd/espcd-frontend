@@ -141,6 +141,7 @@ class ProductDialogComponent extends Component {
                     <FormControl
                         fullWidth
                         margin="dense"
+                        disabled={!this.props.productId}
                     >
                         <InputLabel id="firmware-select-label">
                             Latest firmware

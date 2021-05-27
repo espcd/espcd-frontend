@@ -137,7 +137,7 @@ class FirmwareDialogComponent extends Component {
                         onChange={this.handleChange}
                     />
                     <ModelSelectComponent
-                        disabled={this.props.firmwareId}
+                        disabled={!!this.props.firmwareId}
                         model={this.state.firmware.model}
                         onChange={this.handleChange}
                     />

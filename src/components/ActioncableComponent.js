@@ -16,17 +16,18 @@ class ActioncableComponent extends Component {
             {channel: "DevicesChannel"},
             {
                 received: payload => {
+                    console.log(payload);
                     let type = payload.type;
-                    let device = payload.device;
+                    let data = payload.data;
                     switch (type) {
                         case "create":
-                            this.props.dispatchAddDevice(device);
+                            this.props.dispatchAddDevice(data);
                             break;
                         case "update":
-                            this.props.dispatchEditDevice(device);
+                            this.props.dispatchEditDevice(data);
                             break;
                         case "destroy":
-                            this.props.dispatchDeleteDevice(device.id);
+                            this.props.dispatchDeleteDevice(data);
                             break;
                         default:
                             console.error("unknown device payload type: " + type);
@@ -41,16 +42,16 @@ class ActioncableComponent extends Component {
                 received: payload => {
                     console.log(payload);
                     let type = payload.type;
-                    let firmware = payload.firmware;
+                    let data = payload.data;
                     switch (type) {
                         case "create":
-                            this.props.dispatchAddFirmware(firmware);
+                            this.props.dispatchAddFirmware(data);
                             break;
                         case "update":
-                            this.props.dispatchEditFirmware(firmware);
+                            this.props.dispatchEditFirmware(data);
                             break;
                         case "destroy":
-                            this.props.dispatchDeleteFirmware(firmware.id);
+                            this.props.dispatchDeleteFirmware(data);
                             break;
                         default:
                             console.error("unknown firmware payload type: " + type);
@@ -65,16 +66,16 @@ class ActioncableComponent extends Component {
                 received: payload => {
                     console.log(payload);
                     let type = payload.type;
-                    let product = payload.product;
+                    let data = payload.data;
                     switch (type) {
                         case "create":
-                            this.props.dispatchAddProduct(product);
+                            this.props.dispatchAddProduct(data);
                             break;
                         case "update":
-                            this.props.dispatchEditProduct(product);
+                            this.props.dispatchEditProduct(data);
                             break;
                         case "destroy":
-                            this.props.dispatchDeleteProduct(product.id);
+                            this.props.dispatchDeleteProduct(data);
                             break;
                         default:
                             console.error("unknown product payload type: " + type);
@@ -82,6 +83,10 @@ class ActioncableComponent extends Component {
                 }
             }
         );
+    }
+
+    componentWillUnmount() {
+        this.cable.disconnect();
     }
 
     render() {

@@ -21,6 +21,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           build-args: |
-            REACT_APP_BACKEND_HOST=test.example.com
+            REACT_APP_BACKEND_HOST=api.espcd.duckdns.org
+            REACT_APP_BACKEND_SECURE=true
+            REACT_APP_BACKEND_PORT=443
           push: true
           tags: ghcr.io/${{ github.repository }}:latest

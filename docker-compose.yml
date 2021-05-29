@@ -2,7 +2,10 @@ version: '3'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        - REACT_APP_BACKEND_HOST=test.example.com
     restart: unless-stopped
     ports:
       - 80:80

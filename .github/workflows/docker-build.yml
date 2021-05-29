@@ -11,7 +11,7 @@ jobs:
     name: Build image job
     steps:
       - name: Login
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -20,5 +20,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          build-args: |
+            REACT_APP_BACKEND_HOST=test.example.com
           push: true
           tags: ghcr.io/${{ github.repository }}:latest

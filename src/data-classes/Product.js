@@ -2,7 +2,7 @@ export default class Product {
     id = "";
     title = "";
     description = "";
-    model = "";
+    fqbn = "";
     auto_update = false;
     firmware_id = "";
     created_at = "";

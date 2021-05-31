@@ -51,7 +51,7 @@ class DevicesComponent extends Component {
                                     [
                                         {key: "title", label: "Title"},
                                         {key: "description", label: "Description"},
-                                        {key: "model", label: "Model"},
+                                        {key: "fqbn", label: "FQBN"},
                                         {key: "product_id", label: "Product"},
                                         {key: "firmware_id", label: "Installed firmware"},
                                         {key: "last_seen", label: "Last seen"},
@@ -85,7 +85,7 @@ class DevicesComponent extends Component {
                                 >
                                     <TableCell>{device.title}</TableCell>
                                     <TableCell>{device.description}</TableCell>
-                                    <TableCell>{device.model}</TableCell>
+                                    <TableCell>{device.fqbn}</TableCell>
                                     <TableCell>
                                         {device.product_id ? device.product_id : "none"}
                                     </TableCell>

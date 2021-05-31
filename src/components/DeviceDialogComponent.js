@@ -6,7 +6,7 @@ import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
 import moment from "moment";
 import {closeDialog} from "../actions/dialog";
-import ModelSelectComponent from "./ModelSelectComponent";
+import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
 import {lower} from "../common";
 
@@ -67,8 +67,8 @@ class DeviceDialogComponent extends Component {
     render() {
         let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware();
 
-        let model = this.updates.model ? this.updates.model : this.state.device.model;
-        let products = this.props.products.filter(product => lower(product.model) === lower(model));
+        let fqbn = this.updates.fqbn ? this.updates.fqbn : this.state.device.fqbn;
+        let products = this.props.products.filter(product => lower(product.fqbn) === lower(fqbn));
 
         return (
             <Dialog
@@ -112,9 +112,9 @@ class DeviceDialogComponent extends Component {
                         value={this.state.device.description}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent
+                    <FqbnSelectComponent
                         disabled
-                        model={this.state.device.model}
+                        fqbn={this.state.device.fqbn}
                         onChange={this.handleChange}
                     />
                     <ProductSelectComponent

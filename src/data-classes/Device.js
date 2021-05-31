@@ -2,7 +2,7 @@ export default class Device {
     id = "";
     title = "";
     description = "";
-    model = "";
+    fqbn = "";
     product_id = "";
     firmware_id = "";
     last_seen = "";

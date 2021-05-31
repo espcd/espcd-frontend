@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
-import ModelSelectComponent from "./ModelSelectComponent";
+import FqbnSelectComponent from "./FqbnSelectComponent";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -121,8 +121,8 @@ class ProductDialogComponent extends Component {
                         value={this.state.product.description}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent
-                        model={this.state.product.model}
+                    <FqbnSelectComponent
+                        fqbn={this.state.product.fqbn}
                         onChange={this.handleChange}
                     />
                     <FormControlLabel

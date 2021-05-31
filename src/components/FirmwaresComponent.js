@@ -68,7 +68,7 @@ class FirmwaresComponent extends Component {
                                         [
                                             {key: "title", label: "Title"},
                                             {key: "description", label: "Description"},
-                                            {key: "model", label: "Model"},
+                                            {key: "fqbn", label: "FQBN"},
                                             {key: "version", label: "Version"},
                                             {key: "product_id", label: "Product"}
                                         ].map(
@@ -101,7 +101,7 @@ class FirmwaresComponent extends Component {
                                     >
                                         <TableCell>{firmware.title}</TableCell>
                                         <TableCell>{firmware.description}</TableCell>
-                                        <TableCell>{firmware.model}</TableCell>
+                                        <TableCell>{firmware.fqbn}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
                                         <TableCell>{firmware.product_id}</TableCell>
                                         <TableCell align="right">

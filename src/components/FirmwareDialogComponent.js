@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
-import ModelSelectComponent from "./ModelSelectComponent";
+import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
 import {lower} from "../common";
 
@@ -88,8 +88,8 @@ class FirmwareDialogComponent extends Component {
     };
 
     render() {
-        let model = this.updates.model ? this.updates.model : this.state.firmware.model;
-        let products = this.props.products.filter(product => lower(product.model) === lower(model));
+        let fqbn = this.updates.fqbn ? this.updates.fqbn : this.state.firmware.fqbn;
+        let products = this.props.products.filter(product => lower(product.fqbn) === lower(fqbn));
 
         return (
             <Dialog
@@ -133,9 +133,9 @@ class FirmwareDialogComponent extends Component {
                         value={this.state.firmware.description ? this.state.firmware.description : ""}
                         onChange={this.handleChange}
                     />
-                    <ModelSelectComponent
+                    <FqbnSelectComponent
                         disabled={!!this.props.firmwareId}
-                        model={this.state.firmware.model}
+                        fqbn={this.state.firmware.fqbn}
                         onChange={this.handleChange}
                     />
                     <TextField

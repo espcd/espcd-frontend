@@ -22,46 +22,26 @@ import FqbnSelectComponent from "./FqbnSelectComponent";
 class ProductDialogComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {};
         this.state = {
-            product: new Product()
+            updates: {}
         };
     }
 
-    setProduct() {
-        let product = this.props.products.find(product => product.id === this.props.productId) || new Product();
-        this.setState({
-            product: {...product}
-        });
-    }
-
-    componentDidMount() {
-        this.setProduct();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.productId !== prevProps.productId) {
-            this.setProduct();
-        }
-    }
-
     handleChange = (event, value) => {
+        let target = event.target;
         let key;
-        if (value) {
+        if (value && !target.type) {
             // autocomplete component onChange event
             key = "fqbn";
         } else {
-            let target = event.target;
             key = target.name;
             value = target.type === "checkbox" ? target.checked : target.value;
         }
 
-        this.updates[key] = value;
-
-        let product = this.state.product;
-        product[key] = value;
+        let updates = this.state.updates;
+        updates[key] = value;
         this.setState({
-            product: product
+            updates: updates
         });
     };
 
@@ -72,10 +52,10 @@ class ProductDialogComponent extends Component {
     };
 
     handleSubmit = () => {
-        let productId = this.state.product.id;
+        let productId = this.props.product.id;
         let payload = this.updates;
 
-        if (this.props.productId) {
+        if (this.props.isPresent) {
             this.props.editProduct(productId, payload)
                 .then(() => this.props.closeDialog());
         } else {
@@ -84,7 +64,24 @@ class ProductDialogComponent extends Component {
         }
     };
 
+    getValue = (key, defaultValue = "") => {
+        let res = this.state.updates[key] ? this.state.updates[key] : this.props.product[key];
+        return res ? res : defaultValue;
+    };
+
     render() {
+        let product = {
+            id: this.props.product.id,
+            title: this.getValue("title"),
+            description: this.getValue("description"),
+            fqbn: this.getValue("fqbn"),
+            auto_update: this.getValue("auto_update", false),
+            firmware_id: this.getValue("firmware_id")
+        };
+
+        let okButtonDisabled = !Object.keys(this.props.product).some(key =>
+            this.state.updates[key] && this.state.updates[key] !== this.props.product[key]);
+
         return (
             <Dialog
                 open={this.props.open}
@@ -92,7 +89,7 @@ class ProductDialogComponent extends Component {
                 onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
-                    {this.props.productId ? "Edit product" : "Add product"}
+                    {this.props.isPresent ? "Edit product" : "Add product"}
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -103,7 +100,7 @@ class ProductDialogComponent extends Component {
                         label="ID"
                         type="text"
                         fullWidth
-                        value={this.state.product.id}
+                        value={product.id}
                     />
                     <TextField
                         autoFocus
@@ -113,7 +110,7 @@ class ProductDialogComponent extends Component {
                         label="Title"
                         type="text"
                         fullWidth
-                        value={this.state.product.title}
+                        value={product.title}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -124,18 +121,18 @@ class ProductDialogComponent extends Component {
                         type="text"
                         multiline
                         fullWidth
-                        value={this.state.product.description}
+                        value={product.description}
                         onChange={this.handleChange}
                     />
                     <FqbnSelectComponent
-                        fqbn={this.state.product.fqbn}
+                        fqbn={product.fqbn}
                         onChange={this.handleChange}
                     />
                     <FormControlLabel
                         style={{width: "100%"}}
                         control={
                             <Checkbox
-                                checked={this.state.product.auto_update}
+                                checked={product.auto_update}
                                 onChange={this.handleChange}
                                 id="auto_update"
                                 name="auto_update"
@@ -147,7 +144,7 @@ class ProductDialogComponent extends Component {
                     <FormControl
                         fullWidth
                         margin="dense"
-                        disabled={!this.props.productId}
+                        disabled={!this.props.isPresent}
                     >
                         <InputLabel id="firmware-select-label">
                             Latest firmware
@@ -156,7 +153,7 @@ class ProductDialogComponent extends Component {
                             labelId="firmware-select-label"
                             id="firmware_id"
                             name="firmware_id"
-                            value={this.state.product.firmware_id}
+                            value={product.firmware_id}
                             onChange={this.handleChange}
                         >
                             <MenuItem value={""} key={`firmware-menuitem-`}>-</MenuItem>
@@ -183,6 +180,7 @@ class ProductDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
+                        disabled={okButtonDisabled}
                     >
                         Ok
                     </Button>
@@ -194,11 +192,13 @@ class ProductDialogComponent extends Component {
 
 const mapStateToProps = (state) => {
     let productId = state.dialogReducer.props.productId;
+    let product = state.productsReducer.products.find(product => product.id === productId) || new Product();
     let firmwares = state.firmwaresReducer.firmwares.filter(firmware => firmware.product_id === productId);
     return {
         open: state.dialogReducer.open,
+        isPresent: !!productId,
         productId,
-        products: state.productsReducer.products,
+        product,
         firmwares
     };
 };

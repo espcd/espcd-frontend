@@ -12,56 +12,36 @@ import {
     TextField,
     Typography
 } from "@material-ui/core";
-import Firmware from "../data-classes/Firmware";
 import {closeDialog} from "../actions/dialog";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
 import {lower} from "../common";
+import Firmware from "../data-classes/Firmware";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {};
         this.state = {
-            firmware: new Firmware(),
-            selectedFile: null
+            selectedFile: null,
+            updates: {}
         };
     }
 
-    setFirmware() {
-        let firmware = this.props.firmwares.find(firmware => firmware.id === this.props.firmwareId) || new Firmware();
-        this.setState({
-            firmware: {...firmware}
-        });
-    }
-
-    componentDidMount() {
-        this.setFirmware();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.firmwareId !== prevProps.firmwareId) {
-            this.setFirmware();
-        }
-    }
-
     handleChange = (event, value) => {
+        let target = event.target;
         let key;
-        if (value) {
+        if (value && !target.type) {
             // autocomplete component onChange event
             key = "fqbn";
         } else {
-            let target = event.target;
             key = target.name;
             value = target.type === "checkbox" ? target.checked : target.value;
         }
 
-        this.updates[key] = value;
-
-        let firmware = this.state.firmware;
-        firmware[key] = value;
+        let updates = this.state.updates;
+        updates[key] = value;
         this.setState({
-            firmware: firmware
+            updates: updates
         });
     };
 
@@ -72,11 +52,11 @@ class FirmwareDialogComponent extends Component {
     };
 
     handleSubmit = () => {
-        let firmwareId = this.state.firmware.id;
-        let payload = this.updates;
+        let firmwareId = this.props.firmware.id;
+        let payload = this.state.updates;
         let file = this.state.selectedFile;
 
-        if (this.props.firmwareId) {
+        if (this.props.isPresent) {
             this.props.editFirmware(firmwareId, payload, file)
                 .then(() => this.props.closeDialog());
         } else {
@@ -93,9 +73,24 @@ class FirmwareDialogComponent extends Component {
         });
     };
 
+    getValue = (key, defaultValue = "") => {
+        let res = this.state.updates[key] ? this.state.updates[key] : this.props.firmware[key];
+        return res ? res : defaultValue;
+    };
+
     render() {
-        let fqbn = this.updates.fqbn ? this.updates.fqbn : this.state.firmware.fqbn;
-        let products = this.props.products.filter(product => lower(product.fqbn) === lower(fqbn));
+        let firmware = {
+            id: this.props.firmware.id,
+            title: this.getValue("title"),
+            description: this.getValue("description"),
+            fqbn: this.getValue("fqbn"),
+            version: this.getValue("version"),
+            product_id: this.getValue("product_id")
+        };
+        let products = this.props.products.filter(product => lower(product.fqbn) === lower(firmware.fqbn));
+
+        let okButtonDisabled = !Object.keys(this.props.firmware).some(key =>
+            this.state.updates[key] && this.state.updates[key] !== this.props.firmware[key]);
 
         return (
             <Dialog
@@ -104,7 +99,7 @@ class FirmwareDialogComponent extends Component {
                 onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
-                    {this.props.firmwareId ? "Edit firmware" : "Add firmware"}
+                    {this.props.isPresent ? "Edit firmware" : "Add firmware"}
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -115,7 +110,7 @@ class FirmwareDialogComponent extends Component {
                         label="ID"
                         type="text"
                         fullWidth
-                        value={this.state.firmware.id}
+                        value={firmware.id}
                     />
                     <TextField
                         autoFocus
@@ -125,7 +120,7 @@ class FirmwareDialogComponent extends Component {
                         label="Title"
                         type="text"
                         fullWidth
-                        value={this.state.firmware.title}
+                        value={firmware.title}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -136,12 +131,12 @@ class FirmwareDialogComponent extends Component {
                         type="text"
                         multiline
                         fullWidth
-                        value={this.state.firmware.description ? this.state.firmware.description : ""}
+                        value={firmware.description}
                         onChange={this.handleChange}
                     />
                     <FqbnSelectComponent
-                        disabled={!!this.props.firmwareId}
-                        fqbn={this.state.firmware.fqbn}
+                        disabled={this.props.isPresent}
+                        fqbn={firmware.fqbn}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -152,7 +147,7 @@ class FirmwareDialogComponent extends Component {
                         label="Version"
                         type="text"
                         fullWidth
-                        value={this.state.firmware.version}
+                        value={firmware.version}
                         onChange={this.handleChange}
                     />
                     <FormControl margin="dense">
@@ -184,7 +179,7 @@ class FirmwareDialogComponent extends Component {
                         </Grid>
                     </FormControl>
                     <ProductSelectComponent
-                        product_id={this.state.firmware.product_id}
+                        product_id={firmware.product_id}
                         products={products}
                         onChange={this.handleChange}
                     />
@@ -201,6 +196,7 @@ class FirmwareDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
+                        disabled={okButtonDisabled}
                     >
                         Ok
                     </Button>
@@ -210,12 +206,17 @@ class FirmwareDialogComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
-    firmwareId: state.dialogReducer.props.firmwareId,
-    firmwares: state.firmwaresReducer.firmwares,
-    products: state.productsReducer.products
-});
+const mapStateToProps = (state) => {
+    let firmwareId = state.dialogReducer.props.firmwareId;
+    let firmware = state.firmwaresReducer.firmwares.find(firmware => firmware.id === firmwareId) || new Firmware();
+    return {
+        firmware,
+        isPresent: !!firmwareId,
+        open: state.dialogReducer.open,
+        firmwares: state.firmwaresReducer.firmwares,
+        products: state.productsReducer.products
+    };
+};
 
 const mapDispatchToProps = {
     closeDialog,

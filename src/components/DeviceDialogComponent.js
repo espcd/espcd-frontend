@@ -13,46 +13,26 @@ import {lower} from "../common";
 class DeviceDialogComponent extends Component {
     constructor(props) {
         super(props);
-        this.updates = {};
         this.state = {
-            device: new Device()
+            updates: {}
         };
     }
 
-    setDevice() {
-        let device = this.props.devices.find(device => device.id === this.props.deviceId);
-        this.setState({
-            device: {...device}
-        });
-    }
-
-    componentDidMount() {
-        this.setDevice();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.deviceId !== prevProps.deviceId) {
-            this.setDevice();
-        }
-    }
-
     handleChange = (event, value) => {
+        let target = event.target;
         let key;
-        if (value) {
+        if (value && !target.type) {
             // autocomplete component onChange event
             key = "fqbn";
         } else {
-            let target = event.target;
             key = target.name;
             value = target.type === "checkbox" ? target.checked : target.value;
         }
 
-        this.updates[key] = value;
-
-        let device = this.state.device;
-        device[key] = value;
+        let updates = this.state.updates;
+        updates[key] = value;
         this.setState({
-            device: device
+            updates: updates
         });
     };
 
@@ -63,18 +43,34 @@ class DeviceDialogComponent extends Component {
     };
 
     handleSubmit = () => {
-        let deviceId = this.state.device.id;
-        let payload = this.updates;
+        let deviceId = this.props.device.id;
+        let payload = this.state.updates;
 
         this.props.editDevice(deviceId, payload)
             .then(() => this.props.closeDialog());
     };
 
-    render() {
-        let firmware = this.props.firmwares.find(firmware => firmware.id === this.state.device.firmware_id) || new Firmware();
+    getValue = (key, defaultValue = "") => {
+        let res = this.state.updates[key] ? this.state.updates[key] : this.props.device[key];
+        return res ? res : defaultValue;
+    };
 
-        let fqbn = this.updates.fqbn ? this.updates.fqbn : this.state.device.fqbn;
-        let products = this.props.products.filter(product => lower(product.fqbn) === lower(fqbn));
+    render() {
+        let device = {
+            id: this.props.device.id,
+            title: this.getValue("title"),
+            description: this.getValue("description"),
+            fqbn: this.getValue("fqbn"),
+            product_id: this.getValue("product_id"),
+            firmware_id: this.getValue("firmware_id"),
+            last_seen: this.props.device.last_seen ? moment(this.props.device.last_seen).fromNow() : "never",
+        };
+
+        let firmware = this.props.firmwares.find(firmware => firmware.id === device.firmware_id) || new Firmware();
+        let products = this.props.products.filter(product => lower(product.fqbn) === lower(device.fqbn));
+
+        let okButtonDisabled = !Object.keys(this.props.device).some(key =>
+            this.state.updates[key] && this.state.updates[key] !== this.props.device[key]);
 
         return (
             <Dialog
@@ -94,7 +90,7 @@ class DeviceDialogComponent extends Component {
                         label="ID"
                         type="text"
                         fullWidth
-                        value={this.state.device.id}
+                        value={device.id}
                     />
                     <TextField
                         autoFocus
@@ -104,7 +100,7 @@ class DeviceDialogComponent extends Component {
                         label="Title"
                         type="text"
                         fullWidth
-                        value={this.state.device.title}
+                        value={device.title}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -115,16 +111,16 @@ class DeviceDialogComponent extends Component {
                         type="text"
                         multiline
                         fullWidth
-                        value={this.state.device.description}
+                        value={device.description}
                         onChange={this.handleChange}
                     />
                     <FqbnSelectComponent
                         disabled
-                        fqbn={this.state.device.fqbn}
+                        fqbn={device.fqbn}
                         onChange={this.handleChange}
                     />
                     <ProductSelectComponent
-                        product_id={this.state.device.product_id}
+                        product_id={device.product_id}
                         products={products}
                         onChange={this.handleChange}
                     />
@@ -146,7 +142,7 @@ class DeviceDialogComponent extends Component {
                         label="Last seen"
                         type="text"
                         fullWidth
-                        value={this.state.device.last_seen ? moment(this.state.device.last_seen).fromNow() : "never"}
+                        value={device.last_seen}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -161,6 +157,7 @@ class DeviceDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
+                        disabled={okButtonDisabled}
                     >
                         Ok
                     </Button>
@@ -170,13 +167,16 @@ class DeviceDialogComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
-    deviceId: state.dialogReducer.props.deviceId,
-    devices: state.devicesReducer.devices,
-    firmwares: state.firmwaresReducer.firmwares,
-    products: state.productsReducer.products
-});
+const mapStateToProps = (state) => {
+    let deviceId = state.dialogReducer.props.deviceId;
+    let device = state.devicesReducer.devices.find(device => device.id === deviceId) || new Device();
+    return {
+        device,
+        open: state.dialogReducer.open,
+        firmwares: state.firmwaresReducer.firmwares,
+        products: state.productsReducer.products
+    };
+};
 
 const mapDispatchToProps = {
     closeDialog,

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {FormControl, TextField} from "@material-ui/core";
 import FQBNs from "../data-classes/FQBNs";
+import {Autocomplete} from "@material-ui/lab";
 
 class FqbnSelectComponent extends Component {
     render() {
@@ -11,24 +12,16 @@ class FqbnSelectComponent extends Component {
                 disabled={this.props.disabled}
                 required
             >
-                <InputLabel id="fqbn-select-label">FQBN</InputLabel>
-                <Select
-                    labelId="fqbn-select-label"
+                <Autocomplete
                     id="fqbn"
                     name="fqbn"
                     value={this.props.fqbn}
+                    options={FQBNs}
+                    renderInput={params =>
+                        <TextField {...params} label="FQBN"/>
+                    }
                     onChange={this.props.onChange}
-                >
-                    <MenuItem value={""} key={`fqbn-menuitem-`}>-</MenuItem>
-                    {FQBNs.map(fqbn => (
-                        <MenuItem
-                            value={fqbn}
-                            key={`fqbn-menuitem-${fqbn}`}
-                        >
-                            {fqbn}
-                        </MenuItem>
-                    ))}
-                </Select>
+                />
             </FormControl>
         );
     }

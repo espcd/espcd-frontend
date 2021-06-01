@@ -36,10 +36,16 @@ class DeviceDialogComponent extends Component {
         }
     }
 
-    handleChange = (event) => {
-        let target = event.target;
-        let key = target.name;
-        let value = target.value;
+    handleChange = (event, value) => {
+        let key;
+        if (value) {
+            // autocomplete component onChange event
+            key = "fqbn";
+        } else {
+            let target = event.target;
+            key = target.name;
+            value = target.type === "checkbox" ? target.checked : target.value;
+        }
 
         this.updates[key] = value;
 

@@ -46,7 +46,7 @@ const formDataFromFirmware = (firmware, content) => {
     Object.keys(firmware).forEach(key => {
         data.append("firmware[" + key + "]", firmware[key]);
     });
-    if (content != null) {
+    if (content) {
         data.append("firmware[content]", content);
     }
     return data;

@@ -8,7 +8,6 @@ import moment from "moment";
 import {closeDialog} from "../actions/dialog";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
-import {lower} from "../common";
 
 class DeviceDialogComponent extends Component {
     constructor(props) {
@@ -18,16 +17,18 @@ class DeviceDialogComponent extends Component {
         };
     }
 
-    handleChange = (event, value) => {
+    handleFqbnChange = (event, value) => {
+        let updates = this.state.updates;
+        updates.fqbn = value;
+        this.setState({
+            updates: updates
+        });
+    }
+
+    handleChange = (event) => {
         let target = event.target;
-        let key;
-        if (value && !target.type) {
-            // autocomplete component onChange event
-            key = "fqbn";
-        } else {
-            key = target.name;
-            value = target.type === "checkbox" ? target.checked : target.value;
-        }
+        let key = target.name;
+        let value = target.type === "checkbox" ? target.checked : target.value;
 
         let updates = this.state.updates;
         updates[key] = value;
@@ -67,7 +68,7 @@ class DeviceDialogComponent extends Component {
         };
 
         let firmware = this.props.firmwares.find(firmware => firmware.id === device.firmware_id) || new Firmware();
-        let products = this.props.products.filter(product => lower(product.fqbn) === lower(device.fqbn));
+        let products = this.props.products.filter(product => product.fqbn === device.fqbn);
 
         let okButtonDisabled = !Object.keys(this.props.device).some(key =>
             this.state.updates[key] && this.state.updates[key] !== this.props.device[key]);
@@ -117,7 +118,7 @@ class DeviceDialogComponent extends Component {
                     <FqbnSelectComponent
                         disabled
                         fqbn={device.fqbn}
-                        onChange={this.handleChange}
+                        onChange={this.handleFqbnChange}
                     />
                     <ProductSelectComponent
                         product_id={device.product_id}

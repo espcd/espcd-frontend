@@ -15,7 +15,6 @@ import {
 import {closeDialog} from "../actions/dialog";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
-import {lower} from "../common";
 import Firmware from "../data-classes/Firmware";
 
 class FirmwareDialogComponent extends Component {
@@ -27,16 +26,18 @@ class FirmwareDialogComponent extends Component {
         };
     }
 
-    handleChange = (event, value) => {
+    handleFqbnChange = (event, value) => {
+        let updates = this.state.updates;
+        updates.fqbn = value;
+        this.setState({
+            updates: updates
+        });
+    }
+
+    handleChange = (event) => {
         let target = event.target;
-        let key;
-        if (value && !target.type) {
-            // autocomplete component onChange event
-            key = "fqbn";
-        } else {
-            key = target.name;
-            value = target.type === "checkbox" ? target.checked : target.value;
-        }
+        let key = target.name;
+        let value = target.type === "checkbox" ? target.checked : target.value;
 
         let updates = this.state.updates;
         updates[key] = value;
@@ -87,7 +88,7 @@ class FirmwareDialogComponent extends Component {
             version: this.getValue("version"),
             product_id: this.getValue("product_id")
         };
-        let products = this.props.products.filter(product => lower(product.fqbn) === lower(firmware.fqbn));
+        let products = this.props.products.filter(product => product.fqbn === firmware.fqbn);
 
         let okButtonDisabled = !Object.keys(this.props.firmware).some(key =>
             this.state.updates[key] && this.state.updates[key] !== this.props.firmware[key]);
@@ -137,7 +138,7 @@ class FirmwareDialogComponent extends Component {
                     <FqbnSelectComponent
                         disabled={this.props.isPresent}
                         fqbn={firmware.fqbn}
-                        onChange={this.handleChange}
+                        onChange={this.handleFqbnChange}
                     />
                     <TextField
                         required

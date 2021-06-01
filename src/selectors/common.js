@@ -1,10 +1,8 @@
-import {lower} from "../common";
-
 export const filterItems = (items, query) => items.filter(item => {
     return Object.keys(item).some(key => {
         let value = item[key];
         let valueStr = value ? String(value).toLowerCase() : "";
-        return valueStr.includes(lower(query));
+        return valueStr.includes(query ? query.toLowerCase() : query);
     });
 });
 

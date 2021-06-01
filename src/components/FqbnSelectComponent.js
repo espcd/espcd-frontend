@@ -10,7 +10,6 @@ class FqbnSelectComponent extends Component {
                 fullWidth
                 margin="dense"
                 disabled={this.props.disabled}
-                required
             >
                 <Autocomplete
                     id="fqbn"
@@ -18,7 +17,11 @@ class FqbnSelectComponent extends Component {
                     value={this.props.fqbn}
                     options={FQBNs}
                     renderInput={params =>
-                        <TextField {...params} label="FQBN"/>
+                        <TextField
+                            {...params}
+                            label="FQBN"
+                            required
+                        />
                     }
                     onChange={this.props.onChange}
                 />

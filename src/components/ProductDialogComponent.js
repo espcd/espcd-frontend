@@ -27,16 +27,18 @@ class ProductDialogComponent extends Component {
         };
     }
 
-    handleChange = (event, value) => {
+    handleFqbnChange = (event, value) => {
+        let updates = this.state.updates;
+        updates.fqbn = value;
+        this.setState({
+            updates: updates
+        });
+    }
+
+    handleChange = (event) => {
         let target = event.target;
-        let key;
-        if (value && !target.type) {
-            // autocomplete component onChange event
-            key = "fqbn";
-        } else {
-            key = target.name;
-            value = target.type === "checkbox" ? target.checked : target.value;
-        }
+        let key = target.name;
+        let value = target.type === "checkbox" ? target.checked : target.value;
 
         let updates = this.state.updates;
         updates[key] = value;
@@ -53,7 +55,7 @@ class ProductDialogComponent extends Component {
 
     handleSubmit = () => {
         let productId = this.props.product.id;
-        let payload = this.updates;
+        let payload = this.state.updates;
 
         if (this.props.isPresent) {
             this.props.editProduct(productId, payload)
@@ -126,7 +128,7 @@ class ProductDialogComponent extends Component {
                     />
                     <FqbnSelectComponent
                         fqbn={product.fqbn}
-                        onChange={this.handleChange}
+                        onChange={this.handleFqbnChange}
                     />
                     <FormControlLabel
                         style={{width: "100%"}}

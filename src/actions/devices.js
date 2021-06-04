@@ -1,4 +1,4 @@
-import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {backendUrl, fetchGet, fetchPostPatchDelete} from "./common";
 
 export const ADD_DEVICES = "ADD_DEVICES";
 export const ADD_DEVICE = "ADD_DEVICE";
@@ -33,15 +33,16 @@ export const dispatchAddDevice = (device) => async dispatch => dispatch(addDevic
 export const dispatchEditDevice = (device) => async dispatch => dispatch(editDeviceAction(device));
 export const dispatchDeleteDevice = (deviceId) => async dispatch => dispatch(deleteDeviceAction(deviceId));
 
-export const getDevices = () => async dispatch => {
+export const getDevices = () => async (dispatch, getState) => {
     fetchGet(
         dispatch,
+        getState,
         baseUrl,
         response => dispatch(addDevicesAction(response))
     );
 };
 
-export const editDevice = (deviceId, payload) => async dispatch => {
+export const editDevice = (deviceId, payload) => async (dispatch, getState) => {
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -49,20 +50,22 @@ export const editDevice = (deviceId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${deviceId}`,
         requestOptions,
         "Device edited"
     );
 };
 
-export const deleteDevice = (deviceId) => async dispatch => {
+export const deleteDevice = (deviceId) => async (dispatch, getState) => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${deviceId}`,
         requestOptions,
         "Device deleted"

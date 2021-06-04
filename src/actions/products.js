@@ -1,4 +1,4 @@
-import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {backendUrl, fetchGet, fetchPostPatchDelete} from "./common";
 
 export const ADD_PRODUCTS = "ADD_PRODUCTS";
 export const ADD_PRODUCT = "ADD_PRODUCT";
@@ -33,15 +33,16 @@ export const dispatchAddProduct = (product) => async dispatch => dispatch(addPro
 export const dispatchEditProduct = (product) => async dispatch => dispatch(editProductAction(product));
 export const dispatchDeleteProduct = (productId) => async dispatch => dispatch(deleteProductAction(productId));
 
-export const getProducts = () => async dispatch => {
+export const getProducts = () => async (dispatch, getState) => {
     fetchGet(
         dispatch,
+        getState,
         baseUrl,
         response => dispatch(addProductsAction(response))
     );
 };
 
-export const createProduct = (payload) => async dispatch => {
+export const createProduct = (payload) => async (dispatch, getState) => {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -49,15 +50,16 @@ export const createProduct = (payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         baseUrl,
         requestOptions,
         "Product created"
     );
 };
 
-export const editProduct = (productId, payload) => async dispatch => {
+export const editProduct = (productId, payload) => async (dispatch, getState) => {
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -65,20 +67,22 @@ export const editProduct = (productId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${productId}`,
         requestOptions,
         "Product edited"
     );
 };
 
-export const deleteProduct = (productId) => async dispatch => {
+export const deleteProduct = (productId) => async (dispatch, getState) => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${productId}`,
         requestOptions,
         "Product deleted"

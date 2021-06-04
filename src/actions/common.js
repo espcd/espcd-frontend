@@ -21,7 +21,16 @@ const parseError = async error => {
     }
 };
 
-export const fetchGet = (dispatch, url, onSuccess) => {
+const addParamsToUrl = (getState, url) => {
+    let api_key = getState().sessionReducer.token;
+    if (api_key) {
+        url = `${url}?api_key=${api_key}`
+    }
+    return url;
+}
+
+export const fetchGet = (dispatch, getState, url, onSuccess) => {
+    url = addParamsToUrl(getState, url);
     fetch(url)
         .then(response => {
             if (!response.ok) throw response;
@@ -37,16 +46,18 @@ export const fetchGet = (dispatch, url, onSuccess) => {
         });
 };
 
-export const fetchPatchDelete = (dispatch, url, requestOptions, successMessage) => {
+export const fetchPostPatchDelete = (dispatch, getState, url, requestOptions, successMessage) => {
+    url = addParamsToUrl(getState, url);
     return new Promise((resolve) => {
         fetch(url, requestOptions)
             .then(response => {
                 if (!response.ok) throw response;
                 return response;
             })
-            .then(() => {
+            .then(parseJson)
+            .then(response => {
                 dispatch(addSuccessNotification(successMessage));
-                resolve();
+                resolve(response);
             })
             .catch(async error => {
                 let message = await parseError(error);

@@ -1,4 +1,4 @@
-import {backendUrl, fetchGet, fetchPatchDelete} from "./common";
+import {backendUrl, fetchGet, fetchPostPatchDelete} from "./common";
 
 export const ADD_FIRMWARES = "ADD_FIRMWARES";
 export const ADD_FIRMWARE = "ADD_FIRMWARE";
@@ -33,9 +33,10 @@ export const dispatchAddFirmware = (firmware) => async dispatch => dispatch(addF
 export const dispatchEditFirmware = (firmware) => async dispatch => dispatch(editFirmwareAction(firmware));
 export const dispatchDeleteFirmware = (firmwareId) => async dispatch => dispatch(deleteFirmwareAction(firmwareId));
 
-export const getFirmwares = () => async dispatch => {
+export const getFirmwares = () => async (dispatch, getState) => {
     fetchGet(
         dispatch,
+        getState,
         baseUrl,
         response => dispatch(addFirmwaresAction(response))
     );
@@ -52,40 +53,43 @@ const formDataFromFirmware = (firmware, content) => {
     return data;
 };
 
-export const createFirmware = (payload, content) => async dispatch => {
+export const createFirmware = (payload, content) => async (dispatch, getState) => {
     let data = formDataFromFirmware(payload, content);
     const requestOptions = {
         method: "POST",
         body: data
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         baseUrl,
         requestOptions,
         "Firmware created"
     );
 };
 
-export const editFirmware = (firmwareId, payload, content) => async dispatch => {
+export const editFirmware = (firmwareId, payload, content) => async (dispatch, getState) => {
     let data = formDataFromFirmware(payload, content);
     const requestOptions = {
         method: "PATCH",
         body: data
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${firmwareId}`,
         requestOptions,
         "Firmware edited"
     );
 };
 
-export const deleteFirmware = (firmwareId) => async dispatch => {
+export const deleteFirmware = (firmwareId) => async (dispatch, getState) => {
     const requestOptions = {
         method: "DELETE"
     };
-    return fetchPatchDelete(
+    return fetchPostPatchDelete(
         dispatch,
+        getState,
         `${baseUrl}/${firmwareId}`,
         requestOptions,
         "Firmware deleted"

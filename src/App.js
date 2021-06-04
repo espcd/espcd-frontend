@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {
     AppBar,
-    ButtonBase,
     CssBaseline,
     Drawer,
+    IconButton,
     List,
     ListItem,
     ListItemIcon,
@@ -12,7 +12,7 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {Apps, DeviceHub, Memory} from "@material-ui/icons";
+import {AccountCircle, Apps, DeviceHub, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
@@ -21,6 +21,8 @@ import ProductsComponent from "./components/ProductsComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import DialogComponent from "./components/DialogComponent";
 import ActioncableComponent from "./components/ActioncableComponent";
+import {LOGIN_DIALOG_COMPONENT, openDialog} from "./actions/dialog";
+import {connect} from "react-redux";
 
 const drawerWidth = 200;
 
@@ -65,9 +67,16 @@ class App extends Component {
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
-                            <ButtonBase onClick={() => this.props.history.push("/")}>
-                                <Typography variant="h6" noWrap className={classes.title}>espcd-frontend</Typography>
-                            </ButtonBase>
+                            <Typography variant="h6" edge="start" noWrap className={classes.title}>
+                                <span style={{cursor: "pointer"}}
+                                      onClick={() => this.props.history.push("/")}>espcd-frontend</span>
+                            </Typography>
+                            <IconButton
+                                edge="end"
+                                color="inherit"
+                                onClick={() => this.props.openDialog(LOGIN_DIALOG_COMPONENT)}>
+                                <AccountCircle/>
+                            </IconButton>
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -122,8 +131,14 @@ class App extends Component {
     }
 }
 
+const mapDispatchToProps = {
+    openDialog
+};
+
 export default withRouter(
-    withStyles(styles)(
-        App
+    connect(null, mapDispatchToProps)(
+        withStyles(styles)(
+            App
+        )
     )
 );

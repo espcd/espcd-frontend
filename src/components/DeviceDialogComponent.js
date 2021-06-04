@@ -23,7 +23,7 @@ class DeviceDialogComponent extends Component {
         this.setState({
             updates: updates
         });
-    }
+    };
 
     handleChange = (event) => {
         let target = event.target;

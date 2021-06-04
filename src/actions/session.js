@@ -4,7 +4,6 @@ import {getFirmwares} from "./firmwares";
 import {getProducts} from "./products";
 
 export const SET_TOKEN = "SET_TOKEN";
-export const DELETE_TOKEN = "DELETE_TOKEN";
 
 const baseUrl = `${backendUrl}/session`;
 
@@ -14,7 +13,8 @@ export const setTokenAction = (token) => ({
 });
 
 export const deleteTokenAction = () => ({
-    type: DELETE_TOKEN
+    type: SET_TOKEN,
+    data: ""
 });
 
 export const createSession = (username, password) => async (dispatch, getState) => {
@@ -53,5 +53,5 @@ export const deleteSession = () => async (dispatch, getState) => {
         baseUrl,
         requestOptions,
         "Logout successful"
-    );
+    ).then(() => dispatch(deleteTokenAction()));
 };

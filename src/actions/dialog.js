@@ -4,7 +4,7 @@ export const CONFIRMATION_DIALOG = "CONFIRMATION_DIALOG";
 export const DEVICE_DIALOG = "DEVICE_DIALOG";
 export const FIRMWARE_DIALOG = "FIRMWARE_DIALOG";
 export const PRODUCT_DIALOG = "PRODUCT_DIALOG";
-export const LOGIN_DIALOG_COMPONENT = "LOGIN_DIALOG_COMPONENT";
+export const TOKEN_DIALOG = "TOKEN_DIALOG";
 
 export const openDialog = (type, props = {}) => async dispatch => {
     dispatch({

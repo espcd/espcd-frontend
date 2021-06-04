@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {dispatchAddDevice, dispatchDeleteDevice, dispatchEditDevice,} from "../actions/devices";
 import {dispatchAddFirmware, dispatchDeleteFirmware, dispatchEditFirmware} from "../actions/firmwares";
 import {dispatchAddProduct, dispatchDeleteProduct, dispatchEditProduct} from "../actions/products";
+import {dispatchAddToken, dispatchDeleteToken, dispatchEditToken} from "../actions/tokens";
 
 class ActioncableComponent extends Component {
     constructor(props) {
@@ -85,6 +86,30 @@ class ActioncableComponent extends Component {
                 }
             }
         );
+
+        this.cable.subscriptions.create(
+            {channel: "TokensChannel"},
+            {
+                received: payload => {
+                    console.log(payload);
+                    let type = payload.type;
+                    let data = payload.data;
+                    switch (type) {
+                        case "create":
+                            this.props.dispatchAddToken(data);
+                            break;
+                        case "update":
+                            this.props.dispatchEditToken(data);
+                            break;
+                        case "destroy":
+                            this.props.dispatchDeleteToken(data);
+                            break;
+                        default:
+                            console.error("unknown token payload type: " + type);
+                    }
+                }
+            }
+        );
     }
 
     componentWillUnmount() {
@@ -106,6 +131,9 @@ const mapDispatchToProps = {
     dispatchAddProduct,
     dispatchEditProduct,
     dispatchDeleteProduct,
+    dispatchAddToken,
+    dispatchEditToken,
+    dispatchDeleteToken,
 };
 
 export default connect(null, mapDispatchToProps)(

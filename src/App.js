@@ -9,6 +9,7 @@ import FirmwaresComponent from "./components/FirmwaresComponent";
 import ProductsComponent from "./components/ProductsComponent";
 import TitleComponent from "./components/TitleComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
+import TokensComponent from "./components/TokensComponent";
 
 class App extends Component {
     render() {
@@ -25,6 +26,7 @@ class App extends Component {
                     <DashboardRouteComponent path="/devices" component={DevicesComponent}/>
                     <DashboardRouteComponent path="/firmwares" component={FirmwaresComponent}/>
                     <DashboardRouteComponent path="/products" component={ProductsComponent}/>
+                    <DashboardRouteComponent path="/tokens" component={TokensComponent}/>
                 </Switch>
             </React.Fragment>
         );

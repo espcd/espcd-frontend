@@ -13,12 +13,12 @@ import {
     Tooltip,
     withStyles
 } from "@material-ui/core";
-import {deleteProduct, setProductQuery, setProductSort} from "../actions/products";
+import {deleteToken, setTokenQuery, setTokenSort} from "../actions/tokens";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
-import {getFilteredAndSortedProducts} from "../selectors/products";
+import {CONFIRMATION_DIALOG, openDialog, TOKEN_DIALOG} from "../actions/dialog";
+import {getFilteredAndSortedTokens} from "../selectors/tokens";
 import TableSearchComponent from "./TableSearchComponent";
 
 const styles = theme => ({
@@ -35,23 +35,23 @@ const styles = theme => ({
     }
 });
 
-class ProductsComponent extends Component {
-    deleteProduct(product) {
+class TokensComponent extends Component {
+    deleteToken(token) {
         this.props.openDialog(
             CONFIRMATION_DIALOG,
             {
-                title: "Delete product",
-                content: `Are you sure you want to delete the product ${product.id}?`,
-                handleOk: () => this.props.deleteProduct(product.id)
+                title: "Delete token",
+                content: `Are you sure you want to delete the token ${token.id}?`,
+                handleOk: () => this.props.deleteToken(token.id)
             }
         );
     }
 
-    openProductDialog(productId = null) {
+    openTokenDialog(tokenId = null) {
         this.props.openDialog(
-            PRODUCT_DIALOG,
+            TOKEN_DIALOG,
             {
-                productId
+                tokenId
             }
         );
     }
@@ -69,17 +69,14 @@ class ProductsComponent extends Component {
                                     {
                                         [
                                             {key: "title", label: "Title"},
-                                            {key: "description", label: "Description"},
-                                            {key: "fqbn", label: "FQBN"},
-                                            {key: "auto_update", label: "Auto update"},
-                                            {key: "firmware_id", label: "Latest firmware"},
+                                            {key: "token", label: "Token"}
                                         ].map(
                                             row => (
-                                                <TableCell key={`products-table-head-${row.key}`}>
+                                                <TableCell key={`tokens-table-head-${row.key}`}>
                                                     <TableSortLabel
                                                         active={this.props.sortBy === row.key}
                                                         direction={this.props.sortOrder}
-                                                        onClick={() => this.props.setProductSort(row.key, this.props.sortOrder)}
+                                                        onClick={() => this.props.setTokenSort(row.key, this.props.sortOrder)}
                                                     >
                                                         {row.label}
                                                     </TableSortLabel>
@@ -87,30 +84,27 @@ class ProductsComponent extends Component {
                                             )
                                         )
                                     }
-                                    <TableCell key={`products-table-head-search`} align="right">
+                                    <TableCell key={`tokens-table-head-search`} align="right">
                                         <TableSearchComponent
                                             query={this.props.query}
-                                            setQuery={this.props.setProductQuery}
+                                            setQuery={this.props.setTokenQuery}
                                         />
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.props.products.map(product => (
+                                {this.props.tokens.map(token => (
                                     <TableRow
                                         hover
-                                        key={`product-table-body-${product.id}`}
+                                        key={`token-table-body-${token.id}`}
                                     >
-                                        <TableCell>{product.title}</TableCell>
-                                        <TableCell>{product.description}</TableCell>
-                                        <TableCell>{product.fqbn}</TableCell>
-                                        <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
-                                        <TableCell>{product.firmware_id}</TableCell>
+                                        <TableCell>{token.title}</TableCell>
+                                        <TableCell>{token.token}</TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={() => this.openProductDialog(product.id)}>
+                                            <Button onClick={() => this.openTokenDialog(token.id)}>
                                                 <Edit/>
                                             </Button>
-                                            <Button onClick={() => this.deleteProduct(product)}>
+                                            <Button onClick={() => this.deleteToken(token)}>
                                                 <Delete/>
                                             </Button>
                                         </TableCell>
@@ -121,10 +115,10 @@ class ProductsComponent extends Component {
                     </TableContainer>
                 </Paper>
                 <div className={classes.spacing}/>
-                <Tooltip title="Add Product" aria-label="add product">
+                <Tooltip title="Add Token" aria-label="add token">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.openProductDialog()}
+                         onClick={() => this.openTokenDialog()}
                     >
                         <Add/>
                     </Fab>
@@ -135,23 +129,23 @@ class ProductsComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    products: getFilteredAndSortedProducts(state),
-    query: state.productsReducer.query,
-    sortBy: state.productsReducer.sortBy,
-    sortOrder: state.productsReducer.sortOrder
+    tokens: getFilteredAndSortedTokens(state),
+    query: state.tokensReducer.query,
+    sortBy: state.tokensReducer.sortBy,
+    sortOrder: state.tokensReducer.sortOrder
 });
 
 const mapDispatchToProps = {
-    deleteProduct,
-    setProductQuery,
-    setProductSort,
+    deleteToken,
+    setTokenQuery,
+    setTokenSort,
     openDialog
 };
 
 export default withRouter(
     connect(mapStateToProps, mapDispatchToProps)(
         withStyles(styles)(
-            ProductsComponent
+            TokensComponent
         )
     )
 );

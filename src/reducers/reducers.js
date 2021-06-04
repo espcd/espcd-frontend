@@ -5,6 +5,7 @@ import {productsReducer} from "./products";
 import {notificationsReducer} from "./notifications";
 import {dialogReducer} from "./dialog";
 import {sessionReducer} from "./session";
+import {tokensReducer} from "./tokens";
 
 export default combineReducers({
     devicesReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     productsReducer,
     notificationsReducer,
     dialogReducer,
-    sessionReducer
+    sessionReducer,
+    tokensReducer
 });

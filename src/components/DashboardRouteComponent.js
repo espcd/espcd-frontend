@@ -16,12 +16,13 @@ import {
     withStyles
 } from "@material-ui/core";
 import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
-import {Apps, DeviceHub, ExitToApp, Memory} from "@material-ui/icons";
+import {Apps, DeviceHub, ExitToApp, Memory, VpnKey} from "@material-ui/icons";
 import {connect} from "react-redux";
 import {deleteSession} from "../actions/session";
 import {getDevices} from "../actions/devices";
 import {getFirmwares} from "../actions/firmwares";
 import {getProducts} from "../actions/products";
+import {getTokens} from "../actions/tokens";
 
 const drawerWidth = 200;
 
@@ -59,9 +60,10 @@ class DashboardRouteComponent extends Component {
             return <Redirect to="/login"/>;
         }
 
-        getDevices();
-        getFirmwares();
-        getProducts();
+        this.props.getDevices();
+        this.props.getFirmwares();
+        this.props.getProducts();
+        this.props.getTokens();
 
         return (
             <Route {...rest} render={matchProps => (
@@ -122,6 +124,12 @@ class DashboardRouteComponent extends Component {
                                         </ListItemIcon>
                                         <ListItemText primary="Products"/>
                                     </ListItem>
+                                    <ListItem button key="tokens" component={Link} to="/tokens">
+                                        <ListItemIcon>
+                                            <VpnKey/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Tokens"/>
+                                    </ListItem>
                                 </List>
                             </div>
                         </Drawer>
@@ -145,7 +153,8 @@ const mapDispatchToProps = {
     deleteSession,
     getDevices,
     getFirmwares,
-    getProducts
+    getProducts,
+    getTokens
 };
 
 export default withRouter(

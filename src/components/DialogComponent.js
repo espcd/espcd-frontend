@@ -1,10 +1,18 @@
 import React, {Component} from "react";
-import {closeDialog, CONFIRMATION_DIALOG, DEVICE_DIALOG, FIRMWARE_DIALOG, PRODUCT_DIALOG} from "../actions/dialog";
+import {
+    closeDialog,
+    CONFIRMATION_DIALOG,
+    DEVICE_DIALOG,
+    FIRMWARE_DIALOG,
+    PRODUCT_DIALOG,
+    TOKEN_DIALOG
+} from "../actions/dialog";
 import {connect} from "react-redux";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import DeviceDialogComponent from "./DeviceDialogComponent";
 import FirmwareDialogComponent from "./FirmwareDialogComponent";
 import ProductDialogComponent from "./ProductDialogComponent";
+import TokenDialogComponent from "./TokenDialogComponent";
 
 class DialogComponent extends Component {
     render() {
@@ -17,6 +25,8 @@ class DialogComponent extends Component {
                 return <FirmwareDialogComponent/>;
             case PRODUCT_DIALOG:
                 return <ProductDialogComponent/>;
+            case TOKEN_DIALOG:
+                return <TokenDialogComponent/>;
             default:
                 return null;
         }

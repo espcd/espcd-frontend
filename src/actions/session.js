@@ -4,12 +4,17 @@ import {getFirmwares} from "./firmwares";
 import {getProducts} from "./products";
 
 export const SET_TOKEN = "SET_TOKEN";
+export const DELETE_TOKEN = "DELETE_TOKEN";
 
 const baseUrl = `${backendUrl}/session`;
 
 export const setTokenAction = (token) => ({
     type: SET_TOKEN,
     data: token,
+});
+
+export const deleteTokenAction = () => ({
+    type: DELETE_TOKEN
 });
 
 export const createSession = (username, password) => async (dispatch, getState) => {
@@ -36,4 +41,17 @@ export const createSession = (username, password) => async (dispatch, getState) 
             dispatch(getFirmwares());
             dispatch(getProducts());
         });
+};
+
+export const deleteSession = () => async (dispatch, getState) => {
+    const requestOptions = {
+        method: "DELETE"
+    };
+    return fetchPostPatchDelete(
+        dispatch,
+        getState,
+        baseUrl,
+        requestOptions,
+        "Logout successful"
+    );
 };

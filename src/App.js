@@ -12,7 +12,7 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {AccountCircle, Apps, DeviceHub, Memory} from "@material-ui/icons";
+import {AccountCircle, Apps, DeviceHub, ExitToApp, Memory} from "@material-ui/icons";
 import DevicesComponent from "./components/DevicesComponent";
 import FirmwaresComponent from "./components/FirmwaresComponent";
 import TitleComponent from "./components/TitleComponent";
@@ -21,8 +21,9 @@ import ProductsComponent from "./components/ProductsComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import DialogComponent from "./components/DialogComponent";
 import ActioncableComponent from "./components/ActioncableComponent";
-import {LOGIN_DIALOG_COMPONENT, openDialog} from "./actions/dialog";
+import {CONFIRMATION_DIALOG, LOGIN_DIALOG_COMPONENT, openDialog} from "./actions/dialog";
 import {connect} from "react-redux";
+import {deleteSession} from "./actions/session";
 
 const drawerWidth = 200;
 
@@ -71,12 +72,30 @@ class App extends Component {
                                 <span style={{cursor: "pointer"}}
                                       onClick={() => this.props.history.push("/")}>espcd-frontend</span>
                             </Typography>
-                            <IconButton
-                                edge="end"
-                                color="inherit"
-                                onClick={() => this.props.openDialog(LOGIN_DIALOG_COMPONENT)}>
-                                <AccountCircle/>
-                            </IconButton>
+                            {this.props.loggedIn ? (
+                                <IconButton
+                                    edge="end"
+                                    color="inherit"
+                                    onClick={
+                                        () => this.props.openDialog(
+                                            CONFIRMATION_DIALOG,
+                                            {
+                                                title: "Logout",
+                                                content: "Do you really want to log out?",
+                                                handleOk: this.props.deleteSession
+                                            }
+                                        )
+                                    }>
+                                    <ExitToApp/>
+                                </IconButton>
+                            ) : (
+                                <IconButton
+                                    edge="end"
+                                    color="inherit"
+                                    onClick={() => this.props.openDialog(LOGIN_DIALOG_COMPONENT)}>
+                                    <AccountCircle/>
+                                </IconButton>
+                            )}
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -131,12 +150,17 @@ class App extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    loggedIn: !!state.sessionReducer.token
+});
+
 const mapDispatchToProps = {
-    openDialog
+    openDialog,
+    deleteSession
 };
 
 export default withRouter(
-    connect(null, mapDispatchToProps)(
+    connect(mapStateToProps, mapDispatchToProps)(
         withStyles(styles)(
             App
         )

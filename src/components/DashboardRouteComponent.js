@@ -9,12 +9,14 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    Menu,
+    MenuItem,
     Toolbar,
     Typography,
     withStyles
 } from "@material-ui/core";
 import {CONFIRMATION_DIALOG, openDialog, USER_DIALOG_COMPONENT} from "../actions/dialog";
-import {Apps, DeviceHub, Edit, ExitToApp, Memory, VpnKey} from "@material-ui/icons";
+import {AccountCircle, Apps, DeviceHub, Memory, VpnKey} from "@material-ui/icons";
 import {connect} from "react-redux";
 import {deleteSession} from "../actions/session";
 import {getDevices} from "../actions/devices";
@@ -51,6 +53,42 @@ const styles = theme => ({
 });
 
 class DashboardRouteComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            anchorEl: null
+        };
+    }
+
+    openMenu = event => {
+        this.setState({
+            anchorEl: event.currentTarget
+        });
+    };
+
+    closeMenu = () => {
+        this.setState({
+            anchorEl: null
+        });
+    };
+
+    handleEditUser = () => {
+        this.closeMenu();
+        this.props.openDialog(USER_DIALOG_COMPONENT);
+    };
+
+    handleLogout = () => {
+        this.closeMenu();
+        this.props.openDialog(
+            CONFIRMATION_DIALOG,
+            {
+                title: "Logout",
+                content: "Do you really want to log out?",
+                handleOk: this.props.deleteSession
+            }
+        );
+    };
+
     render() {
         const {component: Component, classes, ...rest} = this.props;
 
@@ -69,28 +107,22 @@ class DashboardRouteComponent extends Component {
                                 <span style={{cursor: "pointer"}}
                                       onClick={() => this.props.history.push("/")}>espcd-frontend</span>
                                 </Typography>
+                                <Menu
+                                    id="user-menu"
+                                    anchorEl={this.state.anchorEl}
+                                    keepMounted
+                                    open={Boolean(this.state.anchorEl)}
+                                    onClose={this.closeMenu}
+                                >
+                                    <MenuItem onClick={this.handleEditUser}>Edit user</MenuItem>
+                                    <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                                </Menu>
                                 <IconButton
                                     edge="end"
                                     color="inherit"
-                                    onClick={
-                                        () => this.props.openDialog(USER_DIALOG_COMPONENT)
-                                    }>
-                                    <Edit/>
-                                </IconButton>
-                                <IconButton
-                                    edge="end"
-                                    color="inherit"
-                                    onClick={
-                                        () => this.props.openDialog(
-                                            CONFIRMATION_DIALOG,
-                                            {
-                                                title: "Logout",
-                                                content: "Do you really want to log out?",
-                                                handleOk: this.props.deleteSession
-                                            }
-                                        )
-                                    }>
-                                    <ExitToApp/>
+                                    onClick={this.openMenu}
+                                >
+                                    <AccountCircle/>
                                 </IconButton>
                             </Toolbar>
                         </AppBar>

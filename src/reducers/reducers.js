@@ -6,6 +6,7 @@ import {notificationsReducer} from "./notifications";
 import {dialogReducer} from "./dialog";
 import {sessionReducer} from "./session";
 import {tokensReducer} from "./tokens";
+import {userReducer} from "./user";
 
 export default combineReducers({
     devicesReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     notificationsReducer,
     dialogReducer,
     sessionReducer,
-    tokensReducer
+    tokensReducer,
+    userReducer
 });

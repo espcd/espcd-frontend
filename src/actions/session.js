@@ -1,4 +1,5 @@
 import {backendUrl, fetchPostPatchDelete} from "./common";
+import {addUserAction} from "./user";
 
 export const SET_TOKEN = "SET_TOKEN";
 
@@ -31,7 +32,9 @@ export const createSession = (username, password) => async (dispatch, getState) 
         baseUrl,
         requestOptions,
         "Login successful"
-    ).then(response => dispatch(setTokenAction(response.token)));
+    )
+        .then(response => dispatch(setTokenAction(response.token)))
+        .then(() => dispatch(addUserAction(username)));
 };
 
 export const deleteSession = () => async (dispatch, getState) => {

@@ -13,8 +13,8 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {CONFIRMATION_DIALOG, openDialog} from "../actions/dialog";
-import {Apps, DeviceHub, ExitToApp, Memory, VpnKey} from "@material-ui/icons";
+import {CONFIRMATION_DIALOG, openDialog, USER_DIALOG_COMPONENT} from "../actions/dialog";
+import {Apps, DeviceHub, Edit, ExitToApp, Memory, VpnKey} from "@material-ui/icons";
 import {connect} from "react-redux";
 import {deleteSession} from "../actions/session";
 import {getDevices} from "../actions/devices";
@@ -69,6 +69,14 @@ class DashboardRouteComponent extends Component {
                                 <span style={{cursor: "pointer"}}
                                       onClick={() => this.props.history.push("/")}>espcd-frontend</span>
                                 </Typography>
+                                <IconButton
+                                    edge="end"
+                                    color="inherit"
+                                    onClick={
+                                        () => this.props.openDialog(USER_DIALOG_COMPONENT)
+                                    }>
+                                    <Edit/>
+                                </IconButton>
                                 <IconButton
                                     edge="end"
                                     color="inherit"

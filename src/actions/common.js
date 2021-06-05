@@ -24,10 +24,10 @@ const parseError = async error => {
 const addParamsToUrl = (getState, url) => {
     let api_key = getState().sessionReducer.token;
     if (api_key) {
-        url = `${url}?api_key=${api_key}`
+        url = `${url}?api_key=${api_key}`;
     }
     return url;
-}
+};
 
 export const fetchGet = (dispatch, getState, url, onSuccess) => {
     url = addParamsToUrl(getState, url);

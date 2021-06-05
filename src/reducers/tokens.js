@@ -1,11 +1,4 @@
-import {
-    ADD_TOKEN,
-    ADD_TOKENS,
-    DELETE_TOKEN,
-    EDIT_TOKEN,
-    SET_TOKEN_QUERY,
-    SET_TOKEN_SORT
-} from "../actions/tokens";
+import {ADD_TOKEN, ADD_TOKENS, DELETE_TOKEN, EDIT_TOKEN, SET_TOKEN_QUERY, SET_TOKEN_SORT} from "../actions/tokens";
 
 const initialState = {
     tokens: [],

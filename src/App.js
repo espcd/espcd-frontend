@@ -11,7 +11,7 @@ import TitleComponent from "./components/TitleComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import TokensComponent from "./components/TokensComponent";
 import DialogComponent from "./components/DialogComponent";
-import ActioncableComponent from "./components/ActioncableComponent";
+import WebsocketComponent from "./components/WebsocketComponent";
 import {getDevices} from "./actions/devices";
 import {getFirmwares} from "./actions/firmwares";
 import {getProducts} from "./actions/products";
@@ -35,7 +35,7 @@ class App extends Component {
             this.props.getProducts();
             this.props.getTokens();
         }
-    }
+    };
 
     render() {
         return (
@@ -47,7 +47,7 @@ class App extends Component {
                     this.props.loggedIn &&
                     <React.Fragment>
                         <DialogComponent/>
-                        <ActioncableComponent/>
+                        <WebsocketComponent/>
                     </React.Fragment>
                 }
 

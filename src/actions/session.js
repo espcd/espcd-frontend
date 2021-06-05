@@ -1,7 +1,4 @@
 import {backendUrl, fetchPostPatchDelete} from "./common";
-import {getDevices} from "./devices";
-import {getFirmwares} from "./firmwares";
-import {getProducts} from "./products";
 
 export const SET_TOKEN = "SET_TOKEN";
 
@@ -34,13 +31,7 @@ export const createSession = (username, password) => async (dispatch, getState) 
         baseUrl,
         requestOptions,
         "Login successful"
-    )
-        .then(response => dispatch(setTokenAction(response.token)))
-        .then(() => {
-            dispatch(getDevices());
-            dispatch(getFirmwares());
-            dispatch(getProducts());
-        });
+    ).then(response => dispatch(setTokenAction(response.token)));
 };
 
 export const deleteSession = () => async (dispatch, getState) => {

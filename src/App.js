@@ -10,13 +10,46 @@ import ProductsComponent from "./components/ProductsComponent";
 import TitleComponent from "./components/TitleComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import TokensComponent from "./components/TokensComponent";
+import DialogComponent from "./components/DialogComponent";
+import ActioncableComponent from "./components/ActioncableComponent";
+import {getDevices} from "./actions/devices";
+import {getFirmwares} from "./actions/firmwares";
+import {getProducts} from "./actions/products";
+import {getTokens} from "./actions/tokens";
 
 class App extends Component {
+    componentDidMount() {
+        this.init();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.loggedIn !== this.props.loggedIn) {
+            this.init();
+        }
+    }
+
+    init = () => {
+        if (this.props.loggedIn) {
+            this.props.getDevices();
+            this.props.getFirmwares();
+            this.props.getProducts();
+            this.props.getTokens();
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
                 <TitleComponent/>
                 <SnackbarComponent/>
+
+                {
+                    this.props.loggedIn &&
+                    <React.Fragment>
+                        <DialogComponent/>
+                        <ActioncableComponent/>
+                    </React.Fragment>
+                }
 
                 <Switch>
                     <Route exact path="/">
@@ -37,8 +70,15 @@ const mapStateToProps = (state) => ({
     loggedIn: !!state.sessionReducer.token
 });
 
+const mapDispatchToProps = {
+    getDevices,
+    getFirmwares,
+    getProducts,
+    getTokens
+};
+
 export default withRouter(
-    connect(mapStateToProps, null)(
+    connect(mapStateToProps, mapDispatchToProps)(
         App
     )
 );

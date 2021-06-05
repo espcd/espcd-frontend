@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import {Link, Redirect, Route, withRouter} from "react-router-dom";
-import DialogComponent from "./DialogComponent";
-import ActioncableComponent from "./ActioncableComponent";
 import {
     AppBar,
     CssBaseline,
@@ -60,17 +58,9 @@ class DashboardRouteComponent extends Component {
             return <Redirect to="/login"/>;
         }
 
-        this.props.getDevices();
-        this.props.getFirmwares();
-        this.props.getProducts();
-        this.props.getTokens();
-
         return (
             <Route {...rest} render={matchProps => (
                 <React.Fragment>
-                    <DialogComponent/>
-                    <ActioncableComponent/>
-
                     <div className={classes.root}>
                         <CssBaseline/>
                         <AppBar position="fixed" className={classes.appBar}>

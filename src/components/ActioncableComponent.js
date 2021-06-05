@@ -10,11 +10,33 @@ class ActioncableComponent extends Component {
     constructor(props) {
         super(props);
         let scheme = process.env.REACT_APP_BACKEND_SECURE === "true" ? "wss" : "ws";
-        let url = `${scheme}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/cable`;
-        this.cable = ActionCable.createConsumer(url);
+        this.baseUrl = `${scheme}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/cable`;
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.token !== this.props.token) {
+            this.disconnectCable();
+            this.connectCable();
+        }
+    }
+
+    disconnectCable = () => {
+        if (this.cable) {
+            this.cable.disconnect();
+        }
+    };
+
+    connectCable = () => {
+        if (!this.props.token) {
+            return;
+        }
+        let url = `${this.baseUrl}?api_key=${this.props.token}`;
+        this.cable = ActionCable.createConsumer(url);
+    };
+
     componentDidMount() {
+        this.connectCable();
+
         this.cable.subscriptions.create(
             {channel: "DevicesChannel"},
             {
@@ -113,13 +135,17 @@ class ActioncableComponent extends Component {
     }
 
     componentWillUnmount() {
-        this.cable.disconnect();
+        this.disconnectCable();
     }
 
     render() {
         return null;
     }
 }
+
+const mapStateToProps = (state) => ({
+    token: state.sessionReducer.token
+});
 
 const mapDispatchToProps = {
     dispatchAddDevice,
@@ -136,6 +162,6 @@ const mapDispatchToProps = {
     dispatchDeleteToken,
 };
 
-export default connect(null, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
     ActioncableComponent
 );

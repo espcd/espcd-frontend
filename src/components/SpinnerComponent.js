@@ -1,13 +1,6 @@
 import React, {Component} from "react";
-import {Backdrop, CircularProgress, withStyles} from "@material-ui/core";
+import {CircularProgress, Dialog} from "@material-ui/core";
 import {backendUrl} from "../actions/common";
-
-const styles = theme => ({
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 2,
-        color: "#fff",
-    },
-});
 
 class SpinnerComponent extends Component {
     constructor(props) {
@@ -41,20 +34,28 @@ class SpinnerComponent extends Component {
             },
             4000
         );
+    }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {
-        const {classes} = this.props;
-
         return (
-            <Backdrop className={classes.backdrop} open={this.state.active}>
-                <CircularProgress color="inherit"/>
-            </Backdrop>
+            <Dialog
+                open={this.state.active}
+                PaperProps={{
+                    style: {
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                        overflow: "hidden"
+                    },
+                }}
+            >
+                <CircularProgress color="inherit" style={{color: "white"}}/>
+            </Dialog>
         );
     }
 }
 
-export default withStyles(styles)(
-    SpinnerComponent
-);
+export default SpinnerComponent;

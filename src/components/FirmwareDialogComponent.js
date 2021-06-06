@@ -91,7 +91,8 @@ class FirmwareDialogComponent extends Component {
         let products = this.props.products.filter(product => product.fqbn === firmware.fqbn);
 
         let okButtonDisabled = !Object.keys(this.props.firmware).some(key =>
-            this.state.updates[key] && this.state.updates[key] !== this.props.firmware[key]);
+            this.state.updates[key] && this.state.updates[key] !== this.props.firmware[key]
+        ) && !this.state.selectedFile;
 
         return (
             <Dialog

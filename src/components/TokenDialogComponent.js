@@ -87,6 +87,7 @@ class TokenDialogComponent extends Component {
                         label="Title"
                         type="text"
                         fullWidth
+                        required
                         value={token.title}
                         onChange={this.handleChange}
                     />

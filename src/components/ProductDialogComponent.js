@@ -131,7 +131,6 @@ class ProductDialogComponent extends Component {
                         onChange={this.handleFqbnChange}
                     />
                     <FormControlLabel
-                        style={{width: "100%"}}
                         control={
                             <Checkbox
                                 checked={product.auto_update}

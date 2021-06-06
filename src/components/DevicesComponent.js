@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {
-    Button,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -8,7 +8,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TableSortLabel
+    TableSortLabel,
+    Tooltip
 } from "@material-ui/core";
 import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
@@ -69,7 +70,7 @@ class DevicesComponent extends Component {
                                         )
                                     )
                                 }
-                                <TableCell key={`products-table-head-search`} align="right">
+                                <TableCell key={`devices-table-head-search`} align="right">
                                     <TableSearchComponent
                                         query={this.props.query}
                                         setQuery={this.props.setDeviceQuery}
@@ -94,12 +95,17 @@ class DevicesComponent extends Component {
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
                                     <TableCell align="right">
-                                        <Button onClick={() => this.openDeviceDialog(device.id)}>
-                                            <Edit/>
-                                        </Button>
-                                        <Button onClick={() => this.deleteDevice(device)}>
-                                            <Delete/>
-                                        </Button>
+                                        <Tooltip title="Edit device" aria-label="edit device">
+                                            <IconButton color="inherit"
+                                                        onClick={() => this.openDeviceDialog(device.id)}>
+                                                <Edit/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Delete device" aria-label="delete device">
+                                            <IconButton color="inherit" onClick={() => this.deleteDevice(device)}>
+                                                <Delete/>
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}

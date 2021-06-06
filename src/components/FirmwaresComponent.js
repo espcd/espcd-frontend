@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {
-    Button,
     Fab,
+    IconButton,
+    Link,
     Paper,
     Table,
     TableBody,
@@ -45,7 +46,7 @@ class FirmwaresComponent extends Component {
         );
     }
 
-    openDeviceDialog(firmwareId = null) {
+    openFirmwareDialog(firmwareId = null) {
         this.props.openDialog(
             FIRMWARE_DIALOG,
             {
@@ -105,17 +106,27 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.version}</TableCell>
                                         <TableCell>{firmware.product_id}</TableCell>
                                         <TableCell align="right">
-                                            <a href={`${backendUrl}/firmwares/${firmware.id}/content`} download>
-                                                <Button>
+                                            <Tooltip title="Download firmware" aria-label="download firmware">
+                                                <Link
+                                                    href={`${backendUrl}/firmwares/${firmware.id}/content?api_key=${this.props.token}`}
+                                                    component={IconButton}
+                                                    color="inherit"
+                                                >
                                                     <GetApp/>
-                                                </Button>
-                                            </a>
-                                            <Button onClick={() => this.openDeviceDialog(firmware.id)}>
-                                                <Edit/>
-                                            </Button>
-                                            <Button onClick={() => this.deleteFirmware(firmware)}>
-                                                <Delete/>
-                                            </Button>
+                                                </Link>
+                                            </Tooltip>
+                                            <Tooltip title="Edit firmware" aria-label="edit firmware">
+                                                <IconButton color="inherit"
+                                                            onClick={() => this.openFirmwareDialog(firmware.id)}>
+                                                    <Edit/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Delete firmware" aria-label="delete firmware">
+                                                <IconButton color="inherit"
+                                                            onClick={() => this.deleteFirmware(firmware)}>
+                                                    <Delete/>
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -127,7 +138,7 @@ class FirmwaresComponent extends Component {
                 <Tooltip title="Add Firmware" aria-label="add firmware">
                     <Fab color="primary"
                          className={classes.fab}
-                         onClick={() => this.openDeviceDialog()}
+                         onClick={() => this.openFirmwareDialog()}
                     >
                         <Add/>
                     </Fab>
@@ -141,7 +152,8 @@ const mapStateToProps = (state) => ({
     firmwares: getFilteredAndSortedFirmwares(state),
     query: state.firmwaresReducer.query,
     sortBy: state.firmwaresReducer.sortBy,
-    sortOrder: state.firmwaresReducer.sortOrder
+    sortOrder: state.firmwaresReducer.sortOrder,
+    token: state.sessionReducer.token
 });
 
 const mapDispatchToProps = {

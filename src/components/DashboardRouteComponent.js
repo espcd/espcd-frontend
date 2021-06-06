@@ -12,6 +12,7 @@ import {
     Menu,
     MenuItem,
     Toolbar,
+    Tooltip,
     Typography,
     withStyles
 } from "@material-ui/core";
@@ -117,13 +118,15 @@ class DashboardRouteComponent extends Component {
                                     <MenuItem onClick={this.handleEditUser}>Edit user</MenuItem>
                                     <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                                 </Menu>
-                                <IconButton
-                                    edge="end"
-                                    color="inherit"
-                                    onClick={this.openMenu}
-                                >
-                                    <AccountCircle/>
-                                </IconButton>
+                                <Tooltip title="User" aria-label="user">
+                                    <IconButton
+                                        edge="end"
+                                        color="inherit"
+                                        onClick={this.openMenu}
+                                    >
+                                        <AccountCircle/>
+                                    </IconButton>
+                                </Tooltip>
                             </Toolbar>
                         </AppBar>
                         <Drawer

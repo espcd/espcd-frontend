@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {
-    Button,
     Fab,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -103,12 +103,17 @@ class TokensComponent extends Component {
                                         <TableCell>{token.description}</TableCell>
                                         <TableCell>{token.token}</TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={() => this.openTokenDialog(token.id)}>
-                                                <Edit/>
-                                            </Button>
-                                            <Button onClick={() => this.deleteToken(token)}>
-                                                <Delete/>
-                                            </Button>
+                                            <Tooltip title="Edit token" aria-label="edit token">
+                                                <IconButton color="inherit"
+                                                            onClick={() => this.openTokenDialog(token.id)}>
+                                                    <Edit/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Delete token" aria-label="delete token">
+                                                <IconButton color="inherit" onClick={() => this.deleteToken(token)}>
+                                                    <Delete/>
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}

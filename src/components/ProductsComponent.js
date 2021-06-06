@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {
-    Button,
     Fab,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -107,12 +107,17 @@ class ProductsComponent extends Component {
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
                                         <TableCell>{product.firmware_id}</TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={() => this.openProductDialog(product.id)}>
-                                                <Edit/>
-                                            </Button>
-                                            <Button onClick={() => this.deleteProduct(product)}>
-                                                <Delete/>
-                                            </Button>
+                                            <Tooltip title="Edit product" aria-label="edit product">
+                                                <IconButton color="inherit"
+                                                            onClick={() => this.openProductDialog(product.id)}>
+                                                    <Edit/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Delete product" aria-label="delete product">
+                                                <IconButton color="inherit" onClick={() => this.deleteProduct(product)}>
+                                                    <Delete/>
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}

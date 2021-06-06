@@ -30,30 +30,32 @@ const addParamsToUrl = (getState, url) => {
     return url;
 };
 
-export const fetchGet = (dispatch, getState, url, onSuccess) => {
+export const fetchGet = (dispatch, getState, url) => {
     url = addParamsToUrl(getState, url);
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw response;
-            return response;
-        })
-        .then(parseJson)
-        .then(response => {
-            onSuccess(response);
-        })
-        .catch(async error => {
-            let message = await parseError(error);
-            if (error.status === 401 && !url.endsWith("/session")) {
-                dispatch(deleteTokenAction())
-            } else {
-                dispatch(addErrorNotification(message));
-            }
-        });
+    return new Promise(resolve => {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw response;
+                return response;
+            })
+            .then(parseJson)
+            .then(response => {
+                resolve(response);
+            })
+            .catch(async error => {
+                let message = await parseError(error);
+                if (error.status === 401) {
+                    dispatch(deleteTokenAction());
+                } else {
+                    dispatch(addErrorNotification(message));
+                }
+            });
+    });
 };
 
 export const fetchPostPatchDelete = (dispatch, getState, url, requestOptions, successMessage) => {
     url = addParamsToUrl(getState, url);
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         fetch(url, requestOptions)
             .then(response => {
                 if (!response.ok) throw response;
@@ -67,7 +69,7 @@ export const fetchPostPatchDelete = (dispatch, getState, url, requestOptions, su
             .catch(async error => {
                 let message = await parseError(error);
                 if (error.status === 401 && !url.endsWith("/session")) {
-                    dispatch(deleteTokenAction())
+                    dispatch(deleteTokenAction());
                 } else {
                     dispatch(addErrorNotification(message));
                 }

@@ -34,12 +34,11 @@ export const dispatchEditFirmware = (firmware) => async dispatch => dispatch(edi
 export const dispatchDeleteFirmware = (firmwareId) => async dispatch => dispatch(deleteFirmwareAction(firmwareId));
 
 export const getFirmwares = () => async (dispatch, getState) => {
-    fetchGet(
+    return fetchGet(
         dispatch,
         getState,
-        baseUrl,
-        response => dispatch(addFirmwaresAction(response))
-    );
+        baseUrl
+    ).then(response => dispatch(addFirmwaresAction(response)));
 };
 
 const formDataFromFirmware = (firmware, content) => {

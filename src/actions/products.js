@@ -34,12 +34,11 @@ export const dispatchEditProduct = (product) => async dispatch => dispatch(editP
 export const dispatchDeleteProduct = (productId) => async dispatch => dispatch(deleteProductAction(productId));
 
 export const getProducts = () => async (dispatch, getState) => {
-    fetchGet(
+    return fetchGet(
         dispatch,
         getState,
-        baseUrl,
-        response => dispatch(addProductsAction(response))
-    );
+        baseUrl
+    ).then(response => dispatch(addProductsAction(response)));
 };
 
 export const createProduct = (payload) => async (dispatch, getState) => {

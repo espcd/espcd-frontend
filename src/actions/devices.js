@@ -34,12 +34,11 @@ export const dispatchEditDevice = (device) => async dispatch => dispatch(editDev
 export const dispatchDeleteDevice = (deviceId) => async dispatch => dispatch(deleteDeviceAction(deviceId));
 
 export const getDevices = () => async (dispatch, getState) => {
-    fetchGet(
+    return fetchGet(
         dispatch,
         getState,
-        baseUrl,
-        response => dispatch(addDevicesAction(response))
-    );
+        baseUrl
+    ).then(response => dispatch(addDevicesAction(response)));
 };
 
 export const editDevice = (deviceId, payload) => async (dispatch, getState) => {

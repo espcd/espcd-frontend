@@ -34,12 +34,11 @@ export const dispatchEditToken = (token) => async dispatch => dispatch(editToken
 export const dispatchDeleteToken = (tokenId) => async dispatch => dispatch(deleteTokenAction(tokenId));
 
 export const getTokens = () => async (dispatch, getState) => {
-    fetchGet(
+    return fetchGet(
         dispatch,
         getState,
-        baseUrl,
-        response => dispatch(addTokensAction(response))
-    );
+        baseUrl
+    ).then(response => dispatch(addTokensAction(response)));
 };
 
 export const createToken = (payload) => async (dispatch, getState) => {

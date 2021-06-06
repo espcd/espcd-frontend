@@ -1,4 +1,5 @@
 import {addErrorNotification, addSuccessNotification} from "./notifications";
+import {deleteTokenAction} from "./session";
 
 const scheme = process.env.REACT_APP_BACKEND_SECURE === "true" ? "https" : "http";
 export const backendUrl = `${scheme}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
@@ -42,7 +43,11 @@ export const fetchGet = (dispatch, getState, url, onSuccess) => {
         })
         .catch(async error => {
             let message = await parseError(error);
-            dispatch(addErrorNotification(message));
+            if (error.status === 401 && !url.endsWith("/session")) {
+                dispatch(deleteTokenAction())
+            } else {
+                dispatch(addErrorNotification(message));
+            }
         });
 };
 
@@ -61,7 +66,11 @@ export const fetchPostPatchDelete = (dispatch, getState, url, requestOptions, su
             })
             .catch(async error => {
                 let message = await parseError(error);
-                dispatch(addErrorNotification(message));
+                if (error.status === 401 && !url.endsWith("/session")) {
+                    dispatch(deleteTokenAction())
+                } else {
+                    dispatch(addErrorNotification(message));
+                }
             });
     });
 };

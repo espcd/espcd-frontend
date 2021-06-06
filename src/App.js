@@ -16,6 +16,7 @@ import {getDevices} from "./actions/devices";
 import {getFirmwares} from "./actions/firmwares";
 import {getProducts} from "./actions/products";
 import {getTokens} from "./actions/tokens";
+import SpinnerComponent from "./components/SpinnerComponent";
 
 class App extends Component {
     componentDidMount() {
@@ -40,6 +41,7 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
+                <SpinnerComponent/>
                 <TitleComponent/>
                 <SnackbarComponent/>
 

@@ -26,7 +26,7 @@ class LoginComponent extends Component {
     }
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && !this.submitDisabled()) {
             this.handleSubmit();
         }
     };
@@ -42,6 +42,8 @@ class LoginComponent extends Component {
             [event.target.name]: event.target.value
         });
     };
+
+    submitDisabled = () => !this.state.username || !this.state.password;
 
     render() {
         const {classes} = this.props;
@@ -84,6 +86,7 @@ class LoginComponent extends Component {
                             size="large"
                             className={classes.submit}
                             onClick={this.handleSubmit}
+                            disabled={this.submitDisabled()}
                         >
                             Sign In
                         </Button>

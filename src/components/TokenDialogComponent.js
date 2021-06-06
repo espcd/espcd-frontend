@@ -26,7 +26,7 @@ class TokenDialogComponent extends Component {
     };
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter" && event.target.type !== "textarea") {
+        if (event.key === "Enter" && !this.submitDisabled() && event.target.type !== "textarea") {
             this.handleSubmit();
         }
     };
@@ -49,15 +49,15 @@ class TokenDialogComponent extends Component {
         return res ? res : defaultValue;
     };
 
+    submitDisabled = () => !Object.keys(this.props.token).some(key =>
+        this.state.updates[key] && this.state.updates[key] !== this.props.token[key]);
+
     render() {
         let token = {
             id: this.props.token.id,
             title: this.getValue("title"),
             token: this.getValue("token")
         };
-
-        let okButtonDisabled = !Object.keys(this.props.token).some(key =>
-            this.state.updates[key] && this.state.updates[key] !== this.props.token[key]);
 
         return (
             <Dialog
@@ -115,7 +115,7 @@ class TokenDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={okButtonDisabled}
+                        disabled={this.submitDisabled()}
                     >
                         Ok
                     </Button>

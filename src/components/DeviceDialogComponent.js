@@ -38,7 +38,7 @@ class DeviceDialogComponent extends Component {
     };
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter" && event.target.type !== "textarea") {
+        if (event.key === "Enter" && !this.submitDisabled() && event.target.type !== "textarea") {
             this.handleSubmit();
         }
     };
@@ -56,6 +56,9 @@ class DeviceDialogComponent extends Component {
         return res ? res : defaultValue;
     };
 
+    submitDisabled = () => !Object.keys(this.props.device).some(key =>
+        this.state.updates[key] && this.state.updates[key] !== this.props.device[key]);
+
     render() {
         let device = {
             id: this.props.device.id,
@@ -69,9 +72,6 @@ class DeviceDialogComponent extends Component {
 
         let firmware = this.props.firmwares.find(firmware => firmware.id === device.firmware_id) || new Firmware();
         let products = this.props.products.filter(product => product.fqbn === device.fqbn);
-
-        let okButtonDisabled = !Object.keys(this.props.device).some(key =>
-            this.state.updates[key] && this.state.updates[key] !== this.props.device[key]);
 
         return (
             <Dialog
@@ -158,7 +158,7 @@ class DeviceDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={okButtonDisabled}
+                        disabled={this.submitDisabled()}
                     >
                         Ok
                     </Button>

@@ -48,7 +48,7 @@ class ProductDialogComponent extends Component {
     };
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter" && event.target.type !== "textarea") {
+        if (event.key === "Enter" && !this.submitDisabled() && event.target.type !== "textarea") {
             this.handleSubmit();
         }
     };
@@ -71,6 +71,9 @@ class ProductDialogComponent extends Component {
         return res ? res : defaultValue;
     };
 
+    submitDisabled = () => !Object.keys(this.props.product).some(key =>
+        this.state.updates[key] && this.state.updates[key] !== this.props.product[key]);
+
     render() {
         let product = {
             id: this.props.product.id,
@@ -80,9 +83,6 @@ class ProductDialogComponent extends Component {
             auto_update: this.getValue("auto_update", false),
             firmware_id: this.getValue("firmware_id")
         };
-
-        let okButtonDisabled = !Object.keys(this.props.product).some(key =>
-            this.state.updates[key] && this.state.updates[key] !== this.props.product[key]);
 
         return (
             <Dialog
@@ -182,7 +182,7 @@ class ProductDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={okButtonDisabled}
+                        disabled={this.submitDisabled()}
                     >
                         Ok
                     </Button>

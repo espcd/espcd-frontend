@@ -19,7 +19,7 @@ class UserDialogComponent extends Component {
     };
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && !this.submitDisabled()) {
             this.handleSubmit();
         }
     };
@@ -28,6 +28,8 @@ class UserDialogComponent extends Component {
         this.props.editUser(this.state.password)
             .then(() => this.props.closeDialog());
     };
+
+    submitDisabled = () => !this.state.password;
 
     render() {
         return (
@@ -74,7 +76,7 @@ class UserDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={!this.state.password}
+                        disabled={this.submitDisabled()}
                     >
                         Ok
                     </Button>

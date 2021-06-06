@@ -13,6 +13,9 @@ store.subscribe(() => {
     saveState({
         sessionReducer: {
             token: state.sessionReducer.token
+        },
+        userReducer: {
+            username: state.userReducer.username
         }
     });
 });

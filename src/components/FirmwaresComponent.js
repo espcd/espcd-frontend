@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {
     Fab,
     IconButton,
-    Link,
     Paper,
     Table,
     TableBody,
@@ -107,13 +106,12 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.product_id}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Download firmware" aria-label="download firmware">
-                                                <Link
-                                                    href={`${backendUrl}/firmwares/${firmware.id}/content?api_key=${this.props.token}`}
-                                                    component={IconButton}
+                                                <IconButton
                                                     color="inherit"
+                                                    href={`${backendUrl}/firmwares/${firmware.id}/content?api_key=${this.props.token}`}
                                                 >
                                                     <GetApp/>
-                                                </Link>
+                                                </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Edit firmware" aria-label="edit firmware">
                                                 <IconButton color="inherit"

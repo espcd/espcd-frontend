@@ -69,6 +69,7 @@ class TokensComponent extends Component {
                                     {
                                         [
                                             {key: "title", label: "Title"},
+                                            {key: "description", label: "Description"},
                                             {key: "token", label: "Token"}
                                         ].map(
                                             row => (
@@ -99,6 +100,7 @@ class TokensComponent extends Component {
                                         key={`token-table-body-${token.id}`}
                                     >
                                         <TableCell>{token.title}</TableCell>
+                                        <TableCell>{token.description}</TableCell>
                                         <TableCell>{token.token}</TableCell>
                                         <TableCell align="right">
                                             <Button onClick={() => this.openTokenDialog(token.id)}>

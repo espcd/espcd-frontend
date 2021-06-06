@@ -91,6 +91,17 @@ class TokenDialogComponent extends Component {
                         onChange={this.handleChange}
                     />
                     <TextField
+                        margin="dense"
+                        id="description"
+                        name="description"
+                        label="Description"
+                        type="text"
+                        multiline
+                        fullWidth
+                        value={token.description}
+                        onChange={this.handleChange}
+                    />
+                    <TextField
                         disabled
                         margin="dense"
                         id="token"

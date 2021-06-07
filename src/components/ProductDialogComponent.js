@@ -67,12 +67,12 @@ class ProductDialogComponent extends Component {
     };
 
     getValue = (key, defaultValue = "") => {
-        let res = this.state.updates[key] ? this.state.updates[key] : this.props.product[key];
+        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.product[key];
         return res ? res : defaultValue;
     };
 
     submitDisabled = () => !Object.keys(this.props.product).some(key =>
-        this.state.updates[key] && this.state.updates[key] !== this.props.product[key]);
+        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]);
 
     render() {
         let product = {

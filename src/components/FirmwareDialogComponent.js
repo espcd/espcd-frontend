@@ -75,12 +75,12 @@ class FirmwareDialogComponent extends Component {
     };
 
     getValue = (key, defaultValue = "") => {
-        let res = this.state.updates[key] ? this.state.updates[key] : this.props.firmware[key];
+        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.firmware[key];
         return res ? res : defaultValue;
     };
 
     submitDisabled = () => !Object.keys(this.props.firmware).some(key =>
-        this.state.updates[key] && this.state.updates[key] !== this.props.firmware[key]
+        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.firmware[key]
     ) && !this.state.selectedFile
 
     render() {

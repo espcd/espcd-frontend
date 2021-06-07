@@ -45,12 +45,12 @@ class TokenDialogComponent extends Component {
     };
 
     getValue = (key, defaultValue = "") => {
-        let res = this.state.updates[key] ? this.state.updates[key] : this.props.token[key];
+        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.token[key];
         return res ? res : defaultValue;
     };
 
     submitDisabled = () => !Object.keys(this.props.token).some(key =>
-        this.state.updates[key] && this.state.updates[key] !== this.props.token[key]);
+        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.token[key]);
 
     render() {
         let token = {

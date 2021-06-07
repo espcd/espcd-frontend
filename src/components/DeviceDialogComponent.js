@@ -52,12 +52,12 @@ class DeviceDialogComponent extends Component {
     };
 
     getValue = (key, defaultValue = "") => {
-        let res = this.state.updates[key] ? this.state.updates[key] : this.props.device[key];
+        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.device[key];
         return res ? res : defaultValue;
     };
 
     submitDisabled = () => !Object.keys(this.props.device).some(key =>
-        this.state.updates[key] && this.state.updates[key] !== this.props.device[key]);
+        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.device[key]);
 
     render() {
         let device = {

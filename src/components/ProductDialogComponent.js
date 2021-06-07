@@ -8,16 +8,11 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormControl,
     FormControlLabel,
-    InputLabel,
-    MenuItem,
-    Select,
     TextField
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
-import FqbnSelectComponent from "./FqbnSelectComponent";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -26,14 +21,6 @@ class ProductDialogComponent extends Component {
             updates: {}
         };
     }
-
-    handleFqbnChange = (event, value) => {
-        let updates = this.state.updates;
-        updates.fqbn = value;
-        this.setState({
-            updates: updates
-        });
-    };
 
     handleChange = (event) => {
         let target = event.target;
@@ -79,9 +66,7 @@ class ProductDialogComponent extends Component {
             id: this.props.product.id,
             title: this.getValue("title"),
             description: this.getValue("description"),
-            fqbn: this.getValue("fqbn"),
-            auto_update: this.getValue("auto_update", false),
-            firmware_id: this.getValue("firmware_id")
+            auto_update: this.getValue("auto_update", false)
         };
 
         return (
@@ -126,10 +111,6 @@ class ProductDialogComponent extends Component {
                         value={product.description}
                         onChange={this.handleChange}
                     />
-                    <FqbnSelectComponent
-                        fqbn={product.fqbn}
-                        onChange={this.handleFqbnChange}
-                    />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -142,32 +123,6 @@ class ProductDialogComponent extends Component {
                         }
                         label="Auto update"
                     />
-                    <FormControl
-                        fullWidth
-                        margin="dense"
-                        disabled={!this.props.isPresent}
-                    >
-                        <InputLabel id="firmware-select-label">
-                            Latest firmware
-                        </InputLabel>
-                        <Select
-                            labelId="firmware-select-label"
-                            id="firmware_id"
-                            name="firmware_id"
-                            value={product.firmware_id}
-                            onChange={this.handleChange}
-                        >
-                            <MenuItem value={""} key={`firmware-menuitem-`}>-</MenuItem>
-                            {this.props.firmwares.map(firmware => (
-                                <MenuItem
-                                    value={firmware.id}
-                                    key={`firmware-menuitem-${firmware.id}`}
-                                >
-                                    {firmware.title} ({firmware.id})
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button

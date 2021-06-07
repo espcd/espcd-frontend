@@ -26,7 +26,7 @@ class ProductSelectComponent extends Component {
                             value={product.id}
                             key={`product-menuitem-${product.id}`}
                         >
-                            {product.title ? product.title : product.id} ({product.fqbn})
+                            {product.id} {product.title && `(${product.title})`}
                         </MenuItem>
                     ))}
                 </Select>

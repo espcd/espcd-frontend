@@ -81,7 +81,7 @@ class FirmwareDialogComponent extends Component {
 
     submitDisabled = () => !Object.keys(this.props.firmware).some(key =>
         this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.firmware[key]
-    ) && !this.state.selectedFile
+    ) && !this.state.selectedFile;
 
     render() {
         let firmware = {
@@ -92,7 +92,6 @@ class FirmwareDialogComponent extends Component {
             version: this.getValue("version"),
             product_id: this.getValue("product_id")
         };
-        let products = this.props.products.filter(product => product.fqbn === firmware.fqbn);
 
         return (
             <Dialog
@@ -182,7 +181,7 @@ class FirmwareDialogComponent extends Component {
                     </FormControl>
                     <ProductSelectComponent
                         product_id={firmware.product_id}
-                        products={products}
+                        products={this.props.products}
                         onChange={this.handleChange}
                     />
                 </DialogContent>

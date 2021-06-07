@@ -39,7 +39,7 @@ class UserDialogComponent extends Component {
                 onKeyPress={this.handleKeyPress}
             >
                 <DialogTitle>
-                    Change User
+                    Edit User
                 </DialogTitle>
                 <DialogContent dividers>
                     <TextField

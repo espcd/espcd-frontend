@@ -71,7 +71,6 @@ class DeviceDialogComponent extends Component {
         };
 
         let firmware = this.props.firmwares.find(firmware => firmware.id === device.firmware_id) || new Firmware();
-        let products = this.props.products.filter(product => product.fqbn === device.fqbn);
 
         return (
             <Dialog
@@ -122,7 +121,7 @@ class DeviceDialogComponent extends Component {
                     />
                     <ProductSelectComponent
                         product_id={device.product_id}
-                        products={products}
+                        products={this.props.products}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -133,7 +132,7 @@ class DeviceDialogComponent extends Component {
                         label="Installed firmware"
                         type="text"
                         fullWidth
-                        value={firmware.id ? `${firmware.title} (${firmware.id})` : "unknown"}
+                        value={firmware.id ? `${firmware.id + (firmware.title ? ` (${firmware.title})` : "")}` : "unknown"}
                     />
                     <TextField
                         disabled

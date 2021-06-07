@@ -16,7 +16,7 @@ class SpinnerComponent extends Component {
         };
         fetch(`${backendUrl}/devices`, requestOptions)
             .then(response => {
-                if (response.status === 401) {
+                if (response.ok || response.status === 401) {
                     this.setState({active: false});
                 }
             });

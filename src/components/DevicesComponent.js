@@ -14,11 +14,11 @@ import {
 import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import moment from "moment";
 import {Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, DEVICE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 import TableSearchComponent from "./TableSearchComponent";
+import TimeComponent from "./TimeComponent";
 
 class DevicesComponent extends Component {
     deleteDevice(device) {
@@ -92,8 +92,14 @@ class DevicesComponent extends Component {
                                     <TableCell>
                                         {device.firmware_id ? device.firmware_id : "unknown"}
                                     </TableCell>
-                                    <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
-                                    <TableCell>{moment(device.updated_at).fromNow()}</TableCell>
+                                    <TableCell>{device.last_seen ?
+                                        <TimeComponent datetime={device.last_seen}/>
+                                        :
+                                        "never"
+                                    }</TableCell>
+                                    <TableCell>
+                                        <TimeComponent datetime={device.updated_at}/>
+                                    </TableCell>
                                     <TableCell align="right">
                                         <Tooltip title="Edit device" aria-label="edit device">
                                             <IconButton color="inherit"

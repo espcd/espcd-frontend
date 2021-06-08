@@ -21,7 +21,7 @@ import {backendUrl} from "../actions/common";
 import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 import TableSearchComponent from "./TableSearchComponent";
-import moment from "moment";
+import TimeComponent from "./TimeComponent";
 
 const styles = theme => ({
     fab: {
@@ -104,7 +104,9 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.fqbn}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
                                         <TableCell>{firmware.product_id}</TableCell>
-                                        <TableCell>{moment(firmware.updated_at).fromNow()}</TableCell>
+                                        <TableCell>
+                                            <TimeComponent datetime={firmware.updated_at}/>
+                                        </TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Download firmware" aria-label="download firmware">
                                                 <IconButton

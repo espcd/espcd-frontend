@@ -20,7 +20,7 @@ import {Add, Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, openDialog, TOKEN_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedTokens} from "../selectors/tokens";
 import TableSearchComponent from "./TableSearchComponent";
-import moment from "moment";
+import TimeComponent from "./TimeComponent";
 
 const styles = theme => ({
     button: {
@@ -102,7 +102,9 @@ class TokensComponent extends Component {
                                     >
                                         <TableCell>{token.title}</TableCell>
                                         <TableCell>{token.token}</TableCell>
-                                        <TableCell>{moment(token.updated_at).fromNow()}</TableCell>
+                                        <TableCell>
+                                            <TimeComponent datetime={token.updated_at}/>
+                                        </TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit token" aria-label="edit token">
                                                 <IconButton color="inherit"

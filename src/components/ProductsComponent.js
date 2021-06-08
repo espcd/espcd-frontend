@@ -20,7 +20,7 @@ import {Add, Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 import TableSearchComponent from "./TableSearchComponent";
-import moment from "moment";
+import TimeComponent from "./TimeComponent";
 
 const styles = theme => ({
     button: {
@@ -102,7 +102,9 @@ class ProductsComponent extends Component {
                                     >
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
-                                        <TableCell>{moment(product.updated_at).fromNow()}</TableCell>
+                                        <TableCell>
+                                            <TimeComponent datetime={product.updated_at}/>
+                                        </TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit product" aria-label="edit product">
                                                 <IconButton color="inherit"

@@ -67,6 +67,7 @@ class WebsocketComponent extends Component {
 
     connect = () => {
         this.connectChannel("DevicesChannel", payload => {
+            console.log(payload);
             switch (payload.type) {
                 case "create":
                     this.props.dispatchAddDevice(payload.data);
@@ -83,6 +84,7 @@ class WebsocketComponent extends Component {
         });
 
         this.connectChannel("FirmwaresChannel", payload => {
+            console.log(payload);
             switch (payload.type) {
                 case "create":
                     this.props.dispatchAddFirmware(payload.data);
@@ -99,6 +101,7 @@ class WebsocketComponent extends Component {
         });
 
         this.connectChannel("ProductsChannel", payload => {
+            console.log(payload);
             switch (payload.type) {
                 case "create":
                     this.props.dispatchAddProduct(payload.data);
@@ -115,6 +118,7 @@ class WebsocketComponent extends Component {
         });
 
         this.connectChannel("TokensChannel", payload => {
+            console.log(payload);
             switch (payload.type) {
                 case "create":
                     this.props.dispatchAddToken(payload.data);

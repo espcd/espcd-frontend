@@ -25,7 +25,7 @@ import {getFirmwares} from "../actions/firmwares";
 import {getProducts} from "../actions/products";
 import {getTokens} from "../actions/tokens";
 
-const drawerWidth = 200;
+const drawerWidth = 180;
 
 const styles = theme => ({
     root: {
@@ -46,7 +46,7 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3)
+        padding: theme.spacing(2)
     },
     title: {
         flexGrow: 1

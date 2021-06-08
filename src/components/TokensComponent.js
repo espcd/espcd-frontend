@@ -69,6 +69,7 @@ class TokensComponent extends Component {
                                 <TableRow>
                                     {
                                         [
+                                            {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "token", label: "Token"},
                                             {key: "updated_at", label: "Date"}
@@ -100,6 +101,7 @@ class TokensComponent extends Component {
                                         hover
                                         key={`token-table-body-${token.id}`}
                                     >
+                                        <TableCell>{token.id}</TableCell>
                                         <TableCell>{token.title}</TableCell>
                                         <TableCell>{token.token}</TableCell>
                                         <TableCell>
@@ -107,13 +109,18 @@ class TokensComponent extends Component {
                                         </TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit token" aria-label="edit token">
-                                                <IconButton color="inherit"
-                                                            onClick={() => this.openTokenDialog(token.id)}>
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.openTokenDialog(token.id)}
+                                                >
                                                     <Edit/>
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Delete token" aria-label="delete token">
-                                                <IconButton color="inherit" onClick={() => this.deleteToken(token)}>
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.deleteToken(token)}
+                                                >
                                                     <Delete/>
                                                 </IconButton>
                                             </Tooltip>
@@ -125,10 +132,14 @@ class TokensComponent extends Component {
                     </TableContainer>
                 </Paper>
                 <div className={classes.spacing}/>
-                <Tooltip title="Add Token" aria-label="add token">
-                    <Fab color="primary"
-                         className={classes.fab}
-                         onClick={() => this.openTokenDialog()}
+                <Tooltip
+                    title="Add Token"
+                    aria-label="add token"
+                >
+                    <Fab
+                        color="primary"
+                        className={classes.fab}
+                        onClick={() => this.openTokenDialog()}
                     >
                         <Add/>
                     </Fab>

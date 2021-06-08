@@ -69,6 +69,7 @@ class ProductsComponent extends Component {
                                 <TableRow>
                                     {
                                         [
+                                            {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "auto_update", label: "Auto update"},
                                             {key: "updated_at", label: "Date"}
@@ -100,20 +101,32 @@ class ProductsComponent extends Component {
                                         hover
                                         key={`product-table-body-${product.id}`}
                                     >
+                                        <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={product.updated_at}/>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <Tooltip title="Edit product" aria-label="edit product">
-                                                <IconButton color="inherit"
-                                                            onClick={() => this.openProductDialog(product.id)}>
+                                            <Tooltip
+                                                title="Edit product"
+                                                aria-label="edit product"
+                                            >
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.openProductDialog(product.id)}
+                                                >
                                                     <Edit/>
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Delete product" aria-label="delete product">
-                                                <IconButton color="inherit" onClick={() => this.deleteProduct(product)}>
+                                            <Tooltip
+                                                title="Delete product"
+                                                aria-label="delete product"
+                                            >
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.deleteProduct(product)}
+                                                >
                                                     <Delete/>
                                                 </IconButton>
                                             </Tooltip>
@@ -125,10 +138,14 @@ class ProductsComponent extends Component {
                     </TableContainer>
                 </Paper>
                 <div className={classes.spacing}/>
-                <Tooltip title="Add Product" aria-label="add product">
-                    <Fab color="primary"
-                         className={classes.fab}
-                         onClick={() => this.openProductDialog()}
+                <Tooltip
+                    title="Add Product"
+                    aria-label="add product"
+                >
+                    <Fab
+                        color="primary"
+                        className={classes.fab}
+                        onClick={() => this.openProductDialog()}
                     >
                         <Add/>
                     </Fab>

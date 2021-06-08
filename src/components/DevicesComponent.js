@@ -15,7 +15,7 @@ import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, DEVICE_DIALOG, openDialog} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, DEVICE_DIALOG, FIRMWARE_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -41,6 +41,24 @@ class DevicesComponent extends Component {
         );
     }
 
+    openProductDialog(productId = null) {
+        this.props.openDialog(
+            PRODUCT_DIALOG,
+            {
+                productId
+            }
+        );
+    }
+
+    openFirmwareDialog(firmwareId = null) {
+        this.props.openDialog(
+            FIRMWARE_DIALOG,
+            {
+                firmwareId
+            }
+        );
+    }
+
     render() {
         return (
             <Paper>
@@ -50,6 +68,7 @@ class DevicesComponent extends Component {
                             <TableRow>
                                 {
                                     [
+                                        {key: "id", label: "ID"},
                                         {key: "title", label: "Title"},
                                         {key: "fqbn", label: "FQBN"},
                                         {key: "product_id", label: "Product"},
@@ -84,31 +103,49 @@ class DevicesComponent extends Component {
                                     hover
                                     key={`device-table-body-${device.id}`}
                                 >
-                                    <TableCell>{device.title}</TableCell>
-                                    <TableCell>{device.fqbn}</TableCell>
-                                    <TableCell>
+                                    <TableCell>{device.id}</TableCell>
+                                    <TableCell>{device.title ? device.title : ""}</TableCell>
+                                    <TableCell>{device.fqbn ? device.fqbn : ""}</TableCell>
+                                    <TableCell
+                                        style={device.product_id ? {cursor: "pointer"} : {}}
+                                        onClick={() => device.product_id ? this.openProductDialog(device.product_id) : {}}
+                                    >
                                         {device.product_id ? device.product_id : "none"}
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell
+                                        style={device.firmware_id ? {cursor: "pointer"} : {}}
+                                        onClick={() => device.firmware_id ? this.openFirmwareDialog(device.firmware_id) : {}}
+                                    >
                                         {device.firmware_id ? device.firmware_id : "unknown"}
                                     </TableCell>
-                                    <TableCell>{device.last_seen ?
-                                        <TimeComponent datetime={device.last_seen}/>
-                                        :
+                                    <TableCell>{
+                                        device.last_seen ?
+                                        <TimeComponent datetime={device.last_seen}/> :
                                         "never"
                                     }</TableCell>
                                     <TableCell>
                                         <TimeComponent datetime={device.updated_at}/>
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Tooltip title="Edit device" aria-label="edit device">
-                                            <IconButton color="inherit"
-                                                        onClick={() => this.openDeviceDialog(device.id)}>
+                                        <Tooltip
+                                            title="Edit device"
+                                            aria-label="edit device"
+                                        >
+                                            <IconButton
+                                                color="inherit"
+                                                onClick={() => this.openDeviceDialog(device.id)}
+                                            >
                                                 <Edit/>
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip title="Delete device" aria-label="delete device">
-                                            <IconButton color="inherit" onClick={() => this.deleteDevice(device)}>
+                                        <Tooltip
+                                            title="Delete device"
+                                            aria-label="delete device"
+                                        >
+                                            <IconButton
+                                                color="inherit"
+                                                onClick={() => this.deleteDevice(device)}
+                                            >
                                                 <Delete/>
                                             </IconButton>
                                         </Tooltip>

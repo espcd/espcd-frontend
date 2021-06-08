@@ -18,7 +18,7 @@ import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firm
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
-import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -55,6 +55,15 @@ class FirmwaresComponent extends Component {
         );
     }
 
+    openProductDialog(productId = null) {
+        this.props.openDialog(
+            PRODUCT_DIALOG,
+            {
+                productId
+            }
+        );
+    }
+
     render() {
         const {classes} = this.props;
 
@@ -67,6 +76,7 @@ class FirmwaresComponent extends Component {
                                 <TableRow>
                                     {
                                         [
+                                            {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "fqbn", label: "FQBN"},
                                             {key: "version", label: "Version"},
@@ -100,15 +110,24 @@ class FirmwaresComponent extends Component {
                                         hover
                                         key={`tablerow-firmware-${firmware.id}`}
                                     >
+                                        <TableCell>{firmware.id}</TableCell>
                                         <TableCell>{firmware.title}</TableCell>
                                         <TableCell>{firmware.fqbn}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
-                                        <TableCell>{firmware.product_id}</TableCell>
+                                        <TableCell
+                                            style={firmware.product_id ? {cursor: "pointer"} : {}}
+                                            onClick={() => firmware.product_id ? this.openProductDialog(firmware.product_id) : {}}
+                                        >
+                                            {firmware.product_id ? firmware.product_id : "none"}
+                                        </TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={firmware.updated_at}/>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <Tooltip title="Download firmware" aria-label="download firmware">
+                                            <Tooltip
+                                                title="Download firmware"
+                                                aria-label="download firmware"
+                                            >
                                                 <IconButton
                                                     color="inherit"
                                                     href={`${backendUrl}/firmwares/${firmware.id}/content?api_key=${this.props.token}`}
@@ -116,15 +135,25 @@ class FirmwaresComponent extends Component {
                                                     <GetApp/>
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Edit firmware" aria-label="edit firmware">
-                                                <IconButton color="inherit"
-                                                            onClick={() => this.openFirmwareDialog(firmware.id)}>
+                                            <Tooltip
+                                                title="Edit firmware"
+                                                aria-label="edit firmware"
+                                            >
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.openFirmwareDialog(firmware.id)}
+                                                >
                                                     <Edit/>
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Delete firmware" aria-label="delete firmware">
-                                                <IconButton color="inherit"
-                                                            onClick={() => this.deleteFirmware(firmware)}>
+                                            <Tooltip
+                                                title="Delete firmware"
+                                                aria-label="delete firmware"
+                                            >
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.deleteFirmware(firmware)}
+                                                >
                                                     <Delete/>
                                                 </IconButton>
                                             </Tooltip>
@@ -136,10 +165,14 @@ class FirmwaresComponent extends Component {
                     </TableContainer>
                 </Paper>
                 <div className={classes.spacing}/>
-                <Tooltip title="Add Firmware" aria-label="add firmware">
-                    <Fab color="primary"
-                         className={classes.fab}
-                         onClick={() => this.openFirmwareDialog()}
+                <Tooltip
+                    title="Add Firmware"
+                    aria-label="add firmware"
+                >
+                    <Fab
+                        color="primary"
+                        className={classes.fab}
+                        onClick={() => this.openFirmwareDialog()}
                     >
                         <Add/>
                     </Fab>

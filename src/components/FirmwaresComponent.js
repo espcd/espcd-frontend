@@ -21,6 +21,7 @@ import {backendUrl} from "../actions/common";
 import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog} from "../actions/dialog";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 import TableSearchComponent from "./TableSearchComponent";
+import moment from "moment";
 
 const styles = theme => ({
     fab: {
@@ -67,10 +68,10 @@ class FirmwaresComponent extends Component {
                                     {
                                         [
                                             {key: "title", label: "Title"},
-                                            {key: "description", label: "Description"},
                                             {key: "fqbn", label: "FQBN"},
                                             {key: "version", label: "Version"},
-                                            {key: "product_id", label: "Product"}
+                                            {key: "product_id", label: "Product"},
+                                            {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
                                                 <TableCell key={`firmwares-table-head-${row.key}`}>
@@ -100,10 +101,10 @@ class FirmwaresComponent extends Component {
                                         key={`tablerow-firmware-${firmware.id}`}
                                     >
                                         <TableCell>{firmware.title}</TableCell>
-                                        <TableCell>{firmware.description}</TableCell>
                                         <TableCell>{firmware.fqbn}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
                                         <TableCell>{firmware.product_id}</TableCell>
+                                        <TableCell>{moment(firmware.updated_at).fromNow()}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Download firmware" aria-label="download firmware">
                                                 <IconButton

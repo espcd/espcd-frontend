@@ -20,6 +20,7 @@ import {Add, Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 import TableSearchComponent from "./TableSearchComponent";
+import moment from "moment";
 
 const styles = theme => ({
     button: {
@@ -69,8 +70,8 @@ class ProductsComponent extends Component {
                                     {
                                         [
                                             {key: "title", label: "Title"},
-                                            {key: "description", label: "Description"},
-                                            {key: "auto_update", label: "Auto update"}
+                                            {key: "auto_update", label: "Auto update"},
+                                            {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
                                                 <TableCell key={`products-table-head-${row.key}`}>
@@ -100,8 +101,8 @@ class ProductsComponent extends Component {
                                         key={`product-table-body-${product.id}`}
                                     >
                                         <TableCell>{product.title}</TableCell>
-                                        <TableCell>{product.description}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
+                                        <TableCell>{moment(product.updated_at).fromNow()}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit product" aria-label="edit product">
                                                 <IconButton color="inherit"

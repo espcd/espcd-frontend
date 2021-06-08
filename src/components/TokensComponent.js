@@ -20,6 +20,7 @@ import {Add, Delete, Edit} from "@material-ui/icons";
 import {CONFIRMATION_DIALOG, openDialog, TOKEN_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedTokens} from "../selectors/tokens";
 import TableSearchComponent from "./TableSearchComponent";
+import moment from "moment";
 
 const styles = theme => ({
     button: {
@@ -69,8 +70,8 @@ class TokensComponent extends Component {
                                     {
                                         [
                                             {key: "title", label: "Title"},
-                                            {key: "description", label: "Description"},
-                                            {key: "token", label: "Token"}
+                                            {key: "token", label: "Token"},
+                                            {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
                                                 <TableCell key={`tokens-table-head-${row.key}`}>
@@ -100,8 +101,8 @@ class TokensComponent extends Component {
                                         key={`token-table-body-${token.id}`}
                                     >
                                         <TableCell>{token.title}</TableCell>
-                                        <TableCell>{token.description}</TableCell>
                                         <TableCell>{token.token}</TableCell>
+                                        <TableCell>{moment(token.updated_at).fromNow()}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit token" aria-label="edit token">
                                                 <IconButton color="inherit"

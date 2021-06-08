@@ -51,11 +51,11 @@ class DevicesComponent extends Component {
                                 {
                                     [
                                         {key: "title", label: "Title"},
-                                        {key: "description", label: "Description"},
                                         {key: "fqbn", label: "FQBN"},
                                         {key: "product_id", label: "Product"},
                                         {key: "firmware_id", label: "Installed firmware"},
                                         {key: "last_seen", label: "Last seen"},
+                                        {key: "updated_at", label: "Date"}
                                     ].map(
                                         row => (
                                             <TableCell key={`devices-table-head-${row.key}`}>
@@ -85,7 +85,6 @@ class DevicesComponent extends Component {
                                     key={`device-table-body-${device.id}`}
                                 >
                                     <TableCell>{device.title}</TableCell>
-                                    <TableCell>{device.description}</TableCell>
                                     <TableCell>{device.fqbn}</TableCell>
                                     <TableCell>
                                         {device.product_id ? device.product_id : "none"}
@@ -94,6 +93,7 @@ class DevicesComponent extends Component {
                                         {device.firmware_id ? device.firmware_id : "unknown"}
                                     </TableCell>
                                     <TableCell>{device.last_seen ? moment(device.last_seen).fromNow() : "never"}</TableCell>
+                                    <TableCell>{moment(device.updated_at).fromNow()}</TableCell>
                                     <TableCell align="right">
                                         <Tooltip title="Edit device" aria-label="edit device">
                                             <IconButton color="inherit"

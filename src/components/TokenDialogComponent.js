@@ -111,7 +111,7 @@ class TokenDialogComponent extends Component {
                         type="text"
                         multiline
                         fullWidth
-                        value={token.description}
+                        value={token.token}
                         onChange={this.handleChange}
                     />
                 </DialogContent>

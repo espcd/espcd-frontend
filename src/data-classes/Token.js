@@ -3,6 +3,7 @@ export default class Token {
     title = "";
     description = "";
     token = "";
+    expires_at = "";
     created_at = "";
     updated_at = "";
 }

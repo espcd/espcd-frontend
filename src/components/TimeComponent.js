@@ -10,7 +10,12 @@ class TimeComponent extends Component {
     }
 
     formatDatetime = () => {
-        let formatted = moment(this.props.datetime).fromNow();
+        let formatted;
+        if (this.props.onPast && new Date(this.props.datetime) < new Date()) {
+            formatted = this.props.onPast;
+        } else {
+            formatted = moment(this.props.datetime).fromNow();
+        }
         if (formatted !== this.state.formatted) {
             this.setState({
                 formatted: formatted

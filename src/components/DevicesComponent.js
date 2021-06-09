@@ -120,8 +120,8 @@ class DevicesComponent extends Component {
                                     </TableCell>
                                     <TableCell>{
                                         device.last_seen ?
-                                        <TimeComponent datetime={device.last_seen}/> :
-                                        "never"
+                                            <TimeComponent datetime={device.last_seen}/> :
+                                            "never"
                                     }</TableCell>
                                     <TableCell>
                                         <TimeComponent datetime={device.updated_at}/>

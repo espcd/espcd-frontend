@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Token from "../data-classes/Token";
 import {closeDialog} from "../actions/dialog";
+import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/moment";
 
 class TokenDialogComponent extends Component {
     constructor(props) {
@@ -13,6 +15,12 @@ class TokenDialogComponent extends Component {
         };
     }
 
+    componentDidMount() {
+        if (!this.props.token.expires_at) {
+            this.handleDateChange(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000));
+        }
+    }
+
     handleChange = (event) => {
         let target = event.target;
         let key = target.name;
@@ -20,6 +28,14 @@ class TokenDialogComponent extends Component {
 
         let updates = this.state.updates;
         updates[key] = value;
+        this.setState({
+            updates: updates
+        });
+    };
+
+    handleDateChange = (value) => {
+        let updates = this.state.updates;
+        updates.expires_at = value;
         this.setState({
             updates: updates
         });
@@ -56,7 +72,8 @@ class TokenDialogComponent extends Component {
         let token = {
             id: this.props.token.id,
             title: this.getValue("title"),
-            token: this.getValue("token")
+            token: this.getValue("token"),
+            expires_at: this.getValue("expires_at")
         };
 
         return (
@@ -114,6 +131,21 @@ class TokenDialogComponent extends Component {
                         value={token.token}
                         onChange={this.handleChange}
                     />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DateTimePicker
+                            required
+                            autoOk
+                            showTodayButton
+                            margin="dense"
+                            ampm={false}
+                            value={token.expires_at}
+                            onChange={this.handleDateChange}
+                            format="DD/MM/YYYY HH:mm"
+                            id="expires_at"
+                            name="expires_at"
+                            label="Expires at"
+                        />
+                    </MuiPickersUtilsProvider>
                 </DialogContent>
                 <DialogActions>
                     <Button

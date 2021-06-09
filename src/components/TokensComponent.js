@@ -72,6 +72,7 @@ class TokensComponent extends Component {
                                             {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "token", label: "Token"},
+                                            {key: "expires_at", label: "Expires at"},
                                             {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
@@ -104,6 +105,9 @@ class TokensComponent extends Component {
                                         <TableCell>{token.id}</TableCell>
                                         <TableCell>{token.title}</TableCell>
                                         <TableCell>{token.token}</TableCell>
+                                        <TableCell>
+                                            <TimeComponent datetime={token.expires_at} onPast="expired"/>
+                                        </TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={token.updated_at}/>
                                         </TableCell>

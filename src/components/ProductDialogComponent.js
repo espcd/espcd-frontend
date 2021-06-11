@@ -66,7 +66,8 @@ class ProductDialogComponent extends Component {
             id: this.props.product.id,
             title: this.getValue("title"),
             description: this.getValue("description"),
-            auto_update: this.getValue("auto_update", false)
+            auto_update: this.getValue("auto_update", false),
+            check_interval: this.getValue("check_interval")
         };
 
         return (
@@ -122,6 +123,16 @@ class ProductDialogComponent extends Component {
                             />
                         }
                         label="Auto update"
+                    />
+                    <TextField
+                        margin="dense"
+                        id="check_interval"
+                        name="check_interval"
+                        label="Check interval"
+                        type="text"
+                        fullWidth
+                        value={product.check_interval}
+                        onChange={this.handleChange}
                     />
                 </DialogContent>
                 <DialogActions>

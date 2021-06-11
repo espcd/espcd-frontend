@@ -72,6 +72,7 @@ class ProductsComponent extends Component {
                                             {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "auto_update", label: "Auto update"},
+                                            {key: "check_interval", label: "Check interval"},
                                             {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
@@ -104,6 +105,7 @@ class ProductsComponent extends Component {
                                         <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
+                                        <TableCell>{product.check_interval}s</TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={product.updated_at}/>
                                         </TableCell>

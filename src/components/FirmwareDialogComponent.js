@@ -181,7 +181,6 @@ class FirmwareDialogComponent extends Component {
                     </FormControl>
                     <ProductSelectComponent
                         product_id={firmware.product_id}
-                        products={this.props.products}
                         onChange={this.handleChange}
                     />
                 </DialogContent>
@@ -214,8 +213,7 @@ const mapStateToProps = (state) => {
         firmware,
         isPresent: !!firmwareId,
         open: state.dialogReducer.open,
-        firmwares: state.firmwaresReducer.firmwares,
-        products: state.productsReducer.products
+        firmwares: state.firmwaresReducer.firmwares
     };
 };
 

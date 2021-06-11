@@ -17,7 +17,7 @@ import {deleteToken, setTokenQuery, setTokenSort} from "../actions/tokens";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog, TOKEN_DIALOG} from "../actions/dialog";
+import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG, TOKEN_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedTokens} from "../selectors/tokens";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -57,6 +57,15 @@ class TokensComponent extends Component {
         );
     }
 
+    openProductDialog(productId = null) {
+        this.props.openDialog(
+            PRODUCT_DIALOG,
+            {
+                productId
+            }
+        );
+    }
+
     render() {
         const {classes} = this.props;
 
@@ -72,6 +81,7 @@ class TokensComponent extends Component {
                                             {key: "id", label: "ID"},
                                             {key: "title", label: "Title"},
                                             {key: "token", label: "Token"},
+                                            {key: "product_id", label: "Product"},
                                             {key: "expires_at", label: "Expires at"},
                                             {key: "updated_at", label: "Date"}
                                         ].map(
@@ -105,6 +115,12 @@ class TokensComponent extends Component {
                                         <TableCell>{token.id}</TableCell>
                                         <TableCell>{token.title}</TableCell>
                                         <TableCell>{token.token}</TableCell>
+                                        <TableCell
+                                            style={token.product_id ? {cursor: "pointer"} : {}}
+                                            onClick={() => token.product_id ? this.openProductDialog(token.product_id) : {}}
+                                        >
+                                            {token.product_id ? token.product_id : "none"}
+                                        </TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={token.expires_at} onPast="expired"/>
                                         </TableCell>

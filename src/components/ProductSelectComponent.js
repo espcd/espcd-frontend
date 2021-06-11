@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {connect} from "react-redux";
 
 class ProductSelectComponent extends Component {
     render() {
@@ -35,4 +36,10 @@ class ProductSelectComponent extends Component {
     }
 }
 
-export default ProductSelectComponent;
+const mapStateToProps = (state) => ({
+    products: state.productsReducer.products
+});
+
+export default connect(mapStateToProps)(
+    ProductSelectComponent
+);

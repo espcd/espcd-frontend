@@ -6,6 +6,7 @@ import Token from "../data-classes/Token";
 import {closeDialog} from "../actions/dialog";
 import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/moment";
+import ProductSelectComponent from "./ProductSelectComponent";
 
 class TokenDialogComponent extends Component {
     constructor(props) {
@@ -73,7 +74,8 @@ class TokenDialogComponent extends Component {
             id: this.props.token.id,
             title: this.getValue("title"),
             token: this.getValue("token"),
-            expires_at: this.getValue("expires_at")
+            expires_at: this.getValue("expires_at"),
+            product_id: this.getValue("product_id")
         };
 
         return (
@@ -129,6 +131,10 @@ class TokenDialogComponent extends Component {
                         multiline
                         fullWidth
                         value={token.token}
+                        onChange={this.handleChange}
+                    />
+                    <ProductSelectComponent
+                        product_id={token.product_id}
                         onChange={this.handleChange}
                     />
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>

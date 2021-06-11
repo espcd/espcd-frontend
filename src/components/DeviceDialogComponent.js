@@ -121,7 +121,6 @@ class DeviceDialogComponent extends Component {
                     />
                     <ProductSelectComponent
                         product_id={device.product_id}
-                        products={this.props.products}
                         onChange={this.handleChange}
                     />
                     <TextField
@@ -173,8 +172,7 @@ const mapStateToProps = (state) => {
     return {
         device,
         open: state.dialogReducer.open,
-        firmwares: state.firmwaresReducer.firmwares,
-        products: state.productsReducer.products
+        firmwares: state.firmwaresReducer.firmwares
     };
 };
 

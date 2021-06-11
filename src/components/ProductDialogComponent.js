@@ -9,6 +9,7 @@ import {
     DialogContent,
     DialogTitle,
     FormControlLabel,
+    InputAdornment,
     TextField
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
@@ -129,7 +130,10 @@ class ProductDialogComponent extends Component {
                         id="check_interval"
                         name="check_interval"
                         label="Check interval"
-                        type="text"
+                        type="number"
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">s</InputAdornment>,
+                        }}
                         fullWidth
                         value={product.check_interval}
                         onChange={this.handleChange}

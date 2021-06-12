@@ -80,7 +80,6 @@ class FirmwaresComponent extends Component {
                                             {key: "title", label: "Title"},
                                             {key: "fqbn", label: "FQBN"},
                                             {key: "version", label: "Version"},
-                                            {key: "product_id", label: "Product"},
                                             {key: "updated_at", label: "Date"}
                                         ].map(
                                             row => (
@@ -114,12 +113,6 @@ class FirmwaresComponent extends Component {
                                         <TableCell>{firmware.title}</TableCell>
                                         <TableCell>{firmware.fqbn}</TableCell>
                                         <TableCell>{firmware.version}</TableCell>
-                                        <TableCell
-                                            style={firmware.product_id ? {cursor: "pointer"} : {}}
-                                            onClick={() => firmware.product_id ? this.openProductDialog(firmware.product_id) : {}}
-                                        >
-                                            {firmware.product_id ? firmware.product_id : "none"}
-                                        </TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={firmware.updated_at}/>
                                         </TableCell>

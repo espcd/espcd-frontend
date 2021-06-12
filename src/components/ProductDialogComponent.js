@@ -55,7 +55,7 @@ class ProductDialogComponent extends Component {
         this.setState({
             firmware_id: event.target.value
         });
-    }
+    };
 
     handleKeyPress = (event) => {
         if (event.key === "Enter" && this.submitEnabled() && event.target.type !== "textarea") {
@@ -97,7 +97,7 @@ class ProductDialogComponent extends Component {
 
     productChanged = () => Object.keys(this.props.product).some(key =>
         this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]
-    )
+    );
 
     productFirmwareChanged = () => this.state.fqbn && this.state.firmware_id;
 

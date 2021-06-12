@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import {closeDialog} from "../actions/dialog";
 import FqbnSelectComponent from "./FqbnSelectComponent";
-import ProductSelectComponent from "./ProductSelectComponent";
 import Firmware from "../data-classes/Firmware";
 
 class FirmwareDialogComponent extends Component {

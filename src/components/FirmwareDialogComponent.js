@@ -137,6 +137,7 @@ class FirmwareDialogComponent extends Component {
                     />
                     <FqbnSelectComponent
                         disabled={this.props.isPresent}
+                        required
                         fqbn={firmware.fqbn}
                         onChange={this.handleFqbnChange}
                     />
@@ -179,10 +180,6 @@ class FirmwareDialogComponent extends Component {
                             </Grid>
                         </Grid>
                     </FormControl>
-                    <ProductSelectComponent
-                        product_id={firmware.product_id}
-                        onChange={this.handleChange}
-                    />
                 </DialogContent>
                 <DialogActions>
                     <Button

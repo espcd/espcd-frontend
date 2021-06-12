@@ -15,12 +15,12 @@ class FqbnSelectComponent extends Component {
                     id="fqbn"
                     name="fqbn"
                     value={this.props.fqbn}
-                    options={FQBNs}
+                    options={this.props.options ? this.props.options : FQBNs}
                     renderInput={params =>
                         <TextField
                             {...params}
                             label="FQBN"
-                            required
+                            required={this.props.required}
                         />
                     }
                     onChange={this.props.onChange}

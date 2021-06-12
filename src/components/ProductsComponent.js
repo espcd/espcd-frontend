@@ -105,7 +105,7 @@ class ProductsComponent extends Component {
                                         <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.title}</TableCell>
                                         <TableCell>{product.auto_update ? "yes" : "no"}</TableCell>
-                                        <TableCell>{product.check_interval}s</TableCell>
+                                        <TableCell>{product.check_interval} s</TableCell>
                                         <TableCell>
                                             <TimeComponent datetime={product.updated_at}/>
                                         </TableCell>

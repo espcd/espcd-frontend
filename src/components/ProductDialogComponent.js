@@ -14,12 +14,17 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
+import FqbnSelectComponent from "./FqbnSelectComponent";
+import FirmwareSelectComponent from "./FirmwareSelectComponent";
+import {editFirmware} from "../actions/firmwares";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updates: {}
+            updates: {},
+            fqbn: "",
+            firmware_id: ""
         };
     }
 
@@ -35,8 +40,25 @@ class ProductDialogComponent extends Component {
         });
     };
 
+    handleFqbnChange = (event, value) => {
+        let fqbn = value;
+        let firmware = this.props.firmwares.find(firmware =>
+            firmware.product_id === this.props.productId && firmware.fqbn === fqbn);
+        let firmware_id = firmware ? firmware.id : "";
+        this.setState({
+            fqbn,
+            firmware_id
+        });
+    };
+
+    handleFirmwareChange = (event) => {
+        this.setState({
+            firmware_id: event.target.value
+        });
+    }
+
     handleKeyPress = (event) => {
-        if (event.key === "Enter" && !this.submitDisabled() && event.target.type !== "textarea") {
+        if (event.key === "Enter" && this.submitEnabled() && event.target.type !== "textarea") {
             this.handleSubmit();
         }
     };
@@ -46,11 +68,23 @@ class ProductDialogComponent extends Component {
         let payload = this.state.updates;
 
         if (this.props.isPresent) {
-            this.props.editProduct(productId, payload)
-                .then(() => this.props.closeDialog());
+            if (this.productChanged()) {
+                this.props.editProduct(productId, payload)
+                    .then(() => this.props.closeDialog());
+            }
+            if (this.productFirmwareChanged()) {
+                this.props.editFirmware(this.state.firmware_id, {product_id: productId})
+                    .then(() => this.props.closeDialog());
+            }
         } else {
-            this.props.createProduct(payload)
-                .then(() => this.props.closeDialog());
+            if (this.productChanged()) {
+                this.props.createProduct(payload)
+                    .then(() => this.props.closeDialog());
+            }
+            if (this.productFirmwareChanged()) {
+                this.props.editFirmware(this.state.firmware_id, {product_id: productId})
+                    .then(() => this.props.closeDialog());
+            }
         }
     };
 
@@ -59,8 +93,13 @@ class ProductDialogComponent extends Component {
         return res ? res : defaultValue;
     };
 
-    submitDisabled = () => !Object.keys(this.props.product).some(key =>
-        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]);
+    submitEnabled = () => this.productChanged() || this.productFirmwareChanged();
+
+    productChanged = () => Object.keys(this.props.product).some(key =>
+        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]
+    )
+
+    productFirmwareChanged = () => this.state.fqbn && this.state.firmware_id;
 
     render() {
         let product = {
@@ -138,6 +177,16 @@ class ProductDialogComponent extends Component {
                         value={product.check_interval}
                         onChange={this.handleChange}
                     />
+                    <FqbnSelectComponent
+                        options={this.props.fqbns}
+                        fqbn={this.state.fqbn}
+                        onChange={this.handleFqbnChange}
+                    />
+                    <FirmwareSelectComponent
+                        fqbn={this.state.fqbn}
+                        firmware_id={this.state.firmware_id}
+                        onChange={this.handleFirmwareChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -151,7 +200,7 @@ class ProductDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={this.submitDisabled()}
+                        disabled={!this.submitEnabled()}
                     >
                         Ok
                     </Button>
@@ -164,20 +213,22 @@ class ProductDialogComponent extends Component {
 const mapStateToProps = (state) => {
     let productId = state.dialogReducer.props.productId;
     let product = state.productsReducer.products.find(product => product.id === productId) || new Product();
-    let firmwares = state.firmwaresReducer.firmwares.filter(firmware => firmware.product_id === productId);
+    let firmwares = state.firmwaresReducer.firmwares;
     return {
         open: state.dialogReducer.open,
         isPresent: !!productId,
         productId,
         product,
-        firmwares
+        firmwares,
+        fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))]
     };
 };
 
 const mapDispatchToProps = {
     closeDialog,
     createProduct,
-    editProduct
+    editProduct,
+    editFirmware
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

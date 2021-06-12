@@ -116,6 +116,7 @@ class DeviceDialogComponent extends Component {
                     />
                     <FqbnSelectComponent
                         disabled
+                        required
                         fqbn={device.fqbn}
                         onChange={this.handleFqbnChange}
                     />

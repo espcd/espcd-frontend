@@ -4,6 +4,7 @@ export default class Product {
     description = "";
     auto_update = false;
     check_interval = "";
+    lock_firmwares = "";
     created_at = "";
     updated_at = "";
 }

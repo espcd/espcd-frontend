@@ -107,7 +107,8 @@ class ProductDialogComponent extends Component {
             title: this.getValue("title"),
             description: this.getValue("description"),
             auto_update: this.getValue("auto_update", false),
-            check_interval: this.getValue("check_interval")
+            check_interval: this.getValue("check_interval"),
+            lock_firmwares: this.getValue("lock_firmwares")
         };
 
         return (
@@ -186,6 +187,18 @@ class ProductDialogComponent extends Component {
                         fqbn={this.state.fqbn}
                         firmware_id={this.state.firmware_id}
                         onChange={this.handleFirmwareChange}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={product.lock_firmwares}
+                                onChange={this.handleChange}
+                                id="lock_firmwares"
+                                name="lock_firmwares"
+                                color="primary"
+                            />
+                        }
+                        label="Lock firmwares"
                     />
                 </DialogContent>
                 <DialogActions>

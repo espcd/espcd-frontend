@@ -18,6 +18,7 @@ class DeleteConfirmationDialog extends Component {
     render() {
         return (
             <Dialog
+                fullWidth
                 open={this.props.open}
                 onClose={this.props.closeDialog}
                 onKeyPress={this.handleKeyPress}

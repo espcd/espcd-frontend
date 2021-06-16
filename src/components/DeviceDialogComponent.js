@@ -74,6 +74,7 @@ class DeviceDialogComponent extends Component {
 
         return (
             <Dialog
+                fullWidth
                 open={this.props.open}
                 onClose={this.props.closeDialog}
                 onKeyPress={this.handleKeyPress}

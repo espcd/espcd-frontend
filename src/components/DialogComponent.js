@@ -4,6 +4,7 @@ import {
     CONFIRMATION_DIALOG,
     DEVICE_DIALOG,
     FIRMWARE_DIALOG,
+    FIRMWARE_HISTORY_COMPONENT,
     PRODUCT_DIALOG,
     TOKEN_DIALOG,
     USER_DIALOG_COMPONENT
@@ -15,6 +16,7 @@ import FirmwareDialogComponent from "./FirmwareDialogComponent";
 import ProductDialogComponent from "./ProductDialogComponent";
 import TokenDialogComponent from "./TokenDialogComponent";
 import UserDialogComponent from "./UserDialogComponent";
+import ProductFirmwareDialogComponent from "./ProductFirmwareDialogComponent";
 
 class DialogComponent extends Component {
     render() {
@@ -31,6 +33,8 @@ class DialogComponent extends Component {
                 return <TokenDialogComponent/>;
             case USER_DIALOG_COMPONENT:
                 return <UserDialogComponent/>;
+            case FIRMWARE_HISTORY_COMPONENT:
+                return <ProductFirmwareDialogComponent/>;
             default:
                 return null;
         }

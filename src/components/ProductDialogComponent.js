@@ -14,17 +14,12 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialog";
-import FqbnSelectComponent from "./FqbnSelectComponent";
-import FirmwareSelectComponent from "./FirmwareSelectComponent";
-import {editFirmware} from "../actions/firmwares";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updates: {},
-            fqbn: "",
-            firmware_id: ""
+            updates: {}
         };
     }
 
@@ -40,23 +35,6 @@ class ProductDialogComponent extends Component {
         });
     };
 
-    handleFqbnChange = (event, value) => {
-        let fqbn = value;
-        let firmware = this.props.firmwares.find(firmware =>
-            firmware.product_id === this.props.productId && firmware.fqbn === fqbn);
-        let firmware_id = firmware ? firmware.id : "";
-        this.setState({
-            fqbn,
-            firmware_id
-        });
-    };
-
-    handleFirmwareChange = (event) => {
-        this.setState({
-            firmware_id: event.target.value
-        });
-    };
-
     handleKeyPress = (event) => {
         if (event.key === "Enter" && this.submitEnabled() && event.target.type !== "textarea") {
             this.handleSubmit();
@@ -68,23 +46,11 @@ class ProductDialogComponent extends Component {
         let payload = this.state.updates;
 
         if (this.props.isPresent) {
-            if (this.productChanged()) {
-                this.props.editProduct(productId, payload)
-                    .then(() => this.props.closeDialog());
-            }
-            if (this.productFirmwareChanged()) {
-                this.props.editFirmware(this.state.firmware_id, {product_id: productId})
-                    .then(() => this.props.closeDialog());
-            }
+            this.props.editProduct(productId, payload)
+                .then(() => this.props.closeDialog());
         } else {
-            if (this.productChanged()) {
-                this.props.createProduct(payload)
-                    .then(() => this.props.closeDialog());
-            }
-            if (this.productFirmwareChanged()) {
-                this.props.editFirmware(this.state.firmware_id, {product_id: productId})
-                    .then(() => this.props.closeDialog());
-            }
+            this.props.createProduct(payload)
+                .then(() => this.props.closeDialog());
         }
     };
 
@@ -93,26 +59,23 @@ class ProductDialogComponent extends Component {
         return res ? res : defaultValue;
     };
 
-    submitEnabled = () => this.productChanged() || this.productFirmwareChanged();
-
-    productChanged = () => Object.keys(this.props.product).some(key =>
+    submitEnabled = () => Object.keys(this.props.product).some(key =>
         this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]
     );
-
-    productFirmwareChanged = () => this.state.fqbn && this.state.firmware_id;
 
     render() {
         let product = {
             id: this.props.product.id,
             title: this.getValue("title"),
             description: this.getValue("description"),
-            auto_update: this.getValue("auto_update", false),
-            check_interval: this.getValue("check_interval"),
-            lock_firmwares: this.getValue("lock_firmwares")
+            auto_update: this.getValue("auto_update", true),
+            check_interval: this.getValue("check_interval", 60),
+            lock_firmwares: this.getValue("lock_firmwares", false)
         };
 
         return (
             <Dialog
+                fullWidth
                 open={this.props.open}
                 onClose={this.props.closeDialog}
                 onKeyPress={this.handleKeyPress}
@@ -178,16 +141,6 @@ class ProductDialogComponent extends Component {
                         value={product.check_interval}
                         onChange={this.handleChange}
                     />
-                    <FqbnSelectComponent
-                        options={this.props.fqbns}
-                        fqbn={this.state.fqbn}
-                        onChange={this.handleFqbnChange}
-                    />
-                    <FirmwareSelectComponent
-                        fqbn={this.state.fqbn}
-                        firmware_id={this.state.firmware_id}
-                        onChange={this.handleFirmwareChange}
-                    />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -226,22 +179,17 @@ class ProductDialogComponent extends Component {
 const mapStateToProps = (state) => {
     let productId = state.dialogReducer.props.productId;
     let product = state.productsReducer.products.find(product => product.id === productId) || new Product();
-    let firmwares = state.firmwaresReducer.firmwares;
     return {
         open: state.dialogReducer.open,
         isPresent: !!productId,
-        productId,
-        product,
-        firmwares,
-        fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))]
+        product
     };
 };
 
 const mapDispatchToProps = {
     closeDialog,
     createProduct,
-    editProduct,
-    editFirmware
+    editProduct
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

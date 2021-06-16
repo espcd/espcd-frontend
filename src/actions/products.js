@@ -88,6 +88,26 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
     );
 };
 
+export const editProductFirmware = (productId, fqbn, firmwareId) => async (dispatch, getState) => {
+    const payload = {
+        "firmware_id": firmwareId
+    };
+    const requestOptions = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    };
+    return fetchPostPatchDelete(
+        dispatch,
+        getState,
+        `${baseUrl}/${productId}/firmware/${fqbn}`,
+        requestOptions,
+        "Product edited"
+    );
+};
+
 export const setProductQuery = (query) => async dispatch => {
     dispatch({
         type: SET_PRODUCT_QUERY,

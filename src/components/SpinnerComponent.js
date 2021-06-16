@@ -43,6 +43,7 @@ class SpinnerComponent extends Component {
     render() {
         return (
             <Dialog
+                fullWidth
                 open={this.state.active}
                 PaperProps={{
                     style: {

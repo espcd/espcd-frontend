@@ -41,12 +41,12 @@ export const boardTypesReducer = (state = initialState, action) => {
                     [action.data.id]: action.data.versions
                         .filter(version => version.object)
                         .map(version => {
-                            version.object = JSON.parse(version.object)
+                            version.object = JSON.parse(version.object);
                             return version;
                         })
                         .reverse()
                 }
-            }
+            };
         default:
             return state;
     }

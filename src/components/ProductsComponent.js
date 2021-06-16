@@ -16,8 +16,8 @@ import {
 import {deleteProduct, setProductQuery, setProductSort} from "../actions/products";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {Add, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
+import {Add, Delete, Edit, Memory} from "@material-ui/icons";
+import {CONFIRMATION_DIALOG, FIRMWARE_HISTORY_COMPONENT, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -51,6 +51,15 @@ class ProductsComponent extends Component {
     openProductDialog(productId = null) {
         this.props.openDialog(
             PRODUCT_DIALOG,
+            {
+                productId
+            }
+        );
+    }
+
+    openFirmwareHistoryDialog(productId) {
+        this.props.openDialog(
+            FIRMWARE_HISTORY_COMPONENT,
             {
                 productId
             }
@@ -121,6 +130,17 @@ class ProductsComponent extends Component {
                                                     onClick={() => this.openProductDialog(product.id)}
                                                 >
                                                     <Edit/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip
+                                                title="Edit product firmware"
+                                                aria-label="edit product firmware"
+                                            >
+                                                <IconButton
+                                                    color="inherit"
+                                                    onClick={() => this.openFirmwareHistoryDialog(product.id)}
+                                                >
+                                                    <Memory/>
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip

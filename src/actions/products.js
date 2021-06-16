@@ -9,22 +9,22 @@ export const SET_PRODUCT_SORT = "SET_PRODUCT_SORT";
 
 const baseUrl = `${backendUrl}/products`;
 
-export const addProductsAction = (products) => ({
+const addProductsAction = (products) => ({
     type: ADD_PRODUCTS,
     data: products,
 });
 
-export const addProductAction = (product) => ({
+const addProductAction = (product) => ({
     type: ADD_PRODUCT,
     data: product,
 });
 
-export const editProductAction = (product) => ({
+const editProductAction = (product) => ({
     type: EDIT_PRODUCT,
     data: product,
 });
 
-export const deleteProductAction = (productId) => ({
+const deleteProductAction = (productId) => ({
     type: DELETE_PRODUCT,
     data: productId,
 });

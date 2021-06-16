@@ -16,7 +16,7 @@ import {
     Typography,
     withStyles
 } from "@material-ui/core";
-import {CONFIRMATION_DIALOG, openDialog, USER_DIALOG_COMPONENT} from "../actions/dialog";
+import {openConfirmationDialog, openUserDialog} from "../actions/dialogs";
 import {AccountCircle, Apps, DeviceHub, Memory, VpnKey} from "@material-ui/icons";
 import {connect} from "react-redux";
 import {deleteSession} from "../actions/session";
@@ -75,19 +75,16 @@ class DashboardRouteComponent extends Component {
 
     handleEditUser = () => {
         this.closeMenu();
-        this.props.openDialog(USER_DIALOG_COMPONENT);
+        this.props.openUserDialog();
     };
 
     handleLogout = () => {
         this.closeMenu();
-        this.props.openDialog(
-            CONFIRMATION_DIALOG,
-            {
-                title: "Logout",
-                content: "Do you really want to log out?",
-                handleOk: this.props.deleteSession
-            }
-        );
+        this.props.openConfirmationDialog({
+            title: "Logout",
+            content: "Do you really want to log out?",
+            handleOk: this.props.deleteSession
+        });
     };
 
     render() {
@@ -182,12 +179,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    openDialog,
     deleteSession,
     getDevices,
     getFirmwares,
     getProducts,
-    getTokens
+    getTokens,
+    openUserDialog,
+    openConfirmationDialog
 };
 
 export default withRouter(

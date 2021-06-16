@@ -9,22 +9,22 @@ export const SET_FIRMWARE_SORT = "SET_FIRMWARE_SORT";
 
 const baseUrl = `${backendUrl}/firmwares`;
 
-export const addFirmwaresAction = (firmwares) => ({
+const addFirmwaresAction = (firmwares) => ({
     type: ADD_FIRMWARES,
     data: firmwares,
 });
 
-export const addFirmwareAction = (firmware) => ({
+const addFirmwareAction = (firmware) => ({
     type: ADD_FIRMWARE,
     data: firmware,
 });
 
-export const editFirmwareAction = (firmware) => ({
+const editFirmwareAction = (firmware) => ({
     type: EDIT_FIRMWARE,
     data: firmware,
 });
 
-export const deleteFirmwareAction = (firmwareId) => ({
+const deleteFirmwareAction = (firmwareId) => ({
     type: DELETE_FIRMWARE,
     data: firmwareId,
 });

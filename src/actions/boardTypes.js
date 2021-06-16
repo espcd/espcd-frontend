@@ -8,27 +8,27 @@ export const ADD_BOARD_TYPE_VERSIONS = "ADD_BOARD_TYPE_VERSIONS";
 
 const baseUrl = `${backendUrl}/board_types`;
 
-export const addBoardTypesAction = (boardTypes) => ({
+const addBoardTypesAction = (boardTypes) => ({
     type: ADD_BOARD_TYPES,
     data: boardTypes,
 });
 
-export const addBoardTypeAction = (boardType) => ({
+const addBoardTypeAction = (boardType) => ({
     type: ADD_BOARD_TYPE,
     data: boardType,
 });
 
-export const editBoardTypeAction = (boardType) => ({
+const editBoardTypeAction = (boardType) => ({
     type: EDIT_BOARD_TYPE,
     data: boardType,
 });
 
-export const deleteBoardTypeAction = (boardTypeId) => ({
+const deleteBoardTypeAction = (boardTypeId) => ({
     type: DELETE_BOARD_TYPE,
     data: boardTypeId,
 });
 
-export const addBoardTypeVersionsAction = (boardTypeId, versions) => ({
+const addBoardTypeVersionsAction = (boardTypeId, versions) => ({
     type: ADD_BOARD_TYPE_VERSIONS,
     data: {
         id: boardTypeId,

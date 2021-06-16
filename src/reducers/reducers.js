@@ -3,7 +3,7 @@ import {devicesReducer} from "./devices";
 import {firmwaresReducer} from "./firmwares";
 import {productsReducer} from "./products";
 import {notificationsReducer} from "./notifications";
-import {dialogReducer} from "./dialog";
+import {dialogsReducer} from "./dialogs";
 import {sessionReducer} from "./session";
 import {tokensReducer} from "./tokens";
 import {userReducer} from "./user";
@@ -14,7 +14,7 @@ export default combineReducers({
     firmwaresReducer,
     productsReducer,
     notificationsReducer,
-    dialogReducer,
+    dialogsReducer,
     sessionReducer,
     tokensReducer,
     userReducer,

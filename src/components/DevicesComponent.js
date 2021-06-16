@@ -15,48 +15,36 @@ import {deleteDevice, setDeviceQuery, setDeviceSort} from "../actions/devices";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, DEVICE_DIALOG, FIRMWARE_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
+import {openConfirmationDialog, openDeviceDialog, openFirmwareDialog, openProductDialog} from "../actions/dialogs";
 import {getFilteredAndSortedDevices} from "../selectors/devices";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
 
 class DevicesComponent extends Component {
     deleteDevice(device) {
-        this.props.openDialog(
-            CONFIRMATION_DIALOG,
-            {
-                title: "Delete device",
-                content: `Are you sure you want to delete the device ${device.id}?`,
-                handleOk: () => this.props.deleteDevice(device.id)
-            }
-        );
+        this.props.openConfirmationDialog({
+            title: "Delete device",
+            content: `Are you sure you want to delete the device ${device.id}?`,
+            handleOk: () => this.props.deleteDevice(device.id)
+        });
     }
 
     openDeviceDialog(deviceId) {
-        this.props.openDialog(
-            DEVICE_DIALOG,
-            {
-                deviceId
-            }
-        );
+        this.props.openDeviceDialog({
+            deviceId
+        });
     }
 
     openProductDialog(productId = null) {
-        this.props.openDialog(
-            PRODUCT_DIALOG,
-            {
-                productId
-            }
-        );
+        this.props.openProductDialog({
+            productId
+        });
     }
 
     openFirmwareDialog(firmwareId = null) {
-        this.props.openDialog(
-            FIRMWARE_DIALOG,
-            {
-                firmwareId
-            }
-        );
+        this.props.openFirmwareDialog({
+            firmwareId
+        });
     }
 
     render() {
@@ -171,7 +159,10 @@ const mapDispatchToProps = {
     deleteDevice,
     setDeviceQuery,
     setDeviceSort,
-    openDialog
+    openConfirmationDialog,
+    openDeviceDialog,
+    openProductDialog,
+    openFirmwareDialog
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DevicesComponent));

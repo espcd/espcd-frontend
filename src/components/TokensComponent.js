@@ -17,7 +17,7 @@ import {deleteToken, setTokenQuery, setTokenSort} from "../actions/tokens";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, openDialog, PRODUCT_DIALOG, TOKEN_DIALOG} from "../actions/dialog";
+import {openConfirmationDialog, openProductDialog, openTokenDialog} from "../actions/dialogs";
 import {getFilteredAndSortedTokens} from "../selectors/tokens";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -38,32 +38,23 @@ const styles = theme => ({
 
 class TokensComponent extends Component {
     deleteToken(token) {
-        this.props.openDialog(
-            CONFIRMATION_DIALOG,
-            {
-                title: "Delete token",
-                content: `Are you sure you want to delete the token ${token.id}?`,
-                handleOk: () => this.props.deleteToken(token.id)
-            }
-        );
+        this.props.openConfirmationDialog({
+            title: "Delete token",
+            content: `Are you sure you want to delete the token ${token.id}?`,
+            handleOk: () => this.props.deleteToken(token.id)
+        });
     }
 
     openTokenDialog(tokenId = null) {
-        this.props.openDialog(
-            TOKEN_DIALOG,
-            {
-                tokenId
-            }
-        );
+        this.props.openTokenDialog({
+            tokenId
+        });
     }
 
     openProductDialog(productId = null) {
-        this.props.openDialog(
-            PRODUCT_DIALOG,
-            {
-                productId
-            }
-        );
+        this.props.openProductDialog({
+            productId
+        });
     }
 
     render() {
@@ -180,7 +171,9 @@ const mapDispatchToProps = {
     deleteToken,
     setTokenQuery,
     setTokenSort,
-    openDialog
+    openConfirmationDialog,
+    openTokenDialog,
+    openProductDialog
 };
 
 export default withRouter(

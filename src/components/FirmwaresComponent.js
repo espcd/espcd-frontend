@@ -18,7 +18,7 @@ import {deleteFirmware, setFirmwareQuery, setFirmwareSort} from "../actions/firm
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {backendUrl} from "../actions/common";
-import {CONFIRMATION_DIALOG, FIRMWARE_DIALOG, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
+import {openConfirmationDialog, openFirmwareDialog, openProductDialog} from "../actions/dialogs";
 import {getFilteredAndSortedFirmwares} from "../selectors/firmwares";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -36,32 +36,23 @@ const styles = theme => ({
 
 class FirmwaresComponent extends Component {
     deleteFirmware(firmware) {
-        this.props.openDialog(
-            CONFIRMATION_DIALOG,
-            {
-                title: "Delete firmware",
-                content: `Are you sure you want to delete the firmware ${firmware.id}?`,
-                handleOk: () => this.props.deleteFirmware(firmware.id)
-            }
-        );
+        this.props.openConfirmationDialog({
+            title: "Delete firmware",
+            content: `Are you sure you want to delete the firmware ${firmware.id}?`,
+            handleOk: () => this.props.deleteFirmware(firmware.id)
+        });
     }
 
     openFirmwareDialog(firmwareId = null) {
-        this.props.openDialog(
-            FIRMWARE_DIALOG,
-            {
-                firmwareId
-            }
-        );
+        this.props.openFirmwareDialog({
+            firmwareId
+        });
     }
 
     openProductDialog(productId = null) {
-        this.props.openDialog(
-            PRODUCT_DIALOG,
-            {
-                productId
-            }
-        );
+        this.props.openProductDialog({
+            productId
+        });
     }
 
     render() {
@@ -187,7 +178,9 @@ const mapDispatchToProps = {
     deleteFirmware,
     setFirmwareQuery,
     setFirmwareSort,
-    openDialog
+    openConfirmationDialog,
+    openFirmwareDialog,
+    openProductDialog
 };
 
 export default withRouter(

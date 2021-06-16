@@ -5,7 +5,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} fr
 import Device from "../data-classes/Device";
 import Firmware from "../data-classes/Firmware";
 import moment from "moment";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
 
@@ -169,11 +169,11 @@ class DeviceDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let deviceId = state.dialogReducer.props.deviceId;
+    let deviceId = state.dialogsReducer.props.deviceId;
     let device = state.devicesReducer.devices.find(device => device.id === deviceId) || new Device();
     return {
         device,
-        open: state.dialogReducer.open,
+        open: state.dialogsReducer.open,
         firmwares: state.firmwaresReducer.firmwares
     };
 };

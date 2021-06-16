@@ -13,7 +13,7 @@ import {
     TextField
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -177,10 +177,10 @@ class ProductDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let productId = state.dialogReducer.props.productId;
+    let productId = state.dialogsReducer.props.productId;
     let product = state.productsReducer.products.find(product => product.id === productId) || new Product();
     return {
-        open: state.dialogReducer.open,
+        open: state.dialogsReducer.open,
         isPresent: !!productId,
         product
     };

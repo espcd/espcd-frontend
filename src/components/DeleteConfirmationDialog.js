@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import {connect} from "react-redux";
 
 class DeleteConfirmationDialog extends Component {
@@ -50,10 +50,10 @@ class DeleteConfirmationDialog extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
-    title: state.dialogReducer.props.title,
-    content: state.dialogReducer.props.content,
-    handleOk: state.dialogReducer.props.handleOk
+    open: state.dialogsReducer.open,
+    title: state.dialogsReducer.props.title,
+    content: state.dialogsReducer.props.content,
+    handleOk: state.dialogsReducer.props.handleOk
 });
 
 const mapDispatchToProps = {

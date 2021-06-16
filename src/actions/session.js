@@ -5,7 +5,7 @@ export const SET_TOKEN = "SET_TOKEN";
 
 const baseUrl = `${backendUrl}/session`;
 
-export const setTokenAction = (token) => ({
+const setTokenAction = (token) => ({
     type: SET_TOKEN,
     data: token,
 });

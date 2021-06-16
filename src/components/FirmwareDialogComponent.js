@@ -12,7 +12,7 @@ import {
     TextField,
     Typography
 } from "@material-ui/core";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import Firmware from "../data-classes/Firmware";
 
@@ -204,12 +204,12 @@ class FirmwareDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let firmwareId = state.dialogReducer.props.firmwareId;
+    let firmwareId = state.dialogsReducer.props.firmwareId;
     let firmware = state.firmwaresReducer.firmwares.find(firmware => firmware.id === firmwareId) || new Firmware();
     return {
         firmware,
         isPresent: !!firmwareId,
-        open: state.dialogReducer.open,
+        open: state.dialogsReducer.open,
         firmwares: state.firmwaresReducer.firmwares
     };
 };

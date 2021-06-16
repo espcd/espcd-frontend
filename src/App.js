@@ -10,7 +10,7 @@ import ProductsComponent from "./components/ProductsComponent";
 import TitleComponent from "./components/TitleComponent";
 import SnackbarComponent from "./components/SnackbarComponent";
 import TokensComponent from "./components/TokensComponent";
-import DialogComponent from "./components/DialogComponent";
+import DialogsComponent from "./components/DialogsComponent";
 import WebsocketComponent from "./components/WebsocketComponent";
 import {getDevices} from "./actions/devices";
 import {getFirmwares} from "./actions/firmwares";
@@ -50,7 +50,7 @@ class App extends Component {
                 {
                     this.props.loggedIn &&
                     <React.Fragment>
-                        <DialogComponent/>
+                        <DialogsComponent/>
                         <WebsocketComponent/>
                     </React.Fragment>
                 }

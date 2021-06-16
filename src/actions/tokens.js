@@ -9,22 +9,22 @@ export const SET_TOKEN_SORT = "SET_TOKEN_SORT";
 
 const baseUrl = `${backendUrl}/tokens`;
 
-export const addTokensAction = (tokens) => ({
+const addTokensAction = (tokens) => ({
     type: ADD_TOKENS,
     data: tokens,
 });
 
-export const addTokenAction = (token) => ({
+const addTokenAction = (token) => ({
     type: ADD_TOKEN,
     data: token,
 });
 
-export const editTokenAction = (token) => ({
+const editTokenAction = (token) => ({
     type: EDIT_TOKEN,
     data: token,
 });
 
-export const deleteTokenAction = (tokenId) => ({
+const deleteTokenAction = (tokenId) => ({
     type: DELETE_TOKEN,
     data: tokenId,
 });

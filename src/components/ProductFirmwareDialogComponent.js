@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Tooltip} from "@material-ui/core";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import {editProductFirmware} from "../actions/products";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import FirmwareSelectComponent from "./FirmwareSelectComponent";
@@ -145,12 +145,12 @@ class ProductFirmwareDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let productId = state.dialogReducer.props.productId;
+    let productId = state.dialogsReducer.props.productId;
     let firmwares = state.firmwaresReducer.firmwares;
     let boardTypes = state.boardTypesReducer.boardTypes;
     let boardType = boardTypes.find(boardType => boardType.product_id === productId) || new BoardType();
     return ({
-        open: state.dialogReducer.open,
+        open: state.dialogsReducer.open,
         productId,
         fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))],
         boardType,

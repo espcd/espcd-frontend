@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import {editUser} from "../actions/user";
 
 class UserDialogComponent extends Component {
@@ -88,7 +88,7 @@ class UserDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
+    open: state.dialogsReducer.open,
     username: state.userReducer.username
 });
 

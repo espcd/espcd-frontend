@@ -4,11 +4,11 @@ import {
     CONFIRMATION_DIALOG,
     DEVICE_DIALOG,
     FIRMWARE_DIALOG,
-    FIRMWARE_HISTORY_COMPONENT,
     PRODUCT_DIALOG,
+    PRODUCT_FIRMWARE_DIALOG,
     TOKEN_DIALOG,
-    USER_DIALOG_COMPONENT
-} from "../actions/dialog";
+    USER_DIALOG
+} from "../actions/dialogs";
 import {connect} from "react-redux";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import DeviceDialogComponent from "./DeviceDialogComponent";
@@ -18,7 +18,7 @@ import TokenDialogComponent from "./TokenDialogComponent";
 import UserDialogComponent from "./UserDialogComponent";
 import ProductFirmwareDialogComponent from "./ProductFirmwareDialogComponent";
 
-class DialogComponent extends Component {
+class DialogsComponent extends Component {
     render() {
         switch (this.props.type) {
             case CONFIRMATION_DIALOG:
@@ -31,9 +31,9 @@ class DialogComponent extends Component {
                 return <ProductDialogComponent/>;
             case TOKEN_DIALOG:
                 return <TokenDialogComponent/>;
-            case USER_DIALOG_COMPONENT:
+            case USER_DIALOG:
                 return <UserDialogComponent/>;
-            case FIRMWARE_HISTORY_COMPONENT:
+            case PRODUCT_FIRMWARE_DIALOG:
                 return <ProductFirmwareDialogComponent/>;
             default:
                 return null;
@@ -42,9 +42,9 @@ class DialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    open: state.dialogReducer.open,
-    type: state.dialogReducer.type,
-    props: state.dialogReducer.props
+    open: state.dialogsReducer.open,
+    type: state.dialogsReducer.type,
+    props: state.dialogsReducer.props
 });
 
 const mapDispatchToProps = {
@@ -52,5 +52,5 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-    DialogComponent
+    DialogsComponent
 );

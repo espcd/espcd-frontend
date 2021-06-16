@@ -3,7 +3,7 @@ import {createToken, editToken} from "../actions/tokens";
 import {connect} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Token from "../data-classes/Token";
-import {closeDialog} from "../actions/dialog";
+import {closeDialog} from "../actions/dialogs";
 import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/moment";
 import ProductSelectComponent from "./ProductSelectComponent";
@@ -177,10 +177,10 @@ class TokenDialogComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let tokenId = state.dialogReducer.props.tokenId;
+    let tokenId = state.dialogsReducer.props.tokenId;
     let token = state.tokensReducer.tokens.find(token => token.id === tokenId) || new Token();
     return {
-        open: state.dialogReducer.open,
+        open: state.dialogsReducer.open,
         isPresent: !!tokenId,
         tokenId,
         token

@@ -9,22 +9,22 @@ export const SET_DEVICE_SORT = "SET_DEVICE_SORT";
 
 const baseUrl = `${backendUrl}/devices`;
 
-export const addDevicesAction = (devices) => ({
+const addDevicesAction = (devices) => ({
     type: ADD_DEVICES,
     data: devices,
 });
 
-export const addDeviceAction = (device) => ({
+const addDeviceAction = (device) => ({
     type: ADD_DEVICE,
     data: device,
 });
 
-export const editDeviceAction = (device) => ({
+const editDeviceAction = (device) => ({
     type: EDIT_DEVICE,
     data: device,
 });
 
-export const deleteDeviceAction = (deviceId) => ({
+const deleteDeviceAction = (deviceId) => ({
     type: DELETE_DEVICE,
     data: deviceId,
 });

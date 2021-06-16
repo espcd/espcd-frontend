@@ -17,7 +17,7 @@ import {deleteProduct, setProductQuery, setProductSort} from "../actions/product
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Add, Delete, Edit, Memory} from "@material-ui/icons";
-import {CONFIRMATION_DIALOG, FIRMWARE_HISTORY_COMPONENT, openDialog, PRODUCT_DIALOG} from "../actions/dialog";
+import {openConfirmationDialog, openProductDialog, openProductFirmwareDialog} from "../actions/dialogs";
 import {getFilteredAndSortedProducts} from "../selectors/products";
 import TableSearchComponent from "./TableSearchComponent";
 import TimeComponent from "./TimeComponent";
@@ -38,32 +38,23 @@ const styles = theme => ({
 
 class ProductsComponent extends Component {
     deleteProduct(product) {
-        this.props.openDialog(
-            CONFIRMATION_DIALOG,
-            {
-                title: "Delete product",
-                content: `Are you sure you want to delete the product ${product.id}?`,
-                handleOk: () => this.props.deleteProduct(product.id)
-            }
-        );
+        this.props.openConfirmationDialog({
+            title: "Delete product",
+            content: `Are you sure you want to delete the product ${product.id}?`,
+            handleOk: () => this.props.deleteProduct(product.id)
+        });
     }
 
     openProductDialog(productId = null) {
-        this.props.openDialog(
-            PRODUCT_DIALOG,
-            {
-                productId
-            }
-        );
+        this.props.openProductDialog({
+            productId
+        });
     }
 
     openFirmwareHistoryDialog(productId) {
-        this.props.openDialog(
-            FIRMWARE_HISTORY_COMPONENT,
-            {
-                productId
-            }
-        );
+        this.props.openProductFirmwareDialog({
+            productId
+        });
     }
 
     render() {
@@ -190,7 +181,9 @@ const mapDispatchToProps = {
     deleteProduct,
     setProductQuery,
     setProductSort,
-    openDialog
+    openConfirmationDialog,
+    openProductDialog,
+    openProductFirmwareDialog
 };
 
 export default withRouter(

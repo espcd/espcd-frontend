@@ -4,6 +4,7 @@ import {dispatchAddDevice, dispatchDeleteDevice, dispatchEditDevice,} from "../a
 import {dispatchAddFirmware, dispatchDeleteFirmware, dispatchEditFirmware} from "../actions/firmwares";
 import {dispatchAddProduct, dispatchDeleteProduct, dispatchEditProduct} from "../actions/products";
 import {dispatchAddToken, dispatchDeleteToken, dispatchEditToken} from "../actions/tokens";
+import {dispatchAddBoardType, dispatchDeleteBoardType, dispatchEditBoardType} from "../actions/boardTypes";
 
 class WebsocketComponent extends Component {
     constructor(props) {
@@ -133,6 +134,23 @@ class WebsocketComponent extends Component {
                     console.error("unknown token payload: " + payload);
             }
         });
+
+        this.connectChannel("BoardTypesChannel", payload => {
+            console.log(payload);
+            switch (payload.type) {
+                case "create":
+                    this.props.dispatchAddBoardType(payload.data);
+                    break;
+                case "update":
+                    this.props.dispatchEditBoardType(payload.data);
+                    break;
+                case "destroy":
+                    this.props.dispatchDeleteBoardType(payload.data);
+                    break;
+                default:
+                    console.error("unknown boardType payload: " + payload);
+            }
+        });
     };
 
     render() {
@@ -157,6 +175,9 @@ const mapDispatchToProps = {
     dispatchAddToken,
     dispatchEditToken,
     dispatchDeleteToken,
+    dispatchAddBoardType,
+    dispatchEditBoardType,
+    dispatchDeleteBoardType
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

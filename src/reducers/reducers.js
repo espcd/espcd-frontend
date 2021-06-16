@@ -7,6 +7,7 @@ import {dialogReducer} from "./dialog";
 import {sessionReducer} from "./session";
 import {tokensReducer} from "./tokens";
 import {userReducer} from "./user";
+import {boardTypesReducer} from "./boardTypes";
 
 export default combineReducers({
     devicesReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
     dialogReducer,
     sessionReducer,
     tokensReducer,
-    userReducer
+    userReducer,
+    boardTypesReducer
 });

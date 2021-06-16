@@ -17,6 +17,7 @@ import {getFirmwares} from "./actions/firmwares";
 import {getProducts} from "./actions/products";
 import {getTokens} from "./actions/tokens";
 import SpinnerComponent from "./components/SpinnerComponent";
+import {getBoardTypes} from "./actions/boardTypes";
 
 class App extends Component {
     componentDidMount() {
@@ -35,6 +36,7 @@ class App extends Component {
             this.props.getFirmwares();
             this.props.getProducts();
             this.props.getTokens();
+            this.props.getBoardTypes();
         }
     };
 
@@ -76,7 +78,8 @@ const mapDispatchToProps = {
     getDevices,
     getFirmwares,
     getProducts,
-    getTokens
+    getTokens,
+    getBoardTypes
 };
 
 export default withRouter(

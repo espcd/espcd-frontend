@@ -104,7 +104,7 @@ export const editProductFirmware = (productId, fqbn, firmwareId) => async (dispa
         getState,
         `${baseUrl}/${productId}/firmware/${fqbn}`,
         requestOptions,
-        "Product edited"
+        "Product firmware edited"
     );
 };
 

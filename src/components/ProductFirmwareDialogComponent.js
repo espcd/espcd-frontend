@@ -97,7 +97,7 @@ class ProductFirmwareDialogComponent extends Component {
                         onChange={this.handleFirmwareChange}
                     />
                     {
-                        (this.state.fqbn && this.props.versions) &&
+                        (this.state.fqbn && this.props.versions.length > 0) &&
                         <div>
                             <h3>History</h3>
                             {this.props.versions.map(version => (
@@ -149,13 +149,14 @@ const mapStateToProps = (state) => {
     let firmwares = state.firmwaresReducer.firmwares;
     let boardTypes = state.boardTypesReducer.boardTypes;
     let boardType = boardTypes.find(boardType => boardType.product_id === productId) || new BoardType();
+    let versions = state.boardTypesReducer.versions;
     return ({
         open: state.dialogsReducer.open,
         productId,
         fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))],
         boardType,
         firmwares,
-        versions: state.boardTypesReducer.versions ? state.boardTypesReducer.versions[boardType.id] : []
+        versions: versions && versions[boardType.id] ? versions[boardType.id] : []
     });
 };
 

@@ -45,8 +45,9 @@ class ProductFirmwareDialogComponent extends Component {
         this.setState({
             fqbn
         });
-        if (this.props.boardType.id) {
-            this.props.getBoardTypeVersions(this.props.boardType.id);
+        let boardType = this.props.boardTypes.find(boardType => boardType.fqbn === fqbn);
+        if (boardType) {
+            this.props.getBoardTypeVersions(boardType.id);
         }
     };
 
@@ -72,10 +73,11 @@ class ProductFirmwareDialogComponent extends Component {
             .then(() => this.props.closeDialog());
     };
 
-    submitEnabled = () => this.state.fqbn && this.state.firmware_id && this.state.firmware_id !== this.props.boardType.firmware_id;
-
     render() {
-        let productFirmware = this.state.fqbn && this.state.firmware_id ? this.state.firmware_id : this.props.boardType.firmware_id;
+        let boardType = this.props.boardTypes.find(boardType => boardType.fqbn === this.state.fqbn) || new BoardType();
+        let productFirmware = this.state.fqbn && this.state.firmware_id ? this.state.firmware_id : boardType.firmware_id;
+        let versions = this.props.versions && this.props.versions[boardType.id] ? this.props.versions[boardType.id] : [];
+        let submitEnabled = this.state.fqbn && this.state.firmware_id && this.state.firmware_id !== boardType.firmware_id;
 
         return (
             <Dialog
@@ -97,10 +99,10 @@ class ProductFirmwareDialogComponent extends Component {
                         onChange={this.handleFirmwareChange}
                     />
                     {
-                        (this.state.fqbn && this.props.versions.length > 0) &&
+                        (this.state.fqbn && versions.length > 0) &&
                         <div>
                             <h3>History</h3>
-                            {this.props.versions.map(version => (
+                            {versions.map(version => (
                                 <Grid container justify="space-between" alignItems="center" key={version.id}>
                                     <Grid item>
                                         <div>{moment(version.created_at).fromNow()}</div>
@@ -134,7 +136,7 @@ class ProductFirmwareDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={!this.submitEnabled()}
+                        disabled={!submitEnabled}
                     >
                         Ok
                     </Button>
@@ -147,16 +149,14 @@ class ProductFirmwareDialogComponent extends Component {
 const mapStateToProps = (state) => {
     let productId = state.dialogsReducer.props.productId;
     let firmwares = state.firmwaresReducer.firmwares;
-    let boardTypes = state.boardTypesReducer.boardTypes;
-    let boardType = boardTypes.find(boardType => boardType.product_id === productId) || new BoardType();
+    let boardTypes = state.boardTypesReducer.boardTypes.filter(boardType => boardType.product_id === productId);
     let versions = state.boardTypesReducer.versions;
     return ({
         open: state.dialogsReducer.open,
         productId,
         fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))],
-        boardType,
-        firmwares,
-        versions: versions && versions[boardType.id] ? versions[boardType.id] : []
+        boardTypes,
+        versions
     });
 };
 

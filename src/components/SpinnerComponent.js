@@ -49,7 +49,8 @@ class SpinnerComponent extends Component {
                     style: {
                         backgroundColor: "transparent",
                         boxShadow: "none",
-                        overflow: "hidden"
+                        overflow: "hidden",
+                        alignItems: "center"
                     },
                 }}
             >

@@ -78,14 +78,8 @@ class FirmwareDialogComponent extends Component {
 
     getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.firmware[key];
 
-    submitDisabled = () => {
-        let required = ["fqbn", "version"];
-        return (
-            !required.every(key => this.valueChanged(key)) ||
-            !Object.keys(this.props.firmware).some(key => this.valueChanged(key)) ||
-            this.state.selectedFile === null
-        );
-    };
+    submitDisabled = () => this.state.selectedFile == null &&
+        !Object.keys(this.props.firmware).some(key => this.valueChanged(key));
 
     render() {
         let firmware = {

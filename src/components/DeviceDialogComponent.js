@@ -56,13 +56,7 @@ class DeviceDialogComponent extends Component {
 
     getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.device[key];
 
-    submitDisabled = () => {
-        let required = ["fqbn"];
-        return (
-            !required.every(key => this.valueChanged(key)) ||
-            !Object.keys(this.props.device).some(key => this.valueChanged(key))
-        );
-    };
+    submitDisabled = () => !Object.keys(this.props.device).some(key => this.valueChanged(key));
 
     render() {
         let device = {

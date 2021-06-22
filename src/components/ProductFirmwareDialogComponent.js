@@ -9,6 +9,7 @@ import BoardType from "../data-classes/BoardType";
 import {getBoardTypeVersions} from "../actions/boardTypes";
 import {Restore} from "@material-ui/icons";
 import moment from "moment";
+import {valueChanged} from "./common";
 
 class ProductFirmwareDialogComponent extends Component {
     constructor(props) {
@@ -42,10 +43,11 @@ class ProductFirmwareDialogComponent extends Component {
     };
 
     changeFqbn = (fqbn) => {
-        this.setState({
-            fqbn
-        });
         let boardType = this.props.boardTypes.find(boardType => boardType.fqbn === fqbn);
+        this.setState({
+            fqbn,
+            firmware_id: boardType ? boardType.firmware_id : ""
+        });
         if (boardType) {
             this.props.getBoardTypeVersions(boardType.id);
         }
@@ -75,9 +77,9 @@ class ProductFirmwareDialogComponent extends Component {
 
     render() {
         let boardType = this.props.boardTypes.find(boardType => boardType.fqbn === this.state.fqbn) || new BoardType();
-        let productFirmware = this.state.fqbn && this.state.firmware_id ? this.state.firmware_id : boardType.firmware_id;
+        let productFirmware = this.state.fqbn && this.state.firmware_id !== null ? this.state.firmware_id : boardType.firmware_id;
         let versions = this.props.versions && this.props.versions[boardType.id] ? this.props.versions[boardType.id] : [];
-        let submitEnabled = this.state.fqbn && this.state.firmware_id && this.state.firmware_id !== boardType.firmware_id;
+        let submitEnabled = this.state.fqbn && valueChanged(this.state.firmware_id, boardType.firmware_id);
 
         return (
             <Dialog

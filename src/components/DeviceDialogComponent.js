@@ -8,6 +8,7 @@ import moment from "moment";
 import {closeDialog} from "../actions/dialogs";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import ProductSelectComponent from "./ProductSelectComponent";
+import {objectValueChanged} from "./common";
 
 class DeviceDialogComponent extends Component {
     constructor(props) {
@@ -51,13 +52,11 @@ class DeviceDialogComponent extends Component {
             .then(() => this.props.closeDialog());
     };
 
-    getValue = (key, defaultValue = "") => {
-        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.device[key];
-        return res ? res : defaultValue;
-    };
+    valueChanged = key => objectValueChanged(this.state.updates, this.props.device, key);
 
-    submitDisabled = () => !Object.keys(this.props.device).some(key =>
-        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.device[key]);
+    getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.device[key];
+
+    submitDisabled = () => !Object.keys(this.props.device).some(key => this.valueChanged(key));
 
     render() {
         let device = {

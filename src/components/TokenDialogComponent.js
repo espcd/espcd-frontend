@@ -7,6 +7,7 @@ import {closeDialog} from "../actions/dialogs";
 import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/moment";
 import ProductSelectComponent from "./ProductSelectComponent";
+import {objectValueChanged} from "./common";
 
 class TokenDialogComponent extends Component {
     constructor(props) {
@@ -61,13 +62,11 @@ class TokenDialogComponent extends Component {
         }
     };
 
-    getValue = (key, defaultValue = "") => {
-        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.token[key];
-        return res ? res : defaultValue;
-    };
+    valueChanged = key => objectValueChanged(this.state.updates, this.props.token, key);
 
-    submitDisabled = () => !Object.keys(this.props.token).some(key =>
-        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.token[key]);
+    getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.token[key];
+
+    submitDisabled = () => !Object.keys(this.props.token).some(key => this.valueChanged(key));
 
     render() {
         let token = {

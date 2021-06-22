@@ -15,6 +15,7 @@ import {
 import {closeDialog} from "../actions/dialogs";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import Firmware from "../data-classes/Firmware";
+import {objectValueChanged} from "./common";
 
 class FirmwareDialogComponent extends Component {
     constructor(props) {
@@ -73,14 +74,11 @@ class FirmwareDialogComponent extends Component {
         });
     };
 
-    getValue = (key, defaultValue = "") => {
-        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.firmware[key];
-        return res ? res : defaultValue;
-    };
+    valueChanged = key => objectValueChanged(this.state.updates, this.props.firmware, key);
 
-    submitDisabled = () => !Object.keys(this.props.firmware).some(key =>
-        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.firmware[key]
-    ) && !this.state.selectedFile;
+    getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.firmware[key];
+
+    submitDisabled = () => !Object.keys(this.props.firmware).some(key => this.valueChanged(key)) && this.state.selectedFile == null;
 
     render() {
         let firmware = {

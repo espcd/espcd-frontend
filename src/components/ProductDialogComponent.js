@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import Product from "../data-classes/Product";
 import {closeDialog} from "../actions/dialogs";
+import {objectValueChanged} from "./common";
 
 class ProductDialogComponent extends Component {
     constructor(props) {
@@ -26,7 +27,17 @@ class ProductDialogComponent extends Component {
     handleChange = (event) => {
         let target = event.target;
         let key = target.name;
-        let value = target.type === "checkbox" ? target.checked : target.value;
+        let value;
+        if (target.type === "checkbox") {
+            value = target.checked;
+        } else if (target.type === "number") {
+            value = parseInt(target.value);
+            if (isNaN(value)) {
+                value = 0;
+            }
+        } else {
+            value = target.value;
+        }
 
         let updates = this.state.updates;
         updates[key] = value;
@@ -36,7 +47,7 @@ class ProductDialogComponent extends Component {
     };
 
     handleKeyPress = (event) => {
-        if (event.key === "Enter" && this.submitEnabled() && event.target.type !== "textarea") {
+        if (event.key === "Enter" && !this.submitDisabled() && event.target.type !== "textarea") {
             this.handleSubmit();
         }
     };
@@ -54,23 +65,20 @@ class ProductDialogComponent extends Component {
         }
     };
 
-    getValue = (key, defaultValue = "") => {
-        let res = this.state.updates.hasOwnProperty(key) ? this.state.updates[key] : this.props.product[key];
-        return res ? res : defaultValue;
-    };
+    valueChanged = key => objectValueChanged(this.state.updates, this.props.product, key);
 
-    submitEnabled = () => Object.keys(this.props.product).some(key =>
-        this.state.updates.hasOwnProperty(key) && this.state.updates[key] !== this.props.product[key]
-    );
+    getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.product[key];
+
+    submitDisabled = () => !Object.keys(this.props.product).some(key => this.valueChanged(key));
 
     render() {
         let product = {
             id: this.props.product.id,
             title: this.getValue("title"),
             description: this.getValue("description"),
-            auto_update: this.getValue("auto_update", true),
-            check_interval: this.getValue("check_interval", 60),
-            lock_firmwares: this.getValue("lock_firmwares", false)
+            auto_update: this.getValue("auto_update"),
+            check_interval: this.getValue("check_interval"),
+            lock_firmwares: this.getValue("lock_firmwares")
         };
 
         return (
@@ -166,7 +174,7 @@ class ProductDialogComponent extends Component {
                         variant="contained"
                         color="primary"
                         onClick={this.handleSubmit}
-                        disabled={!this.submitEnabled()}
+                        disabled={this.submitDisabled()}
                     >
                         Ok
                     </Button>

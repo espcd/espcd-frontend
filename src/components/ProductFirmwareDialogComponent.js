@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Tooltip} from "@material-ui/core";
-import {closeDialog} from "../actions/dialogs";
+import {closeDialog, openFirmwareDialog} from "../actions/dialogs";
 import {editProductFirmware} from "../actions/products";
 import FqbnSelectComponent from "./FqbnSelectComponent";
 import FirmwareSelectComponent from "./FirmwareSelectComponent";
@@ -65,6 +65,12 @@ class ProductFirmwareDialogComponent extends Component {
         }
     };
 
+    openFirmwareDialog(firmwareId = null) {
+        this.props.openFirmwareDialog({
+            firmwareId
+        });
+    }
+
     handleRestore = (firmwareId) => {
         this.props.editProductFirmware(this.props.productId, this.state.fqbn, firmwareId)
             .then(() => this.props.closeDialog());
@@ -104,27 +110,43 @@ class ProductFirmwareDialogComponent extends Component {
                         (this.state.fqbn && versions.length > 0) &&
                         <div>
                             <h3>History</h3>
-                            {versions.map(version => (
-                                <Grid container justify="space-between" alignItems="center" key={version.id}>
-                                    <Grid item>
-                                        <div>{moment(version.created_at).fromNow()}</div>
-                                        <div>Firmware: {version.object.firmware_id}</div>
+                            {versions.map(version => {
+                                let firmware = this.props.firmwares.find(firmware => firmware.id === version.object.firmware_id);
+                                let firmwareLabel = "";
+                                if (firmware) {
+                                    firmwareLabel += firmware.id;
+                                    if (firmware.title) {
+                                        firmwareLabel += ` (${firmware.title})`;
+                                    }
+                                }
+                                return (
+                                    <Grid container justify="space-between" alignItems="center" key={version.id}>
+                                        <Grid item>
+                                            <div>{moment(version.created_at).fromNow()}</div>
+                                            <div style={{cursor: "pointer"}}>
+                                                {"Firmware: "}
+                                                <span
+                                                    onClick={() => firmware ? this.openFirmwareDialog(firmware.id) : {}}>
+                                                    {firmwareLabel}
+                                                </span>
+                                            </div>
+                                        </Grid>
+                                        <Grid item>
+                                            <Tooltip
+                                                title="Restore firmware"
+                                                aria-label="restore firmware"
+                                            >
+                                                <IconButton
+                                                    onClick={() => this.handleRestore(version.object.firmware_id)}>
+                                                    <Restore/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item>
-                                        <Tooltip
-                                            title="Restore firmware"
-                                            aria-label="restore firmware"
-                                        >
-                                            <IconButton onClick={() => this.handleRestore(version.object.firmware_id)}>
-                                                <Restore/>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Grid>
-                                </Grid>
-                            ))}
+                                );
+                            })}
                         </div>
                     }
-
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -158,6 +180,7 @@ const mapStateToProps = (state) => {
         productId,
         fqbns: [...new Set(firmwares.map(firmware => firmware.fqbn))],
         boardTypes,
+        firmwares,
         versions
     });
 };
@@ -165,7 +188,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     closeDialog,
     editProductFirmware,
-    getBoardTypeVersions
+    getBoardTypeVersions,
+    openFirmwareDialog
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

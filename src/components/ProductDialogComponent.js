@@ -69,7 +69,9 @@ class ProductDialogComponent extends Component {
 
     getValue = key => this.valueChanged(key) ? this.state.updates[key] : this.props.product[key];
 
-    submitDisabled = () => !Object.keys(this.props.product).some(key => this.valueChanged(key));
+    submitDisabled = () => {
+        return this.props.isPresent && !Object.keys(this.props.product).some(key => this.valueChanged(key));
+    };
 
     render() {
         let product = {

@@ -1,10 +1,15 @@
 import {Component} from "react";
 import {connect} from "react-redux";
-import {dispatchAddDevice, dispatchDeleteDevice, dispatchEditDevice,} from "../actions/devices";
-import {dispatchAddFirmware, dispatchDeleteFirmware, dispatchEditFirmware} from "../actions/firmwares";
-import {dispatchAddProduct, dispatchDeleteProduct, dispatchEditProduct} from "../actions/products";
-import {dispatchAddToken, dispatchDeleteToken, dispatchEditToken} from "../actions/tokens";
-import {dispatchAddBoardType, dispatchDeleteBoardType, dispatchEditBoardType} from "../actions/boardTypes";
+import {dispatchAddDevice, dispatchDeleteDevice, dispatchEditDevice, getDevices} from "../actions/devices";
+import {dispatchAddFirmware, dispatchDeleteFirmware, dispatchEditFirmware, getFirmwares} from "../actions/firmwares";
+import {dispatchAddProduct, dispatchDeleteProduct, dispatchEditProduct, getProducts} from "../actions/products";
+import {dispatchAddToken, dispatchDeleteToken, dispatchEditToken, getTokens} from "../actions/tokens";
+import {
+    dispatchAddBoardType,
+    dispatchDeleteBoardType,
+    dispatchEditBoardType,
+    getBoardTypes
+} from "../actions/boardTypes";
 
 class WebsocketComponent extends Component {
     constructor(props) {
@@ -42,7 +47,7 @@ class WebsocketComponent extends Component {
             if (!event.wasClean) {
                 setTimeout(() => {
                     this.connectChannel(channel, onMessage);
-                }, 4000);
+                }, 1000);
             }
         };
         connection.onerror = () => {
@@ -55,6 +60,11 @@ class WebsocketComponent extends Component {
                     channel: channel
                 })
             }));
+            this.props.getDevices();
+            this.props.getFirmwares();
+            this.props.getProducts();
+            this.props.getTokens();
+            this.props.getBoardTypes();
         };
         connection.onmessage = event => {
             let data = JSON.parse(event.data);
@@ -177,7 +187,12 @@ const mapDispatchToProps = {
     dispatchDeleteToken,
     dispatchAddBoardType,
     dispatchEditBoardType,
-    dispatchDeleteBoardType
+    dispatchDeleteBoardType,
+    getDevices,
+    getFirmwares,
+    getProducts,
+    getTokens,
+    getBoardTypes
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

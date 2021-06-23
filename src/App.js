@@ -12,34 +12,9 @@ import SnackbarComponent from "./components/SnackbarComponent";
 import TokensComponent from "./components/TokensComponent";
 import DialogsComponent from "./components/DialogsComponent";
 import WebsocketComponent from "./components/WebsocketComponent";
-import {getDevices} from "./actions/devices";
-import {getFirmwares} from "./actions/firmwares";
-import {getProducts} from "./actions/products";
-import {getTokens} from "./actions/tokens";
 import SpinnerComponent from "./components/SpinnerComponent";
-import {getBoardTypes} from "./actions/boardTypes";
 
 class App extends Component {
-    componentDidMount() {
-        this.init();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.loggedIn !== this.props.loggedIn) {
-            this.init();
-        }
-    }
-
-    init = () => {
-        if (this.props.loggedIn) {
-            this.props.getDevices();
-            this.props.getFirmwares();
-            this.props.getProducts();
-            this.props.getTokens();
-            this.props.getBoardTypes();
-        }
-    };
-
     render() {
         return (
             <React.Fragment>
@@ -74,16 +49,8 @@ const mapStateToProps = (state) => ({
     loggedIn: !!state.sessionReducer.token
 });
 
-const mapDispatchToProps = {
-    getDevices,
-    getFirmwares,
-    getProducts,
-    getTokens,
-    getBoardTypes
-};
-
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(
+    connect(mapStateToProps)(
         App
     )
 );

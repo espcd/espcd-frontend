@@ -140,6 +140,7 @@ class TokenDialogComponent extends Component {
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DateTimePicker
                             required
+                            fullWidth
                             autoOk
                             showTodayButton
                             margin="dense"

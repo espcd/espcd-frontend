@@ -72,6 +72,7 @@ class TokenDialogComponent extends Component {
         let token = {
             id: this.props.token.id,
             title: this.getValue("title"),
+            description: this.getValue("description"),
             token: this.getValue("token"),
             expires_at: this.getValue("expires_at"),
             product_id: this.getValue("product_id")
